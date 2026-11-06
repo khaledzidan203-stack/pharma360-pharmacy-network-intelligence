@@ -1,109 +1,163 @@
-# Pharma360 — Pharmacy Network Intelligence
+<div align="center">
 
-**Synthetic Pharmacy Retail | Category Analytics | Inventory & Expiry | Supply Chain | Forecast Evaluation | Power BI**  
-**Prepared by Khaled Zidan**
+# Pharma360
+### Pharmacy Network Decision Intelligence
 
-This repository contains the runnable Power BI bundle for Pharma Category Decision Intelligence 360.
+**Category Performance · Inventory & Expiry · Supplier Service · Forecast Evaluation · Governed Decisions**
 
-Repository: [pharma360-pharmacy-network-intelligence](https://github.com/khaledzidan203-stack/pharma360-pharmacy-network-intelligence)
+**Power BI · PBIP / PBIR / TMDL · DAX · Power Query · Parquet · Synthetic Retail Data**
 
-> **Synthetic only.** Stores, products, suppliers, inventory, invoices and policy scenarios are simulated. No real pharmacy-chain records are represented. The report authorizes no operational procurement, clinical substitution, transfers, vendor returns or inventory disposal.
->
-> **Validation status:** the owner confirms that the launcher and report opened and worked locally in Power BI Desktop. This is owner-confirmed local QA; independent clean-clone and cross-device refresh certification has not been performed. Forecast and procurement policy approval remains **NOT CERTIFIED / NOT APPROVED**.
+[**Explore the dashboards**](#dashboard-showcase) · [**Run the report**](#run-the-dashboard) · [**Understand the evidence**](#evidence-and-interpretation) · [**Browse the files**](#repository-map)
 
-## Project overview
+**Prepared by [Khaled Zidan](https://github.com/khaledzidan203-stack)**
 
-Pharma Category Decision Intelligence 360 is an end-to-end pharmacy-retail decision-support case study, connecting commercial results with supplier operations, store and distribution-center inventory, batch/expiry risk, availability, forecast-model assessment, and governed business decisions. It demonstrates how to distinguish descriptive findings, analytical alternatives, constraints, and **authorization**, rather than treating a dashboard recommendation as an executable transaction.
+</div>
 
-The core analytical work spans:
+> [!IMPORTANT]
+> **A working portfolio demonstration, not an operational authorization system.** All pharmacies, SKUs, suppliers, invoices, stock movements and scenarios use fictional synthetic data. The report does not approve purchase orders, store transfers, returns, disposal or clinical substitution. Forecast outputs and proposed policies are **not certified for deployment**.
 
-- **Commercial & category performance:** net sales, COGS, gross profit, gross margin, distinct invoices, average basket value (ABV), GMROI, inventory turnover, period comparisons and branch/SKU concentration.
-- **Inventory and lot quality:** physical, saleable, reserved, ATP, held and withdrawn states; retail versus wider network scope; expiry, withdrawal, supplier claims and credits.
-- **Procurement and supplier intelligence:** ordered versus received units, supplier fulfillment, delayed receipts, constrained replenishment candidates, and approval/review statuses.
-- **Demand and forecasting:** observed/fulfilled rate of sale (ROS), stocked trading exposure, censoring, validation/holdout metrics, model and horizon comparisons, and known provenance restrictions.
-- **Decision governance and evaluation:** review queues, non-executable proposed alternatives, scenario-policy comparisons, service safeguards, evidence quality and availability status.
+## Dashboard showcase
 
-## Bundle contents
+**01 · Executive Overview** — One executive view of commercial performance, profitability, inventory exposure and decision signals.
 
-- One native PBIP project with its matching PBIR report, semantic model, DAX, theme and resources.
-- Exactly **47 actively imported Parquet files**, retaining the relative paths expected by the model.
-- **15 report pages**, **14 Index destinations**, and 15 genuine report screenshots.
-- A Windows launcher that configures the local data root and opens the existing PBIP.
-- The synthetic original world covers **25 stores, 280 SKUs, 8 categories and 10 suppliers**.
+![01 — EXECUTIVE OVERVIEW · original Power BI report screenshot](screen_shoots/01%20EXECUTIVE%20OVERVIEW.png)
+
+### Explore the core decision areas
+
+| **02 · CATEGORY PERFORMANCE & PROFITABILITY** | **05 · INVENTORY & DISTRIBUTION NETWORK** |
+|:---:|:---:|
+| ![02 — CATEGORY PERFORMANCE & PROFITABILITY · original Power BI report screenshot](screen_shoots/02%20CATEGORY%20PERFORMANCE%20%26%20PROFITABILITY.png) | ![05 — INVENTORY & DISTRIBUTION NETWORK · original Power BI report screenshot](screen_shoots/05%20INVENTORY%20%26%20DISTRIBUTION%20NETWORK.png) |
+| Category mix, margins and profit contribution | Retail, DC, in-transit and available stock |
+
+| **11 · FORECAST PERFORMANCE** | **13 · POLICY SCENARIOS & GUARDRAILS** |
+|:---:|:---:|
+| ![11 — FORECAST PERFORMANCE · original Power BI report screenshot](screen_shoots/11%20FORECAST%20PERFORMANCE.png) | ![13 — POLICY SCENARIOS & GUARDRAILS · original Power BI report screenshot](screen_shoots/13%20POLICY%20SCENARIOS%20%26%20GUARDRAILS.png) |
+| Forecast accuracy and provenance limitations | Scenario comparisons, permissions and safeguards |
+
+<details>
+<summary><strong>View all 10 remaining Power BI pages — including the Index and evidence review</strong></summary>
+
+| **00 · INDEX** | **03 · BRANCH PERFORMANCE** |
+|:---:|:---:|
+| ![00 — INDEX · original Power BI report screenshot](screen_shoots/00%20INDEX.png) | ![03 — BRANCH PERFORMANCE · original Power BI report screenshot](screen_shoots/03%20BRANCH%20PERFORMANCE.png) |
+| Navigate the full decision-intelligence report | Store-level performance and concentration |
+
+| **04 · SKU & ASSORTMENT** | **06 · EXPIRY, WITHDRAWAL & QUALITY** |
+|:---:|:---:|
+| ![04 — SKU & ASSORTMENT · original Power BI report screenshot](screen_shoots/04%20SKU%20%26%20ASSORTMENT.png) | ![06 — EXPIRY, WITHDRAWAL & QUALITY · original Power BI report screenshot](screen_shoots/06%20EXPIRY%2C%20WITHDRAWAL%20%26%20QUALITY.png) |
+| Assortment economics and SKU prioritization | Lot-level risk and inventory quality |
+
+| **07 · EXPIRY & WITHDRAWAL DECISION REVIEW** | **08 · SUPPLIER PERFORMANCE & RETURNS** |
+|:---:|:---:|
+| ![07 — EXPIRY & WITHDRAWAL DECISION REVIEW · original Power BI report screenshot](screen_shoots/07%20EXPIRY%20%26%20WITHDRAWAL%20DECISION%20REVIEW.png) | ![08 — SUPPLIER PERFORMANCE & RETURNS · original Power BI report screenshot](screen_shoots/08%20SUPPLIER%20PERFORMANCE%20%26%20RETURNS.png) |
+| Reviewable expiry and withdrawal cases | Supplier service, receipts, claims and returns |
+
+| **09 · REPLENISHMENT & CONSTRAINT INTELLIGENCE** | **10 · ROS, EXPOSURE & AVAILABILITY** |
+|:---:|:---:|
+| ![09 — REPLENISHMENT & CONSTRAINT INTELLIGENCE · original Power BI report screenshot](screen_shoots/09%20REPLENISHMENT%20%26%20CONSTRAINT%20INTELLIGENCE.png) | ![10 — ROS, EXPOSURE & AVAILABILITY · original Power BI report screenshot](screen_shoots/10%20ROS%2C%20EXPOSURE%20%26%20AVAILABILITY.png) |
+| Supply constraints and governed replenishment | Rate of sale, censored exposure and availability |
+
+| **12 · DECISION REVIEW WORKBENCH** | **14 · DATA QUALITY, EVIDENCE & METHODS** |
+|:---:|:---:|
+| ![12 — DECISION REVIEW WORKBENCH · original Power BI report screenshot](screen_shoots/12%20DECISION%20REVIEW%20WORKBENCH.png) | ![14 — DATA QUALITY, EVIDENCE & METHODS · original Power BI report screenshot](screen_shoots/14%20DATA%20QUALITY%2C%20EVIDENCE%20%26%20METHODS.png) |
+| Non-executable decision alternatives and review status | Evidence completeness, definitions and methods |
+
+</details>
+
+All **15 screenshots** are preserved report captures from the final PBIP, presented in the report's saved display order. The images are previews; the downloadable Power BI project provides the interactive slicers, measures and navigation.
+
+## The business problem
+
+A pharmacy network cannot manage commercial performance independently from inventory, supplier service, expiry risk and forecast uncertainty. The question is not simply *which action looks profitable?* It is **which conclusion is supported by the available data, and which proposed action is actually permitted?**
+
+Pharma360 connects:
+
+- **Commercial intelligence:** network, branch, category and SKU sales; COGS; gross profit and margin; invoice-based average basket value; comparisons and inventory productivity.
+- **Stock and quality:** physical, saleable, held, reserved, available-to-promise (ATP), distribution-center and in-transit positions; lot-level expiry and withdrawal exposure.
+- **Supplier performance:** ordered and received quantities, receipt timeliness, returns, claims and credit evidence.
+- **Forecast diagnostics:** observed/fulfilled demand proxies, rate of sale, stock exposure, evaluation horizons and model limitations.
+- **Decision governance:** constrained alternatives, review states, evidence availability, policy guardrails and non-executable outcomes.
+
+### At a glance
+
+| Component | Included in this release |
+|---|---|
+| Interactive report | **15 Power BI pages**, **277 saved PBIR visual definitions**, **14 Index destinations** |
+| Bundled input | **47 actively imported Parquet files** — all required for the existing semantic model |
+| Synthetic network | **25 stores · 280 SKUs · 8 categories · 10 suppliers** |
+| Editable source | Native **PBIP + PBIR + TMDL**, DAX measures and report theme |
+| Opening the report | Windows launcher configures local `PharmaDataRoot`, then opens Power BI Desktop |
+| Independent recreation | **Not claimed** — the full original world-generation and evaluation pipeline is not published in this runnable-report bundle |
+
+## Analytical architecture
+
+```mermaid
+flowchart LR
+    A["Frozen synthetic reporting inputs<br/>47 Parquet files"] --> B["Power Query<br/>PharmaDataRoot"]
+    B --> C["Semantic model<br/>TMDL + relationships + DAX"]
+    C --> D["15-page interactive<br/>Power BI report"]
+    D --> E["Commercial diagnosis<br/>and evidence review"]
+    E --> F["Decision alternatives<br/>subject to guardrails"]
+```
+
+The Parquet inputs preserve the selected synthetic analytical results. Downloading this repository **does not rerun** the original simulations, optimizer studies, historical data engineering or forecast-model selection. It reproduces the *supplied report experience* using the bundled inputs, not an independently rebuilt world.
+
+## Run the dashboard
+
+**Requirements:** Windows and a version of **Microsoft Power BI Desktop** supporting PBIP/PBIR/TMDL. Python, a database server and cloud credentials are **not required** to view the bundled report.
+
+1. [Download the complete repository ZIP](https://github.com/khaledzidan203-stack/pharma360-pharmacy-network-intelligence/archive/refs/heads/main.zip) and extract it fully to a writable folder. Alternatively, clone the repository.
+2. From the extracted root, double-click **`RUN_PHARMA360.cmd`**.
+3. In Power BI Desktop select **Home → Refresh**. Allow the data import to finish, and review the report.
+4. Use the **00 INDEX** page to navigate the 14 destinations. Check the 06 ↔ 07 review links, filters and EGP presentation.
+5. **Save → Close → Reopen** to confirm the refreshed report continues to work.
+
+To verify the bundled data paths before opening, run:
+
+```powershell
+.\RUN_PHARMA360.cmd --verify-only
+```
+
+The launcher detects its own folder, verifies all active Parquet dependencies, and updates **only** the local `PharmaDataRoot` text parameter when necessary. It creates a local rollback copy before a parameter change. If a path update is needed, close Power BI Desktop first. Keep the `data/`, `powerbi/` and `tools/` folders together.
+
+**Verification boundary:** the owner confirmed successful local Desktop operation. A separate fresh-ZIP, cross-folder or cross-device Power BI refresh has **not yet been independently certified**.
+
+## Evidence and interpretation
+
+<details>
+<summary><strong>Scientific and business limitations — important when interpreting the dashboard</strong></summary>
+
+- **Synthetic financial labels:** visible **EGP** is a presentation relabel of the original nominal synthetic amounts, **1:1 without any foreign-exchange calculation**. Some historical measure identifiers still contain `SAR` and are not independent evidence of a currency conversion. Certain financial source fields are stored as integer minor units and converted by the existing measure definitions.
+- **Accounting grains:** invoices are counted at the distinct invoice-header grain, not summed as product-line or category invoices. Stock snapshots are not additive across dates. Financial and inventory comparisons require consistent period, ownership, lot, location and as-of filters.
+- **Scope differences:** a final static review noted **763 units at a wider network scope** versus **584 at retail scope** for expiry/withdrawal-related views. They are not interchangeable figures; a fully aligned reconciliation of their filters and populations was not claimed.
+- **Evidence completeness:** **21 of 24** source cases were proven, **2 not observed** and **1 unverifiable**, corresponding to **87.5%** (displayed as **88%**). Unavailable evidence must not be presented as a measured business zero.
+- **Forecasts:** evaluation is based on observed/fulfilled sales proxies, not independently known latent demand. Known source-calendar/provenance limitations mean that forecast scientific certification remains **ON HOLD / NOT CERTIFIED**.
+- **Policy decisions:** simulation results are not realized clinical or business effects. Existing safety guardrails block operational execution of the reviewed alternatives; no live procurement, stock transfers, returns or disposal are authorized.
+- **Financial comparison caveats:** previously flagged differences in margin precision, unequal compared-period day counts and GMROI denominator grain require aligned-context investigation before interpreting small discrepancies as substantive business results.
+
+</details>
+
+**Interpretation principle:** observed KPIs describe the synthetic network; model outputs suggest alternatives; evidence and constraints determine whether any conclusion is supportable. **A suggestion is not an authorization.**
+
+## Repository map
 
 ```text
-README.md
-RUN_PHARMA360.cmd
-.gitignore
-tools/launch_pharma360.ps1
-powerbi/Pharma_Category_Management_POC.pbip
-powerbi/Pharma_Category_Management_POC.Report/
-powerbi/Pharma_Category_Management_POC.SemanticModel/
-data/                         47 imported synthetic Parquets
-screen_shoots/                15 genuine report screenshots
+.
+├── README.md                         Portfolio case study and dashboard gallery
+├── RUN_PHARMA360.cmd                 Windows launch entry point
+├── .gitignore                        Explicit public-file allowlist protection
+├── tools/
+│   └── launch_pharma360.ps1          Validates inputs and configures local data root
+├── powerbi/
+│   ├── Pharma_Category_Management_POC.pbip
+│   ├── Pharma_Category_Management_POC.Report/
+│   └── Pharma_Category_Management_POC.SemanticModel/
+├── data/                             47 required synthetic Parquet inputs
+└── screen_shoots/                    15 original report-page PNGs
 ```
 
-Bundled Parquets feed Power Query through `PharmaDataRoot`, then the semantic model and report pages. This bundle supports opening and refreshing the supplied report; identical from-zero synthetic-world regeneration is not claimed.
+**Publication scope:** this repository is intentionally a **runnable Power BI portfolio bundle**. It does not include local Codex prompts, development plans, scratch files, private QA logs, source-generating scripts or the full upstream analytics pipeline. The many JSON and TMDL files under `powerbi/` are native components of the editable report and should not be removed merely to reduce the file count.
 
-## Open in Power BI Desktop — Windows
+---
 
-Install a compatible Power BI Desktop version with PBIP support. Download the complete repository using **Code → Download ZIP**, then extract it fully before running the launcher. Alternatively:
-
-```powershell
-git clone https://github.com/khaledzidan203-stack/pharma360-pharmacy-network-intelligence.git
-cd pharma360-pharmacy-network-intelligence
-```
-
-From the extracted or cloned repository folder:
-
-```powershell
-# Check the bundled sources without changing or opening the report
-.\RUN_PHARMA360.cmd --verify-only
-
-# Configure the local data root if needed and open the report
-.\RUN_PHARMA360.cmd
-```
-
-Close Power BI Desktop before launching from a new folder if the data root must change. The launcher derives the root from its own location, validates all imported sources, and changes only `PharmaDataRoot` when necessary, with a local backup and rollback on configuration failure. It prints `NO_CHANGES` when already configured. Keep the complete directory structure together.
-
-In Desktop, select **Refresh**, inspect the report, then **Save → Close → Reopen**. Confirm the 14 Index buttons, the 06↔07 links, EGP presentation, expiry-month order, forecast precision and evidence states. The launcher does not perform refresh or save automatically. If Windows cannot open the PBIP, install Power BI Desktop and associate `.pbip` files with it.
-
-## Report pages and screenshots
-
-The links below follow the current saved display order. Page 07 is the supplementary expiry and withdrawal decision review.
-
-| Saved page | Authentic screenshot |
-|---|---|
-| 00 | [INDEX](screen_shoots/00%20INDEX.png) |
-| 01 | [EXECUTIVE OVERVIEW](screen_shoots/01%20EXECUTIVE%20OVERVIEW.png) |
-| 02 | [CATEGORY PERFORMANCE & PROFITABILITY](screen_shoots/02%20CATEGORY%20PERFORMANCE%20%26%20PROFITABILITY.png) |
-| 03 | [BRANCH PERFORMANCE](screen_shoots/03%20BRANCH%20PERFORMANCE.png) |
-| 04 | [SKU & ASSORTMENT](screen_shoots/04%20SKU%20%26%20ASSORTMENT.png) |
-| 05 | [INVENTORY & DISTRIBUTION NETWORK](screen_shoots/05%20INVENTORY%20%26%20DISTRIBUTION%20NETWORK.png) |
-| 06 | [EXPIRY, WITHDRAWAL & QUALITY](screen_shoots/06%20EXPIRY%2C%20WITHDRAWAL%20%26%20QUALITY.png) |
-| 07 | [EXPIRY & WITHDRAWAL DECISION REVIEW](screen_shoots/07%20EXPIRY%20%26%20WITHDRAWAL%20DECISION%20REVIEW.png) |
-| 08 | [SUPPLIER PERFORMANCE & RETURNS](screen_shoots/08%20SUPPLIER%20PERFORMANCE%20%26%20RETURNS.png) |
-| 09 | [REPLENISHMENT & CONSTRAINT INTELLIGENCE](screen_shoots/09%20REPLENISHMENT%20%26%20CONSTRAINT%20INTELLIGENCE.png) |
-| 10 | [ROS, EXPOSURE & AVAILABILITY](screen_shoots/10%20ROS%2C%20EXPOSURE%20%26%20AVAILABILITY.png) |
-| 11 | [FORECAST PERFORMANCE](screen_shoots/11%20FORECAST%20PERFORMANCE.png) |
-| 12 | [DECISION REVIEW WORKBENCH](screen_shoots/12%20DECISION%20REVIEW%20WORKBENCH.png) |
-| 13 | [POLICY SCENARIOS & GUARDRAILS](screen_shoots/13%20POLICY%20SCENARIOS%20%26%20GUARDRAILS.png) |
-| 14 | [DATA QUALITY, EVIDENCE & METHODS](screen_shoots/14%20DATA%20QUALITY%2C%20EVIDENCE%20%26%20METHODS.png) |
-
-## Data and calculation integrity
-
-- The financial source stores some amounts as integer **minor units** with project-defined `÷100` formatting/calculation; **EGP is a presentation relabel**, not a reassessment of the historical nominal values or conversion from SAR at an exchange rate.
-- **Invoices are distinct headers**, not summed line or category counts. The approved Category ABV repair uses `DIVIDE([SKU Sales SAR], [Category Invoices])` to respect matched Branch × Category scope. The internal measure name retains its historical currency label.
-- Store, distribution-center and transit inventory represent different locations/populations. Snapshot, lot, status, ownership, as-of time and SKU granularity are integral to correct reporting; inventory snapshots must not be summed across dates.
-- Forecast test targets are **observed fulfilled sales**, not independently verified latent demand. Historical forecasting calibration/source-calendar knowledge risks remain **ON HOLD / NOT CERTIFIED**.
-- Historical policy trials are **simulations**, not field-measured causal improvements. The recorded guardrails include blocked policy alternatives; current proposed actions are **not executable**.
-
-## Evidence and analytical limitations
-
-- The 6 Nov evidence-page run reported **21 of 24 source cases proven**, **2 not observed**, **1 unverifiable**. Therefore `21/24 = 87.5%` (displayed as **88%**), *not* 24/24 proven. Missing/unavailable states are not equivalent to business zero.
-- The final pre-release output recorded **763 network-scope** versus **584 retail-scope** expiry/withdrawal-related units. Different populations may explain the difference, but the exact reconciliation must not be asserted without aligned filters, location types and as-of evidence.
-- Financial/snapshot questions flagged in the final output include **33.76% vs 33.77%** margins under potentially different contexts/rounding, **92 vs 91 days** in compared periods, and distinct GMROI denominator grains. These differences remain unresolved analytical disclosures.
-- The final display correction reported changes to **25 files including 24 visuals**: EGP labels, period ordering, formatting precision and negative-zero presentation. This was a **file-level correction**, not by itself complete native Desktop acceptance.
-- Some older source cases or policies remain blocked/unavailable; concise executive wording does not remove these scientific limitations.
-
-The report is a synthetic portfolio and technical education demonstration. Policy simulations do not establish field-measured causal effects, and proposed movements are not executable approvals. EGP is a presentation label with the original synthetic numerical units retained 1:1; no exchange-rate conversion was performed.
+**Developed by [Khaled Zidan](https://github.com/khaledzidan203-stack)** · [GitHub portfolio](https://github.com/khaledzidan203-stack) · [LinkedIn](https://www.linkedin.com/in/khaled-zidan-7400a51a3)
