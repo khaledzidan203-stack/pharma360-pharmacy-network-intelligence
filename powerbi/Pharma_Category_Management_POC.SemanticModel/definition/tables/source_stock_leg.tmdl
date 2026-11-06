@@ -1,0 +1,142 @@
+table source_stock_leg
+	lineageTag: 3da53a08-77c2-51d4-807f-a7ecf8706c7e
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 197add1c-5d7e-57bf-9f00-78d4baae58c2
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: f4be5ac5-485c-5f25-bfd2-6df6422ab4ac
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 1eda0d01-24f4-5bcc-a3ce-63aca9fc7bff
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 157d23c2-b443-5a95-9cf3-0641fee82439
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: f575f308-fd67-50ed-bf76-1c7d085b534c
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: d816b5eb-7d8c-5320-b09c-384e35e13723
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 08849bab-df4f-50e9-8882-2e93699c7131
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column zone_id.
+	column zone_id
+		dataType: string
+		lineageTag: 617dc486-2c4b-5ece-9b06-2b658a69fa05
+		summarizeBy: none
+		sourceColumn: zone_id
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: 8fcb880a-ad60-5bac-a7fb-8cc8a92db68f
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 4cc5a627-7342-5d2b-b609-71ffa110333e
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 1634e523-8ee4-5c9c-8d4b-690ee25b5e14
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column qty.
+	column qty
+		dataType: int64
+		lineageTag: a761f9a9-6ce8-5508-8a79-49700da32e8b
+		summarizeBy: none
+		sourceColumn: qty
+
+	/// Manifest-authorized source column cost_minor.
+	column cost_minor
+		dataType: int64
+		lineageTag: 20d6e859-04bb-5d38-bdc2-787d442e2dc2
+		summarizeBy: none
+		sourceColumn: cost_minor
+
+	/// Manifest-authorized source column kind.
+	column kind
+		dataType: string
+		lineageTag: 05946e12-da63-51a5-b394-ee85781ae44f
+		summarizeBy: none
+		sourceColumn: kind
+
+	/// Manifest-authorized source column reference.
+	column reference
+		dataType: string
+		lineageTag: ab4d80e5-63d5-5ae0-b88b-9a37aef3619b
+		summarizeBy: none
+		sourceColumn: reference
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 8b86ec5c-ea89-5b8b-9f15-42ee71c676bd
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: dd3c8c35-8b30-595c-bb93-dc648910bbeb
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_stock_leg = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/source/stock_leg.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"location", type text}, {"zone_id", type text}, {"lot", type text}, {"sku", type text}, {"status", type text}, {"qty", Int64.Type}, {"cost_minor", Int64.Type}, {"kind", type text}, {"reference", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

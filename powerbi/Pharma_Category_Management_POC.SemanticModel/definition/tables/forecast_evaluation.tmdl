@@ -1,0 +1,166 @@
+table forecast_evaluation
+	lineageTag: dcd5dfeb-38a4-5a4b-b4fd-7270e5b63cba
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 768b2137-9bee-59a0-ae79-3c1c43d56740
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: c979c78f-3e26-5dba-ba35-d89c11c72ec8
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 1dee2573-2302-5253-aa65-c51dc7616a28
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column origin.
+	column origin
+		dataType: string
+		lineageTag: c45dfc29-b0ab-5b30-a507-43a978fb6302
+		summarizeBy: none
+		sourceColumn: origin
+
+	/// Manifest-authorized source column training_end_exclusive.
+	column training_end_exclusive
+		dataType: string
+		lineageTag: b5d4bb1c-30cc-57f1-a386-9bf38127643d
+		summarizeBy: none
+		sourceColumn: training_end_exclusive
+
+	/// Manifest-authorized source column horizon_days.
+	column horizon_days
+		dataType: int64
+		lineageTag: ea4596ba-7ae8-562a-97c9-4f2542cbf6f9
+		summarizeBy: none
+		sourceColumn: horizon_days
+
+	/// Manifest-authorized source column method.
+	column method
+		dataType: string
+		lineageTag: dfb626c5-7f26-5ff5-991a-89083a6cd26f
+		summarizeBy: none
+		sourceColumn: method
+
+	/// Manifest-authorized source column partition.
+	column partition
+		dataType: string
+		lineageTag: bceb4069-248b-513f-9b86-a41cba1abdc2
+		summarizeBy: none
+		sourceColumn: partition
+
+	/// Manifest-authorized source column segment.
+	column segment
+		dataType: string
+		lineageTag: ddb10798-14c3-5500-b7e5-2390aa4f9afd
+		summarizeBy: none
+		sourceColumn: segment
+
+	/// Manifest-authorized source column actual_fulfilled_units.
+	column actual_fulfilled_units
+		dataType: double
+		lineageTag: f4229234-4027-5f84-b7ff-a02fd5ab2ca3
+		summarizeBy: none
+		sourceColumn: actual_fulfilled_units
+
+	/// Manifest-authorized source column forecast_units.
+	column forecast_units
+		dataType: double
+		lineageTag: 0ff82ce5-ce2e-5a27-b53a-bb319e07eab3
+		summarizeBy: none
+		sourceColumn: forecast_units
+
+	/// Manifest-authorized source column error_units.
+	column error_units
+		dataType: double
+		lineageTag: e31cd63e-8a28-55c9-a02b-2f5c457f7533
+		summarizeBy: none
+		sourceColumn: error_units
+
+	/// Manifest-authorized source column absolute_error.
+	column absolute_error
+		dataType: double
+		lineageTag: 9124b7dd-241e-5f29-afaa-7caaaf846971
+		summarizeBy: none
+		sourceColumn: absolute_error
+
+	/// Manifest-authorized source column lower_heuristic.
+	column lower_heuristic
+		dataType: double
+		lineageTag: 9f8da34f-b669-52ab-897c-bcb38438a2a2
+		summarizeBy: none
+		sourceColumn: lower_heuristic
+
+	/// Manifest-authorized source column upper_heuristic.
+	column upper_heuristic
+		dataType: double
+		lineageTag: 78e3fd0f-d808-56d8-b1ba-7c5e3b3f7074
+		summarizeBy: none
+		sourceColumn: upper_heuristic
+
+	/// Manifest-authorized source column covered.
+	column covered
+		dataType: boolean
+		lineageTag: 8a1ab1bd-0103-5bcf-9331-0ca693b8a293
+		summarizeBy: none
+		sourceColumn: covered
+
+	/// Manifest-authorized source column availability_censored.
+	column availability_censored
+		dataType: boolean
+		lineageTag: b1bcdbb1-747b-575e-90bc-f88e43ed913f
+		summarizeBy: none
+		sourceColumn: availability_censored
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 17182ad4-77b4-528c-a753-165e5dc86f7c
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column target.
+	column target
+		dataType: string
+		lineageTag: d5d820a5-4039-5624-a066-b77c5b37985b
+		summarizeBy: none
+		sourceColumn: target
+
+	/// Manifest-authorized source column selected_on_validation.
+	column selected_on_validation
+		dataType: boolean
+		lineageTag: 0abc45f3-f7f6-5801-a4f0-7867ea55588a
+		summarizeBy: none
+		sourceColumn: selected_on_validation
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Forecast Origin Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 0271f3bc-1605-51dc-9a42-e153215415ec
+		summarizeBy: none
+		sourceColumn: Forecast Origin Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition forecast_evaluation = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/04_analytics/FORECAST_BACKTEST_RESULTS.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"location", type text}, {"sku", type text}, {"origin", type text}, {"training_end_exclusive", type text}, {"horizon_days", Int64.Type}, {"method", type text}, {"partition", type text}, {"segment", type text}, {"actual_fulfilled_units", type number}, {"forecast_units", type number}, {"error_units", type number}, {"absolute_error", type number}, {"lower_heuristic", type number}, {"upper_heuristic", type number}, {"covered", type logical}, {"availability_censored", type logical}, {"source_manifest_sha256", type text}, {"target", type text}, {"selected_on_validation", type logical}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Forecast Origin Date", each if Record.Field(_, "origin") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "origin")), 3)), type date)
+				in
+				  Dates0
+

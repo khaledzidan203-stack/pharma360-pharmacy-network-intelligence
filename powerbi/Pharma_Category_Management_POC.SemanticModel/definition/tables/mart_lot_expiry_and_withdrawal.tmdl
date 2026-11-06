@@ -1,0 +1,143 @@
+table mart_lot_expiry_and_withdrawal
+	lineageTag: bb867ef8-ecf8-51bf-a7c4-6edf2a07f2db
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: ff528d80-aa14-5e2a-b6e1-b9fe1504545a
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: c890425e-556a-548c-8ed5-e2c5d8af8161
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: ce0c8fad-3df5-5144-aa4b-7563576c0c08
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 9797d99b-b578-55d0-ada3-571ab1c2bdde
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 8d665ac4-1e15-5e23-bc09-16eae8dd5a00
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 12c35aa3-74ef-5d38-b5e3-15196608b030
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: e447438f-3401-598a-b615-fc9098c432b8
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 813d9ae7-d937-5dbf-8df4-f1f6887d327f
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column qty.
+	column qty
+		dataType: int64
+		lineageTag: 0612faf8-83ef-59f6-bfcb-60aa7e0736fb
+		summarizeBy: none
+		sourceColumn: qty
+
+	/// Manifest-authorized source column expiry_year.
+	column expiry_year
+		dataType: int64
+		lineageTag: 4cbb31a5-1d7a-5346-b916-02d3cd65f7bf
+		summarizeBy: none
+		sourceColumn: expiry_year
+
+	/// Manifest-authorized source column expiry_month.
+	column expiry_month
+		dataType: int64
+		lineageTag: 23314bad-904e-5984-a938-e695cfc1a3ce
+		summarizeBy: none
+		sourceColumn: expiry_month
+
+	/// Manifest-authorized source column expiry_precision.
+	column expiry_precision
+		dataType: string
+		lineageTag: 373fa0e5-1c4e-51ff-83e4-b05b841be49c
+		summarizeBy: none
+		sourceColumn: expiry_precision
+
+	/// Manifest-authorized source column withdrawal_at.
+	column withdrawal_at
+		dataType: string
+		lineageTag: aef07e8a-aa77-5d3d-89c8-b5fde490582d
+		summarizeBy: none
+		sourceColumn: withdrawal_at
+
+	/// Manifest-authorized source column remaining_sellable_days.
+	column remaining_sellable_days
+		dataType: int64
+		lineageTag: 842a156b-bad3-5419-8962-0742622ce581
+		summarizeBy: none
+		sourceColumn: remaining_sellable_days
+
+	/// Manifest-authorized source column unit_cost_minor.
+	column unit_cost_minor
+		dataType: int64
+		lineageTag: b46dce19-295b-5ad4-8608-2ac41550ed09
+		summarizeBy: none
+		sourceColumn: unit_cost_minor
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 783abd78-2253-50e4-84ba-fe0f63219878
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Withdrawal Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 94883a01-5599-54bb-a95a-41d2e3e1b7fc
+		summarizeBy: none
+		sourceColumn: Withdrawal Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_lot_expiry_and_withdrawal = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_lot_expiry_and_withdrawal.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"location", type text}, {"sku", type text}, {"lot", type text}, {"status", type text}, {"qty", Int64.Type}, {"expiry_year", Int64.Type}, {"expiry_month", Int64.Type}, {"expiry_precision", type text}, {"withdrawal_at", type text}, {"remaining_sellable_days", Int64.Type}, {"unit_cost_minor", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Withdrawal Date", each if Record.Field(_, "withdrawal_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "withdrawal_at")), 3)), type date)
+				in
+				  Dates1
+

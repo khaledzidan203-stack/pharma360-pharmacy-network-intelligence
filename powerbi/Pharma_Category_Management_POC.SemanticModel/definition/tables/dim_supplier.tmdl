@@ -1,0 +1,114 @@
+table dim_supplier
+	lineageTag: e618cfbd-2933-5c4a-b86e-6ab7af4ed038
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 2af727c2-4f11-53c5-a1ef-cf3213d30346
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 25ef3307-84ad-5228-83a6-a035d0a66109
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 3e214b34-d67a-5603-9dbf-7e6af99ae636
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: da684f74-e91f-5d84-a558-a8749e07c777
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: e6192dcf-e20d-5ded-bc69-25b6c3f82316
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: 15a3de85-bd7a-5798-b4f1-fb9e0c5fb1f1
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column supplier.
+	column supplier
+		dataType: string
+		lineageTag: 89ddd422-e9af-58b4-8f6f-8d297d408420
+		summarizeBy: none
+		sourceColumn: supplier
+
+	/// Manifest-authorized source column lead_days.
+	column lead_days
+		dataType: double
+		lineageTag: 877766fb-e080-5084-87ac-20f5e8af3e63
+		summarizeBy: none
+		sourceColumn: lead_days
+
+	/// Manifest-authorized source column partial_probability.
+	column partial_probability
+		dataType: double
+		lineageTag: b11b2f03-e962-5d46-85c9-ff1947e6de6f
+		summarizeBy: none
+		sourceColumn: partial_probability
+
+	/// Manifest-authorized source column calendar.
+	column calendar
+		dataType: string
+		lineageTag: 9dab948a-d529-54af-8879-e18874764600
+		summarizeBy: none
+		sourceColumn: calendar
+
+	/// Manifest-authorized source column evidence.
+	column evidence
+		dataType: string
+		lineageTag: 4158f09a-dbaa-5cfc-a2fd-e2e35e10bbf9
+		summarizeBy: none
+		sourceColumn: evidence
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: ae0b2ace-6a3f-588e-bc6e-66c14e18183e
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: e0c50d1d-7116-5650-9679-d23e1514695d
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_supplier = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_supplier.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"supplier", type text}, {"lead_days", type number}, {"partial_probability", type number}, {"calendar", type text}, {"evidence", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

@@ -1,0 +1,13 @@
+table PeriodSelector
+	lineageTag: 54876b35-1e38-59d4-81d4-ef85a395a823
+
+	column Period
+		dataType: string
+		lineageTag: 9c835c71-c0a1-4025-ac39-49d98ff0b37a
+		summarizeBy: none
+		sourceColumn: [Period]
+
+	partition PeriodSelector = calculated
+		mode: import
+		source = DATATABLE("Period",STRING,{{"3M"},{"6M"}})
+

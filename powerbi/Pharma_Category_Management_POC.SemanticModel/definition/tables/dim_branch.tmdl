@@ -1,0 +1,156 @@
+table dim_branch
+	lineageTag: 58b88c4c-63e4-54d5-83c2-9438ac861356
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 9d989299-d5c3-5ad3-ac9c-5aee3fa91bf7
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 58325de7-a7df-51f3-a3ec-0d9cf13833cc
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 8aac4347-0bcf-5eac-85e9-4f7eebcb22d1
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: ac622b9c-f56f-599b-b17a-2c5d16d45bb8
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: ff5cc42b-57e5-5414-8545-aef6ec85c200
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: 607fd433-cfe6-5c17-97ff-3ec177aa124e
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 31d58fc6-33e2-55dc-a93e-e600bf1957b9
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column kind.
+	column kind
+		dataType: string
+		lineageTag: 6af20324-4d30-5736-aa4a-d4cc667117aa
+		summarizeBy: none
+		sourceColumn: kind
+
+	/// Manifest-authorized source column store_class.
+	column store_class
+		dataType: string
+		lineageTag: c585b817-bd21-5e22-919b-7524fa9ec034
+		summarizeBy: none
+		sourceColumn: store_class
+
+	/// Manifest-authorized source column format.
+	column format
+		dataType: string
+		lineageTag: 5a334ae8-0df9-5885-8577-141eb742899e
+		summarizeBy: none
+		sourceColumn: format
+
+	/// Manifest-authorized source column city.
+	column city
+		dataType: string
+		lineageTag: 744e8c25-a431-5e1d-9e2f-6a1d3f45ce77
+		summarizeBy: none
+		sourceColumn: city
+
+	/// Manifest-authorized source column selling_area.
+	column selling_area
+		dataType: int64
+		lineageTag: 9e5e5b53-ed45-5568-adbb-8933e55a349a
+		summarizeBy: none
+		sourceColumn: selling_area
+
+	/// Manifest-authorized source column capacity_litres.
+	column capacity_litres
+		dataType: double
+		lineageTag: 786be31a-f551-5f2f-a6d8-f81a13473009
+		summarizeBy: none
+		sourceColumn: capacity_litres
+
+	/// Manifest-authorized source column capital_minor.
+	column capital_minor
+		dataType: int64
+		lineageTag: 4f289491-98a9-59ba-8953-d5ab7f1b6cef
+		summarizeBy: none
+		sourceColumn: capital_minor
+
+	/// Manifest-authorized source column temperature.
+	column temperature
+		dataType: string
+		lineageTag: b096e0b2-34b9-56cc-80f9-54f935fdb36f
+		summarizeBy: none
+		sourceColumn: temperature
+
+	/// Manifest-authorized source column open_from.
+	column open_from
+		dataType: string
+		lineageTag: df85b0cb-b7a9-5a1c-8fe2-9e9a0f9e37d7
+		summarizeBy: none
+		sourceColumn: open_from
+
+	/// Manifest-authorized source column open_to.
+	column open_to
+		dataType: string
+		lineageTag: 6afec629-50db-50b1-862e-546a72cbf0d5
+		summarizeBy: none
+		sourceColumn: open_to
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 21ca3d99-ffde-5d58-8787-42a94edcdb76
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: efd401fd-6007-57fa-b717-2435badaec86
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_branch = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_branch.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"location", type text}, {"kind", type text}, {"store_class", type text}, {"format", type text}, {"city", type text}, {"selling_area", Int64.Type}, {"capacity_litres", type number}, {"capital_minor", Int64.Type}, {"temperature", type text}, {"open_from", type text}, {"open_to", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

@@ -1,0 +1,191 @@
+table mart_sales_finance_period
+	lineageTag: 065cb435-04e5-54ae-80f1-76f180fb2586
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: e0d0d7f4-90e2-5f99-8957-627c79897aca
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 42323c53-eed4-5a68-8d2b-9319f649345b
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 04b268d1-ebe1-5fbc-b702-c1ae323c7081
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column period.
+	column period
+		dataType: string
+		lineageTag: bd146ef4-0f3a-55fc-9d41-f8923f454cd0
+		summarizeBy: none
+		sourceColumn: period
+
+	/// Manifest-authorized source column period_start.
+	column period_start
+		dataType: string
+		lineageTag: 5ee4c1c5-5881-56fd-b078-68e5c76a0cb9
+		summarizeBy: none
+		sourceColumn: period_start
+
+	/// Manifest-authorized source column period_end.
+	column period_end
+		dataType: string
+		lineageTag: fa50fe7b-db18-52ea-971a-777cd88c7dec
+		summarizeBy: none
+		sourceColumn: period_end
+
+	/// Manifest-authorized source column scope.
+	column scope
+		dataType: string
+		lineageTag: 5116a253-7846-559c-a98f-5aa24d9668c2
+		summarizeBy: none
+		sourceColumn: scope
+
+	/// Manifest-authorized source column entity.
+	column entity
+		dataType: string
+		lineageTag: cea6ddf5-7d23-56f5-86e1-033fc5083549
+		summarizeBy: none
+		sourceColumn: entity
+
+	/// Manifest-authorized source column item.
+	column item
+		dataType: string
+		lineageTag: 4dea7081-6f34-586e-b28e-ab5e32ae20d4
+		summarizeBy: none
+		sourceColumn: item
+
+	/// Manifest-authorized source column gp_minor.
+	column gp_minor
+		dataType: int64
+		lineageTag: 16430655-8560-5cdd-9f4c-07b520998efa
+		summarizeBy: none
+		sourceColumn: gp_minor
+
+	/// Manifest-authorized source column invoice_count.
+	column invoice_count
+		dataType: int64
+		lineageTag: 741f30a4-bfc6-5892-8dd2-28282730019c
+		summarizeBy: none
+		sourceColumn: invoice_count
+
+	/// Manifest-authorized source column margin.
+	column margin
+		dataType: double
+		lineageTag: dbe47570-fe22-54ae-8cec-60dd61806b00
+		summarizeBy: none
+		sourceColumn: margin
+
+	/// Manifest-authorized source column abv_minor.
+	column abv_minor
+		dataType: double
+		lineageTag: 6c8b18c2-e349-5862-8f3b-05e429a220b1
+		summarizeBy: none
+		sourceColumn: abv_minor
+
+	/// Manifest-authorized source column gmroi.
+	column gmroi
+		dataType: double
+		lineageTag: e3d26f7a-4239-5e72-b98c-cd15757e8aee
+		summarizeBy: none
+		sourceColumn: gmroi
+
+	/// Manifest-authorized source column turns.
+	column turns
+		dataType: double
+		lineageTag: 34080b7e-3b4b-521e-a5ab-28426777e015
+		summarizeBy: none
+		sourceColumn: turns
+
+	/// Manifest-authorized source column posted_contribution_minor.
+	column posted_contribution_minor
+		dataType: int64
+		lineageTag: cb711a29-5629-5e99-9aaa-c4180c08cde7
+		summarizeBy: none
+		sourceColumn: posted_contribution_minor
+
+	/// Manifest-authorized source column contribution_reason.
+	column contribution_reason
+		dataType: string
+		lineageTag: f4582068-2a6f-5223-b951-84cca7d4744e
+		summarizeBy: none
+		sourceColumn: contribution_reason
+
+	/// Manifest-authorized source column net_sales_minor.
+	column net_sales_minor
+		dataType: int64
+		lineageTag: 7f23f09d-edcb-513a-b111-aad63805a432
+		summarizeBy: none
+		sourceColumn: net_sales_minor
+
+	/// Manifest-authorized source column net_cogs_minor.
+	column net_cogs_minor
+		dataType: int64
+		lineageTag: 86312e31-1493-5d46-906b-ecc861d2f2a8
+		summarizeBy: none
+		sourceColumn: net_cogs_minor
+
+	/// Manifest-authorized source column net_units.
+	column net_units
+		dataType: int64
+		lineageTag: 15415ae5-6729-523e-994c-e26eb09ae847
+		summarizeBy: none
+		sourceColumn: net_units
+
+	/// Manifest-authorized source column twa_minor.
+	column twa_minor
+		dataType: double
+		lineageTag: 25bb8529-dbb1-55a5-a267-48cc3e71fd53
+		summarizeBy: none
+		sourceColumn: twa_minor
+
+	/// Manifest-authorized source column fees_minor.
+	column fees_minor
+		dataType: int64
+		lineageTag: 36de4231-4d32-5e48-83b1-b33b8f28d7f5
+		summarizeBy: none
+		sourceColumn: fees_minor
+
+	/// Manifest-authorized source column writeoff_minor.
+	column writeoff_minor
+		dataType: int64
+		lineageTag: 450c7efb-7341-5e76-9732-81b8c006b567
+		summarizeBy: none
+		sourceColumn: writeoff_minor
+
+	/// Manifest-authorized source column credit_minor.
+	column credit_minor
+		dataType: int64
+		lineageTag: 9513dbd0-38e2-5d74-ab26-7a462219bde7
+		summarizeBy: none
+		sourceColumn: credit_minor
+
+	/// Manifest-authorized source column vendor_cost_minor.
+	column vendor_cost_minor
+		dataType: int64
+		lineageTag: 66df45d4-4915-5cd1-bb8f-6d024b1e8e07
+		summarizeBy: none
+		sourceColumn: vendor_cost_minor
+
+	partition mart_sales_finance_period = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_sales_finance_period.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"period", type text}, {"period_start", type text}, {"period_end", type text}, {"scope", type text}, {"entity", type text}, {"item", type text}, {"gp_minor", Int64.Type}, {"invoice_count", Int64.Type}, {"margin", type number}, {"abv_minor", type number}, {"gmroi", type number}, {"turns", type number}, {"posted_contribution_minor", Int64.Type}, {"contribution_reason", type text}, {"net_sales_minor", Int64.Type}, {"net_cogs_minor", Int64.Type}, {"net_units", Int64.Type}, {"twa_minor", type number}, {"fees_minor", Int64.Type}, {"writeoff_minor", Int64.Type}, {"credit_minor", Int64.Type}, {"vendor_cost_minor", Int64.Type}}, "en-US")
+				in
+				  Typed
+

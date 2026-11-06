@@ -1,0 +1,86 @@
+table mart_kpi_dictionary
+	lineageTag: 1906d4e6-aaeb-56e7-a4c2-ad111d6c11bd
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: ecc25113-f2e3-591d-b560-ee64c395d01f
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 5df4f9b8-ae4a-52b3-a714-65b00e9afe58
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 7224bb11-cc86-5c83-af9d-e56076de5d68
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column metric.
+	column metric
+		dataType: string
+		lineageTag: 0d5a6056-bc3e-5fbd-a6a8-910a951a2303
+		summarizeBy: none
+		sourceColumn: metric
+
+	/// Manifest-authorized source column formula.
+	column formula
+		dataType: string
+		lineageTag: 1244fbfe-3ecc-573e-a253-81aad9ca5b7a
+		summarizeBy: none
+		sourceColumn: formula
+
+	/// Manifest-authorized source column unit.
+	column unit
+		dataType: string
+		lineageTag: c8039eb3-2731-5ef0-bff5-97fb756f0ef7
+		summarizeBy: none
+		sourceColumn: unit
+
+	/// Manifest-authorized source column aggregation.
+	column aggregation
+		dataType: string
+		lineageTag: 9efbe588-0c5e-5da9-b51e-a3dfca2dcb8f
+		summarizeBy: none
+		sourceColumn: aggregation
+
+	/// Manifest-authorized source column zero_rule.
+	column zero_rule
+		dataType: string
+		lineageTag: 2889a463-4cc3-52b0-8db8-bd055d4fe460
+		summarizeBy: none
+		sourceColumn: zero_rule
+
+	/// Manifest-authorized source column owner.
+	column owner
+		dataType: string
+		lineageTag: d4bd6d71-3abc-5470-aea9-55a1b3bb29e7
+		summarizeBy: none
+		sourceColumn: owner
+
+	/// Manifest-authorized source column authority.
+	column authority
+		dataType: string
+		lineageTag: 55f21ac4-d156-5e1e-bc59-1d4449c34db0
+		summarizeBy: none
+		sourceColumn: authority
+
+	partition mart_kpi_dictionary = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_kpi_dictionary.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"metric", type text}, {"formula", type text}, {"unit", type text}, {"aggregation", type text}, {"zero_rule", type text}, {"owner", type text}, {"authority", type text}}, "en-US")
+				in
+				  Typed
+

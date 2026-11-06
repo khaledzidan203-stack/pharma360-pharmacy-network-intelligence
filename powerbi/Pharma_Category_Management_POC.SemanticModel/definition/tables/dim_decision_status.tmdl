@@ -1,0 +1,27 @@
+table dim_decision_status
+	lineageTag: 6fe0de80-1182-52be-8afe-02216714a0f4
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 44764e92-74c2-55c2-ae7f-7f408a9e9cec
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column executable.
+	column executable
+		dataType: boolean
+		lineageTag: 42141e93-8c14-5799-9bb6-14cb6325e98e
+		summarizeBy: none
+		sourceColumn: executable
+
+	partition dim_decision_status = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_decision_status.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"status", type text}, {"executable", type logical}}, "en-US")
+				in
+				  Typed
+

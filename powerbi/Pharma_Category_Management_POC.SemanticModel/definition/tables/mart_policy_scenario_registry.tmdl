@@ -1,0 +1,72 @@
+table mart_policy_scenario_registry
+	lineageTag: f5569eb5-f143-5838-8100-d6f1106b876c
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 8eba01fa-7f83-599a-9ef6-053379546669
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 97bd3d8c-e03c-5792-923b-a0d57f468a00
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: b72190e0-bd9d-5bd7-9b7c-91d84f68f309
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column family.
+	column family
+		dataType: string
+		lineageTag: c65fcbe7-df7a-5281-ae95-80cdc7b5a42a
+		summarizeBy: none
+		sourceColumn: family
+
+	/// Manifest-authorized source column model.
+	column model
+		dataType: string
+		lineageTag: e0f06787-eb3b-53f7-897c-f38e45dc2c26
+		summarizeBy: none
+		sourceColumn: model
+
+	/// Manifest-authorized source column approval.
+	column approval
+		dataType: string
+		lineageTag: c3f75ba1-3c38-5d7a-8795-3ccb7b4efea9
+		summarizeBy: none
+		sourceColumn: approval
+
+	/// Manifest-authorized source column recommendation_qty.
+	column recommendation_qty
+		dataType: int64
+		lineageTag: 99f4e27e-42d4-5073-af9c-e1734ff9e2ef
+		summarizeBy: none
+		sourceColumn: recommendation_qty
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 4e777878-4cbf-526d-a48a-fc4563a8f088
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	partition mart_policy_scenario_registry = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_policy_scenario_registry.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"family", type text}, {"model", type text}, {"approval", type text}, {"recommendation_qty", Int64.Type}, {"executable_qty", Int64.Type}}, "en-US")
+				in
+				  Typed
+

@@ -1,0 +1,42 @@
+table dim_inventory_location
+	lineageTag: f6bf577a-9063-55a1-b709-8a51830573d3
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: f5275a8a-0412-535b-bb3b-6038273290e9
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 1529a472-517d-574c-b1b9-18f4a79c6b5e
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column location_kind.
+	column location_kind
+		dataType: string
+		lineageTag: ce314710-e714-5ff5-a285-eb20b988ef80
+		summarizeBy: none
+		sourceColumn: location_kind
+
+	/// Manifest-authorized source column branch_identity.
+	column branch_identity
+		dataType: string
+		lineageTag: 77adbe87-fcbf-5348-a372-dfaffafcf636
+		summarizeBy: none
+		sourceColumn: branch_identity
+
+	partition dim_inventory_location = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_inventory_location.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"location", type text}, {"location_kind", type text}, {"branch_identity", type text}}, "en-US")
+				in
+				  Typed
+

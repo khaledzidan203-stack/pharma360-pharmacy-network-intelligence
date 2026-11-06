@@ -1,0 +1,49 @@
+table dim_world
+	lineageTag: ace00df0-3a22-5354-9912-4bab353276aa
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 2e4e300a-d15a-55e8-8ae5-acfa6ec7302f
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column kind.
+	column kind
+		dataType: string
+		lineageTag: ad87d234-ca67-5387-bb7f-6908b939a303
+		summarizeBy: none
+		sourceColumn: kind
+
+	/// Manifest-authorized source column company_operational_approval.
+	column company_operational_approval
+		dataType: string
+		lineageTag: 2fabf869-6f24-5bcc-bc79-56d20335828a
+		summarizeBy: none
+		sourceColumn: company_operational_approval
+
+	/// Manifest-authorized source column empirical_fidelity.
+	column empirical_fidelity
+		dataType: string
+		lineageTag: 6a2e5479-8752-5c6d-9798-29749eb3cf2b
+		summarizeBy: none
+		sourceColumn: empirical_fidelity
+
+	/// Manifest-authorized source column strict_case_completeness.
+	column strict_case_completeness
+		dataType: boolean
+		lineageTag: 66ba6b00-2e6d-5fed-b942-86381fc4b10b
+		summarizeBy: none
+		sourceColumn: strict_case_completeness
+
+	partition dim_world = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_world.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"kind", type text}, {"company_operational_approval", type text}, {"empirical_fidelity", type text}, {"strict_case_completeness", type logical}}, "en-US")
+				in
+				  Typed
+

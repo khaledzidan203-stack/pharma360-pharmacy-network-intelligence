@@ -1,0 +1,184 @@
+table dim_product
+	lineageTag: a129547e-e5eb-59c5-9998-4bad4314856f
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 4c9c3e35-b800-5627-91e8-db6ce033e43b
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: e0561f66-20b0-5305-a004-8e64312ff648
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 9a999989-2b7b-54f9-bce5-34a399efbdd0
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 31a99739-bb57-5cce-a39e-c8f55a446906
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: a7370fbc-296b-5304-b43d-7c16f33d2bd6
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: adddcc4b-78e9-5295-86b7-13741d1ec368
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 73724145-84cc-5175-abd5-56269da84214
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column category.
+	column category
+		dataType: string
+		lineageTag: 6aace5e2-13cc-552a-b181-e8d1055b37c4
+		summarizeBy: none
+		sourceColumn: category
+
+	/// Manifest-authorized source column subcategory.
+	column subcategory
+		dataType: string
+		lineageTag: d2596cd2-a98e-56c7-bdc8-73d28365da55
+		summarizeBy: none
+		sourceColumn: subcategory
+
+	/// Manifest-authorized source column regulatory.
+	column regulatory
+		dataType: string
+		lineageTag: 86ac3640-ea36-5003-8476-f55ddff1e3ea
+		summarizeBy: none
+		sourceColumn: regulatory
+
+	/// Manifest-authorized source column uom.
+	column uom
+		dataType: string
+		lineageTag: 1ad45583-3023-51f7-9a90-2b40c84aa215
+		summarizeBy: none
+		sourceColumn: uom
+
+	/// Manifest-authorized source column litres.
+	column litres
+		dataType: double
+		lineageTag: 518aab75-7aca-5d5f-8113-ec25604930a8
+		summarizeBy: none
+		sourceColumn: litres
+
+	/// Manifest-authorized source column width_cm.
+	column width_cm
+		dataType: int64
+		lineageTag: 77435d64-0857-5aed-957f-b7997960507a
+		summarizeBy: none
+		sourceColumn: width_cm
+
+	/// Manifest-authorized source column depth_cm.
+	column depth_cm
+		dataType: int64
+		lineageTag: 51216fb4-6bf6-5ac0-8c21-2216af5966e7
+		summarizeBy: none
+		sourceColumn: depth_cm
+
+	/// Manifest-authorized source column height_cm.
+	column height_cm
+		dataType: int64
+		lineageTag: bf9885ac-1e05-51b1-ab87-77c06f4eaa94
+		summarizeBy: none
+		sourceColumn: height_cm
+
+	/// Manifest-authorized source column temperature.
+	column temperature
+		dataType: string
+		lineageTag: 70e49b9c-eb4a-57d0-b248-7dcabb6f856c
+		summarizeBy: none
+		sourceColumn: temperature
+
+	/// Manifest-authorized source column lifecycle.
+	column lifecycle
+		dataType: string
+		lineageTag: 2046b281-4b42-5586-9a9c-a9cb83787520
+		summarizeBy: none
+		sourceColumn: lifecycle
+
+	/// Manifest-authorized source column name.
+	column name
+		dataType: string
+		lineageTag: 2491ee39-a417-5727-a39f-34ff96b44bbf
+		summarizeBy: none
+		sourceColumn: name
+
+	/// Manifest-authorized source column dimension_unit.
+	column dimension_unit
+		dataType: string
+		lineageTag: 56e098e9-f687-5af2-b57e-bf6d23b2ffd4
+		summarizeBy: none
+		sourceColumn: dimension_unit
+
+	/// Manifest-authorized source column volume_unit.
+	column volume_unit
+		dataType: string
+		lineageTag: b13bf828-f308-5289-bbf7-f4c309c56f3b
+		summarizeBy: none
+		sourceColumn: volume_unit
+
+	/// Manifest-authorized source column source_provenance.
+	column source_provenance
+		dataType: string
+		lineageTag: f09f7a3f-dd5f-5770-a284-5aa9032fc705
+		summarizeBy: none
+		sourceColumn: source_provenance
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 16af8900-55bc-537d-a61c-515ccc2533f6
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 6cb767dd-2db3-5bcf-ae43-d233052e3326
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_product.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"sku", type text}, {"category", type text}, {"subcategory", type text}, {"regulatory", type text}, {"uom", type text}, {"litres", type number}, {"width_cm", Int64.Type}, {"depth_cm", Int64.Type}, {"height_cm", Int64.Type}, {"temperature", type text}, {"lifecycle", type text}, {"name", type text}, {"dimension_unit", type text}, {"volume_unit", type text}, {"source_provenance", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

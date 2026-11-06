@@ -1,0 +1,13 @@
+table HorizonSelector
+	lineageTag: c527cadb-da18-591f-8b6b-e71c737b748a
+
+	column Days
+		dataType: int64
+		lineageTag: 978ae7bc-b1eb-4ea6-bf40-0904d975b9e6
+		summarizeBy: none
+		sourceColumn: [Days]
+
+	partition HorizonSelector = calculated
+		mode: import
+		source = DATATABLE("Days",INTEGER,{{7},{14},{28}})
+

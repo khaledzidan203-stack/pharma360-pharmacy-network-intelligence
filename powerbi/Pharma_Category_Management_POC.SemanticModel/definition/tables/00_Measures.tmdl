@@ -1,0 +1,2370 @@
+table 00_Measures
+	lineageTag: b347e138-ea6a-5976-a1f4-4bc42babdf70
+
+	/// Selected Period
+	measure 'Selected Period' = IF(ISFILTERED(PeriodSelector[Period]),SELECTEDVALUE(PeriodSelector[Period]),"3M")
+		displayFolder: 15 Navigation & Utility
+		lineageTag: b81fcc13-bd7b-5ef4-88e0-1552c354daac
+
+	/// Selected As Of
+	measure 'Selected As Of' = IF(ISFILTERED(SnapshotSelector[AsOf]),SELECTEDVALUE(SnapshotSelector[AsOf]),"2026-10-30T00:00:00+03:00")
+		displayFolder: 15 Navigation & Utility
+		lineageTag: f69f3809-0532-555b-9e3a-a2ce690e4512
+
+	/// Selected Horizon
+	measure 'Selected Horizon' = IF(ISFILTERED(HorizonSelector[Days]),SELECTEDVALUE(HorizonSelector[Days]),14)
+		formatString: 0
+		displayFolder: 15 Navigation & Utility
+		lineageTag: dee53a71-da10-5f06-b4ec-237f0630d990
+
+	/// Selected Method
+	measure 'Selected Method' = IF(ISFILTERED(forecast_evaluation[method]),SELECTEDVALUE(forecast_evaluation[method]),"MEAN28")
+		displayFolder: 15 Navigation & Utility
+		lineageTag: deccc6cf-7dd2-5412-bb3d-8e768f4417e4
+
+	/// Network Sales SAR
+	measure 'Network Sales SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_network_finance_period[net_sales_minor]),100), mart_network_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 8a00c1be-c611-5ac7-8230-ad69738f8b5c
+
+	/// Network COGS SAR
+	measure 'Network COGS SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_network_finance_period[net_cogs_minor]),100), mart_network_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 7ebf253b-ee4f-5c41-9c7e-3875a2416109
+
+	/// Network Inventory TWA SAR
+	measure 'Network Inventory TWA SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_network_finance_period[twa_minor]),100), mart_network_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 2ec0e389-d8f0-5656-bd9e-618c60b6f7d9
+
+	/// Network Gross Profit SAR
+	measure 'Network Gross Profit SAR' = [Network Sales SAR] - [Network COGS SAR]
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: c627270e-e13a-5bd2-87b4-dee28101aa65
+
+	/// Network Gross Margin %
+	measure 'Network Gross Margin %' = DIVIDE([Network Gross Profit SAR], [Network Sales SAR])
+		formatString: 0.0%
+		displayFolder: 01 Executive Finance
+		lineageTag: 4c18f21c-3e15-5531-a51d-398c0c15a74f
+
+	/// Network GMROI
+	measure 'Network GMROI' = DIVIDE([Network Gross Profit SAR], [Network Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 3a90e835-8e27-50ca-95d7-11af6c8a9cde
+
+	/// Network Turns
+	measure 'Network Turns' = DIVIDE([Network COGS SAR], [Network Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 8d7633c0-bd85-5c13-bee4-a785522ae6ec
+
+	/// Network Invoices
+	measure 'Network Invoices' = VAR P=[Selected Period] RETURN CALCULATE(SUM(mart_network_finance_period[invoice_count]), mart_network_finance_period[period]=P)
+		formatString: #,##0
+		displayFolder: 01 Executive Finance
+		lineageTag: 5d4301a6-a27b-50b7-8c47-d445ce12e5c1
+
+	/// Network ABV SAR
+	measure 'Network ABV SAR' = DIVIDE([Network Sales SAR], [Network Invoices])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: b341181d-746b-558d-a794-0cedc715b680
+
+	/// Category Sales SAR
+	measure 'Category Sales SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_category_finance_period[net_sales_minor]),100), mart_category_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 984186af-f544-596e-8e5e-5d6090be487b
+
+	/// Category COGS SAR
+	measure 'Category COGS SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_category_finance_period[net_cogs_minor]),100), mart_category_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: a4369af8-ffea-5570-aa61-82ed16997526
+
+	/// Category Inventory TWA SAR
+	measure 'Category Inventory TWA SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_category_finance_period[twa_minor]),100), mart_category_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 84aba934-be55-58d9-8d62-6bad41bd5054
+
+	/// Category Gross Profit SAR
+	measure 'Category Gross Profit SAR' = [Category Sales SAR] - [Category COGS SAR]
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: ac305219-b48c-573d-9cb4-b6da20c33d1f
+
+	/// Category Gross Margin %
+	measure 'Category Gross Margin %' = DIVIDE([Category Gross Profit SAR], [Category Sales SAR])
+		formatString: 0.0%
+		displayFolder: 02 Category Performance
+		lineageTag: 981f1298-f406-50f9-9652-deaf2759829e
+
+	/// Category GMROI
+	measure 'Category GMROI' = DIVIDE([Category Gross Profit SAR], [Category Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: d21547cb-1587-5b72-a63b-9b58675a4bc0
+
+	/// Category Turns
+	measure 'Category Turns' = DIVIDE([Category COGS SAR], [Category Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 8faa3865-83f0-5201-b1b6-370617e88611
+
+	/// Category Invoices
+	measure 'Category Invoices' = [Matched Source Invoices]
+		formatString: #,##0
+		displayFolder: 02 Category Performance
+		lineageTag: 8337f46b-0214-5263-916c-dbe1545ec1a8
+
+	/// Category ABV SAR
+	measure 'Category ABV SAR' = DIVIDE([SKU Sales SAR], [Category Invoices])
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: f0b29933-8fd7-5e56-b268-6ce4c6a4ee21
+
+	/// Branch Sales SAR
+	measure 'Branch Sales SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_branch_finance_period[net_sales_minor]),100), mart_branch_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 5fc77ca2-41c1-5621-af0c-6dfb9bfcfb96
+
+	/// Branch COGS SAR
+	measure 'Branch COGS SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_branch_finance_period[net_cogs_minor]),100), mart_branch_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 1ec523a3-b34d-51f6-b860-77d7f393a7d5
+
+	/// Branch Inventory TWA SAR
+	measure 'Branch Inventory TWA SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_branch_finance_period[twa_minor]),100), mart_branch_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: efb55138-0aea-51f9-8c31-185eb08fe31f
+
+	/// Branch Gross Profit SAR
+	measure 'Branch Gross Profit SAR' = [Branch Sales SAR] - [Branch COGS SAR]
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 74ce99bc-6287-51a4-8ecf-47a14172f754
+
+	/// Branch Gross Margin %
+	measure 'Branch Gross Margin %' = DIVIDE([Branch Gross Profit SAR], [Branch Sales SAR])
+		formatString: 0.0%
+		displayFolder: 03 Branch Performance
+		lineageTag: 3310af08-c3cf-59e8-937e-985ef514db5e
+
+	/// Branch GMROI
+	measure 'Branch GMROI' = DIVIDE([Branch Gross Profit SAR], [Branch Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 6b4230b1-3171-531d-99a9-6d1c0a014d89
+
+	/// Branch Turns
+	measure 'Branch Turns' = DIVIDE([Branch COGS SAR], [Branch Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: cd6e0a0c-71c2-5b59-8dd4-54ac0fbe2548
+
+	/// Branch Invoices
+	measure 'Branch Invoices' = VAR P=[Selected Period] RETURN CALCULATE(SUM(mart_branch_finance_period[invoice_count]), mart_branch_finance_period[period]=P)
+		formatString: #,##0
+		displayFolder: 03 Branch Performance
+		lineageTag: e2245757-7d60-515a-b7b4-b75bf651eb9d
+
+	/// Branch ABV SAR
+	measure 'Branch ABV SAR' = DIVIDE([Branch Sales SAR], [Branch Invoices])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 762f0f12-007c-55a9-8606-435e0a59b357
+
+	/// SKU Sales SAR
+	measure 'SKU Sales SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_sales_finance_period[net_sales_minor]),100), mart_sales_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: b176e07b-3d93-5901-97e3-487a888bd87a
+
+	/// SKU COGS SAR
+	measure 'SKU COGS SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_sales_finance_period[net_cogs_minor]),100), mart_sales_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 9189b387-d602-5291-a846-0cc993dd9468
+
+	/// SKU Inventory TWA SAR
+	measure 'SKU Inventory TWA SAR' = VAR P = [Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_sales_finance_period[twa_minor]),100), mart_sales_finance_period[period] = P)
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 3594e302-394b-500e-a6db-0c3c23f0d972
+
+	/// SKU Gross Profit SAR
+	measure 'SKU Gross Profit SAR' = [SKU Sales SAR] - [SKU COGS SAR]
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: fa3a756c-bbbb-5b1e-b03f-e35854779da6
+
+	/// SKU Gross Margin %
+	measure 'SKU Gross Margin %' = DIVIDE([SKU Gross Profit SAR], [SKU Sales SAR])
+		formatString: 0.0%
+		displayFolder: 04 SKU & Assortment
+		lineageTag: dc5831fc-3ec3-56eb-9fbf-924b87c2eb75
+
+	/// SKU GMROI
+	measure 'SKU GMROI' = DIVIDE([SKU Gross Profit SAR], [SKU Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 26ed1a89-1510-5d84-bccc-957926e02f74
+
+	/// SKU Turns
+	measure 'SKU Turns' = DIVIDE([SKU COGS SAR], [SKU Inventory TWA SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 3c912dee-091f-5b1c-a42b-546f209a5263
+
+	/// SKU Invoices
+	measure 'SKU Invoices' = [Matched Source Invoices]
+		formatString: #,##0
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 4ef5db12-8b61-566b-ae86-33fec77ad967
+
+	/// SKU ABV SAR
+	measure 'SKU ABV SAR' = DIVIDE([SKU Sales SAR], [SKU Invoices])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 16607099-bcd2-5f1a-8508-8262fa153014
+
+	/// Matched Source Invoices
+	measure 'Matched Source Invoices' = VAR StartDate=IF([Selected Period]="3M",DATE(2026,7,30),DATE(2026,4,30)) RETURN CALCULATE(DISTINCTCOUNT(source_sale_line[invoice]),REMOVEFILTERS(dim_date), source_sale_line[Event Date]>=StartDate, source_sale_line[Event Date]<DATE(2026,10,30))
+		formatString: #,##0
+		displayFolder: 15 Navigation & Utility
+		lineageTag: aaa00d7f-0f6f-5943-9230-f2f619193d58
+
+	/// Network Posted Contribution SAR
+	measure 'Network Posted Contribution SAR' = VAR P=[Selected Period] RETURN CALCULATE(DIVIDE(SUM(mart_network_finance_period[posted_contribution_minor]),100),mart_network_finance_period[period]=P)
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: cf34af3c-c0c6-5598-8648-da034f5f2fe0
+
+	/// SKU Pareto %
+	measure 'SKU Pareto %' = VAR CurrentSales=[SKU Sales SAR] RETURN DIVIDE(SUMX(FILTER(ALLSELECTED(dim_product[sku]),[SKU Sales SAR]>=CurrentSales),[SKU Sales SAR]),CALCULATE([SKU Sales SAR],ALLSELECTED(dim_product[sku])))
+		formatString: 0.0%
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 03e3de1f-6f13-5f21-978b-e2f35becb77d
+
+	/// Stores
+	measure Stores = DISTINCTCOUNT(dim_branch[location])
+		formatString: #,##0
+		displayFolder: 03 Branch Performance
+		lineageTag: c439aa6c-a9e9-58fa-a7b5-f093ab5631c2
+
+	/// Products
+	measure Products = DISTINCTCOUNT(dim_product[sku])
+		formatString: #,##0
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 458b1e80-571a-53d7-8543-9cc6690f7892
+
+	/// Product Rows
+	measure 'Product Rows' = COUNTROWS(dim_product)
+		formatString: #,##0
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 3e7b82a2-71a2-5c38-b1b5-ae8337932e02
+
+	/// Decision Rows
+	measure 'Decision Rows' = COUNTROWS(decision_review)
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: 0b8c3903-7de3-548c-83a9-498042aee3df
+
+	/// Executable Quantity
+	measure 'Executable Quantity' = SUM(decision_review[executable_quantity])
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: f44a4010-306f-5b1d-a0fd-67a1f053cd4e
+
+	/// Original Proposals
+	measure 'Original Proposals' = COUNTROWS(mart_overstock_proposal_validation)
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: 222bac6b-90a1-5221-a824-7af3508329ff
+
+	/// Constraints
+	measure Constraints = COUNTROWS(source_constraint_component)
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 4d178bf3-8821-5007-905a-3006df27966b
+
+	/// Candidate Count
+	measure 'Candidate Count' = DISTINCTCOUNT(source_constraint_component[candidate_id])
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: d90cb875-bbc9-5497-b9ed-14df614b0735
+
+	/// Supplier Ordered Units
+	measure 'Supplier Ordered Units' = SUM(mart_supplier_service_returns[ordered_qty])
+		formatString: #,##0
+		displayFolder: 07 Supplier Performance
+		lineageTag: 0a709f3d-df28-56c4-a89d-b4050fc7b8a7
+
+	/// Supplier Received Units
+	measure 'Supplier Received Units' = SUM(mart_supplier_service_returns[received_qty])
+		formatString: #,##0
+		displayFolder: 07 Supplier Performance
+		lineageTag: 2faa4eca-dfa6-5682-99c3-538e3ca164ee
+
+	/// Supplier POs
+	measure 'Supplier POs' = DISTINCTCOUNT(mart_supplier_service_returns[po])
+		formatString: #,##0
+		displayFolder: 07 Supplier Performance
+		lineageTag: 196a9964-2aee-568a-8541-d50adc38dd30
+
+	/// Claim Rows
+	measure 'Claim Rows' = COUNTROWS(source_vendor_claim)
+		formatString: #,##0
+		displayFolder: 07 Supplier Performance
+		lineageTag: fc65719b-8eb2-552f-ab99-32381f64d937
+
+	/// Forecast Evaluation Rows
+	measure 'Forecast Evaluation Rows' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(COUNTROWS(forecast_evaluation),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0
+		displayFolder: 10 Forecasting
+		lineageTag: 46cdd2a6-c9f2-5a2f-a8df-ba9596503138
+
+	/// Conditional Forecast Rows
+	measure 'Conditional Forecast Rows' = VAR H=[Selected Horizon] RETURN IF(NOT ISBLANK(H),CALCULATE(COUNTROWS(fact_conditional_forecast),fact_conditional_forecast[horizon_days]=H),BLANK())
+		formatString: #,##0
+		displayFolder: 10 Forecasting
+		lineageTag: b742955a-6f51-535a-be59-bc42df4c360d
+
+	/// Case Rows
+	measure 'Case Rows' = COUNTROWS(source_case_status)
+		formatString: #,##0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: bb4ada16-942a-5d86-af77-18e54531f991
+
+	/// Unavailable KPIs
+	measure 'Unavailable KPIs' = COUNTROWS(mart_unavailable_evidence)
+		formatString: #,##0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: 51ce3934-f01f-5498-9041-6d0e4ec3ee20
+
+	/// Physical Units
+	measure 'Physical Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_lot_stock_asof[physical_qty]),fact_lot_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: e367a09f-5e29-54d9-9975-2a881eee9fd5
+
+	/// Saleable Units
+	measure 'Saleable Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_lot_stock_asof[saleable_qty]),fact_lot_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 5a98c2c3-0ef3-53e8-8ebb-db0a97039824
+
+	/// Reserved Units
+	measure 'Reserved Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_lot_stock_asof[reserved_qty]),fact_lot_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: e14b3396-5878-5d30-a159-a261b504e98c
+
+	/// ATP Units
+	measure 'ATP Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_lot_stock_asof[atp_qty]),fact_lot_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 6f1d67e4-16e6-5218-aa8b-f14da89c40f8
+
+	/// Inventory Cost SAR
+	measure 'Inventory Cost SAR' = VAR A=[Selected As Of] RETURN CALCULATE(DIVIDE(SUM(fact_lot_stock_asof[cost_minor]),100),fact_lot_stock_asof[as_of]=A)
+		formatString: #,##0.00
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 0aaf6783-5e81-5674-8d97-6312a5402b79
+
+	/// Held Units
+	measure 'Held Units' = CALCULATE([Physical Units],fact_lot_stock_asof[status]="QA_HOLD")
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 6ecaac66-2f82-5200-ae27-d6c7d94c94d0
+
+	/// Withdrawn Units
+	measure 'Withdrawn Units' = CALCULATE([Physical Units],fact_lot_stock_asof[status]="WITHDRAWN")
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 6a1c3bfa-9169-5e6d-8c25-ce5a8bae382d
+
+	/// Store Physical Units
+	measure 'Store Physical Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_store_sku_stock_asof[physical_qty]),fact_store_sku_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 2b3ae435-df9e-50d1-af63-d174d066af30
+
+	/// Store Saleable Units
+	measure 'Store Saleable Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_store_sku_stock_asof[saleable_qty]),fact_store_sku_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 558cda9a-57ea-567c-8cc0-1f347257e3fe
+
+	/// Store ATP Units
+	measure 'Store ATP Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_store_sku_stock_asof[atp_qty]),fact_store_sku_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 02e01e68-1904-555e-a7f2-4caccdaeda5c
+
+	/// DC Physical Units
+	measure 'DC Physical Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_dc_stock_asof[physical_qty]),fact_dc_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 7cd58cd9-7b86-5069-aba7-13d9742001d9
+
+	/// DC Saleable Units
+	measure 'DC Saleable Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_dc_stock_asof[saleable_qty]),fact_dc_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 503592be-7845-5589-8c1e-864305521c60
+
+	/// DC ATP Units
+	measure 'DC ATP Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_dc_stock_asof[atp_qty]),fact_dc_stock_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 05 Inventory & Availability
+		lineageTag: 907743d2-e6a9-53e8-beaf-7884dc973c1c
+
+	/// Expiry Cost SAR
+	measure 'Expiry Cost SAR' = CALCULATE(DIVIDE(SUM(fact_expiry_flags[physical_cost_minor]),100),fact_expiry_flags[withdrawal_due]=TRUE())
+		formatString: #,##0.00
+		displayFolder: 06 Expiry & Quality
+		lineageTag: e10a9038-1236-5208-816d-198dba074317
+
+	/// Realized Disposal SAR
+	measure 'Realized Disposal SAR' = DIVIDE(SUM(fact_expiry_flags[realized_disposal_cost_minor]),100)
+		formatString: #,##0.00
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 8cdfa1ff-ea63-547f-a098-cc9510ea2235
+
+	/// Withdrawal Due Units
+	measure 'Withdrawal Due Units' = CALCULATE(SUM(fact_expiry_flags[physical_quantity]),fact_expiry_flags[withdrawal_due]=TRUE())
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: eb22d527-7c53-5740-8909-fd086a357e59
+
+	/// Overdue Units
+	measure 'Overdue Units' = SUM(fact_expiry_flags[overdue_unprocessed_quantity])
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 9eaca912-e7d8-5840-9179-8c511f7ea5b2
+
+	/// Expiry QA Units
+	measure 'Expiry QA Units' = SUM(fact_expiry_flags[QA_held_quantity])
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: d095f767-3fe5-5e42-83e4-1d324e9a4ca3
+
+	/// Expiry Withdrawn Units
+	measure 'Expiry Withdrawn Units' = SUM(fact_expiry_flags[withdrawn_quantity])
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 988c2ecb-c89d-5acf-bf17-34c433769317
+
+	/// Expiry Physical Units
+	measure 'Expiry Physical Units' = SUM(fact_expiry_flags[physical_quantity])
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 250fefff-77be-5375-9f23-5bf0d7ec09f1
+
+	/// Issued Credits SAR
+	measure 'Issued Credits SAR' = VAR ClaimIds=CALCULATETABLE(VALUES(source_vendor_claim[id]),REMOVEFILTERS(dim_date)) RETURN CALCULATE(DIVIDE(SUM(source_vendor_credit[issued_minor]),100),TREATAS(ClaimIds,source_vendor_credit[claim]))
+		formatString: #,##0.00
+		displayFolder: 07 Supplier Performance
+		lineageTag: f1f9062d-3ad4-5a34-8dc9-dd5c6780f046
+
+	/// Claim Expected SAR
+	measure 'Claim Expected SAR' = DIVIDE(SUM(source_vendor_claim[expected_credit_minor]),100)
+		formatString: #,##0.00
+		displayFolder: 07 Supplier Performance
+		lineageTag: a4aaca22-391a-54e2-b81f-623943a4f831
+
+	/// Supplier Fill Rate
+	measure 'Supplier Fill Rate' = DIVIDE([Supplier Received Units],[Supplier Ordered Units])
+		formatString: 0.0%
+		displayFolder: 07 Supplier Performance
+		lineageTag: a49b1a51-3778-54e4-b23e-3ed63d0753f4
+
+	/// Late PO Evidence
+	measure 'Late PO Evidence' = CALCULATE(COUNTROWS(mart_supplier_service_returns),mart_supplier_service_returns[late]=TRUE())
+		formatString: #,##0
+		displayFolder: 07 Supplier Performance
+		lineageTag: d212a3aa-b6dc-5903-8556-f437eacf7caf
+
+	/// Binding Constraints
+	measure 'Binding Constraints' = CALCULATE(COUNTROWS(source_constraint_component),source_constraint_component[is_binding]=TRUE())
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 84ca4c5e-1d6c-5072-b7da-38fef270c361
+
+	/// Applicable Constraints
+	measure 'Applicable Constraints' = CALCULATE(COUNTROWS(source_constraint_component),source_constraint_component[applicability]="APPLICABLE")
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 4d2b349f-f392-58e8-a81f-f6bbf46e3aa0
+
+	/// Constraint Ceiling EACH
+	measure 'Constraint Ceiling EACH' = IF([Candidate Context Ready]=1 && HASONEVALUE(source_constraint_component[family]),SELECTEDVALUE(source_constraint_component[ceiling_units]),BLANK())
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: df155ec6-70a3-5b3a-b88e-9f7b7b49087d
+
+	/// Constraint Occupied Litres
+	measure 'Constraint Occupied Litres' = IF([Candidate Context Ready]=1,MAX(source_constraint_component[occupied_litres]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 0621ddde-0086-5927-badf-de8f82efe027
+
+	/// Constraint Capacity Litres
+	measure 'Constraint Capacity Litres' = IF([Candidate Context Ready]=1,MAX(source_constraint_component[capacity_litres]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 14f3e964-7529-52bb-8558-7e6879a60bb9
+
+	/// Firm Inbound Units
+	measure 'Firm Inbound Units' = VAR A=[Selected As Of] RETURN CALCULATE(SUM(fact_inbound_asof[firm_unreceived_qty]),fact_inbound_asof[as_of]=A)
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 2c8fbd9f-d43d-58c0-9bff-ac074cdb03d7
+
+	/// Fulfilled Units
+	measure 'Fulfilled Units' = VAR P=[Selected Period] RETURN CALCULATE(SUM(mart_store_sku_ros_exposure[fulfilled_units]),mart_store_sku_ros_exposure[period]=P)
+		formatString: #,##0
+		displayFolder: 09 ROS & Exposure
+		lineageTag: 353c0ab9-c541-5ce8-868d-3a947b3cefd9
+
+	/// Trading Exposure Days
+	measure 'Trading Exposure Days' = VAR P=[Selected Period] RETURN CALCULATE(SUM(mart_store_sku_ros_exposure[trading_days]),mart_store_sku_ros_exposure[period]=P)
+		formatString: #,##0.00
+		displayFolder: 09 ROS & Exposure
+		lineageTag: 8b91cb13-d6e8-5703-becd-5166bfad3d10
+
+	/// Stocked Exposure Days
+	measure 'Stocked Exposure Days' = VAR P=[Selected Period] RETURN CALCULATE(SUM(mart_store_sku_ros_exposure[stocked_day_equivalents]),mart_store_sku_ros_exposure[period]=P)
+		formatString: #,##0.00
+		displayFolder: 09 ROS & Exposure
+		lineageTag: daf16738-c0a6-55ef-bf87-0bb79ac57846
+
+	/// Observed ROS
+	measure 'Observed ROS' = DIVIDE([Fulfilled Units],[Trading Exposure Days])
+		formatString: #,##0.00
+		displayFolder: 09 ROS & Exposure
+		lineageTag: 1f428964-582b-5bfb-bd63-1c6eb16f4a0c
+
+	/// In Stock ROS
+	measure 'In Stock ROS' = DIVIDE([Fulfilled Units],[Stocked Exposure Days])
+		formatString: #,##0.00
+		displayFolder: 09 ROS & Exposure
+		lineageTag: b551f6e8-f889-5b90-b5ea-e95ee8c03b18
+
+	/// Censored Rows
+	measure 'Censored Rows' = VAR P=[Selected Period] RETURN CALCULATE(COUNTROWS(mart_store_sku_ros_exposure),mart_store_sku_ros_exposure[period]=P,mart_store_sku_ros_exposure[censored]=TRUE())
+		formatString: #,##0
+		displayFolder: 09 ROS & Exposure
+		lineageTag: 988678d1-c20a-5a6d-a778-2c3c8ef25ff7
+
+	/// Coverage Days
+	measure 'Coverage Days' = VAR P=[Selected Period] RETURN IF(HASONEVALUE(mart_store_sku_ros_exposure[sku]) && HASONEVALUE(mart_store_sku_ros_exposure[location]),CALCULATE(SELECTEDVALUE(mart_store_sku_ros_exposure[coverage_days]),mart_store_sku_ros_exposure[period]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 09 ROS & Exposure
+		lineageTag: acf05a7c-0b0c-505c-bb58-bee815ce9e93
+
+	/// Review Required
+	measure 'Review Required' = CALCULATE(COUNTROWS(decision_review),decision_review[decision_status]="REVIEW_REQUIRED")
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: c8f724d1-1678-5166-9dfb-f65d03534de3
+
+	/// Blocked Decisions
+	measure 'Blocked Decisions' = CALCULATE(COUNTROWS(decision_review),decision_review[decision_status]="BLOCKED")
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: 3b16ec6c-16ae-5f4e-a268-65423ec45fb3
+
+	/// Infeasible Decisions
+	measure 'Infeasible Decisions' = CALCULATE(COUNTROWS(decision_review),decision_review[decision_status]="INFEASIBLE")
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: 34adfbb6-06bc-5718-8521-1490c0e5be9b
+
+	/// Candidate Quantity
+	measure 'Candidate Quantity' = IF(HASONEVALUE(decision_review[family]),SUM(decision_review[candidate_quantity]),BLANK())
+		formatString: #,##0
+		displayFolder: 11 Decision Review
+		lineageTag: 080dc979-2d00-5c5b-966c-709c11d707ed
+
+	/// Historical D06 Candidates
+	measure 'Historical D06 Candidates' = CALCULATE(COUNTROWS(decision_review),decision_review[family]="D06")
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: ae707a1d-e8fa-5993-ae76-2d65efe84d26
+
+	/// Proven Cases
+	measure 'Proven Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="PASS_PROVEN")
+		formatString: #,##0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: 3c82be27-13ec-5925-8c4d-077e14ca2c88
+
+	/// Not Observed Cases
+	measure 'Not Observed Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="NOT_OBSERVED")
+		formatString: #,##0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: e7f65104-390f-5484-8c50-51fe828bc186
+
+	/// Unverifiable Cases
+	measure 'Unverifiable Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="UNVERIFIABLE")
+		formatString: #,##0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: 86ce0772-10bf-5f79-b879-d8fc9f7e3396
+
+	/// Blocked Policies
+	measure 'Blocked Policies' = CALCULATE(COUNTROWS(policy_guardrail),policy_guardrail[status]="BLOCKED_SERVICE_GUARDRAIL")
+		formatString: #,##0
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: a7e392a4-a3b6-5686-850b-faa159917836
+
+	/// Donor Service Violations
+	measure 'Donor Service Violations' = MAX(policy_guardrail[donor_service_violations])
+		formatString: #,##0
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 09a0e0e6-749b-53ee-bc14-5044299dfd07
+
+	/// Paired Seeds
+	measure 'Paired Seeds' = DISTINCTCOUNT(policy_evaluation[evaluation_unit_seed])
+		formatString: #,##0
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 4d768fd9-9025-5b86-8ecf-81a453a44f69
+
+	/// Modeled Fulfilled Difference
+	measure 'Modeled Fulfilled Difference' = IF(HASONEVALUE(dim_scenario[scenario]),SELECTEDVALUE(policy_guardrail[mean_fulfilled_delta]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: fada4973-4333-5826-914d-10a6b23f5f0d
+
+	/// Modeled Margin Difference SAR
+	measure 'Modeled Margin Difference SAR' = IF(HASONEVALUE(dim_scenario[scenario]),DIVIDE(SELECTEDVALUE(policy_guardrail[mean_modeled_margin_delta_minor]),100),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: fa9db13a-e7aa-5386-bbcc-257a961e60cf
+
+	/// CI Lower
+	measure 'CI Lower' = IF(HASONEVALUE(dim_scenario[scenario]),SELECTEDVALUE(policy_guardrail[ci95_low]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 1519d77b-5e33-5664-b428-49ca9cb74814
+
+	/// CI Upper
+	measure 'CI Upper' = IF(HASONEVALUE(dim_scenario[scenario]),SELECTEDVALUE(policy_guardrail[ci95_high]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 63525b15-d841-5095-ab90-5f377acf7971
+
+	/// Donor Fulfilled
+	measure 'Donor Fulfilled' = IF(HASONEVALUE(dim_scenario[scenario]),AVERAGE(policy_evaluation[donor_fulfilled]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 994e8cc0-a377-51eb-80ce-d9c59d6378ac
+
+	/// Receiver Fulfilled
+	measure 'Receiver Fulfilled' = IF(HASONEVALUE(dim_scenario[scenario]),AVERAGE(policy_evaluation[receiver_fulfilled]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: c7c30a96-1091-5f7c-b286-7b126cf65fff
+
+	/// Forecast MAE
+	measure 'Forecast MAE' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(AVERAGE(forecast_evaluation[absolute_error]),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: 0dc8bab5-67d1-5785-80d3-4baf6ab5223e
+
+	/// Forecast WAPE
+	measure 'Forecast WAPE' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(DIVIDE(SUM(forecast_evaluation[absolute_error]),SUM(forecast_evaluation[actual_fulfilled_units])),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: 0.0%
+		displayFolder: 10 Forecasting
+		lineageTag: 8f9f275b-df23-522c-81c8-f9fe6797afc9
+
+	/// Forecast Bias
+	measure 'Forecast Bias' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(DIVIDE(SUM(forecast_evaluation[error_units]),SUM(forecast_evaluation[actual_fulfilled_units])),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: 0.0%
+		displayFolder: 10 Forecasting
+		lineageTag: 47b4bc33-b0c1-5d43-8577-f78db0c29ad8
+
+	/// Validation MAE
+	measure 'Validation MAE' = CALCULATE([Forecast MAE],forecast_evaluation[partition]="VALIDATION")
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: 3fd30dc0-cd96-5be2-8aa1-4fb60c087ef1
+
+	/// Holdout MAE
+	measure 'Holdout MAE' = CALCULATE([Forecast MAE],forecast_evaluation[partition]="FINAL_HOLDOUT")
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: 03765403-fbe6-5823-8a0a-1a79fe074534
+
+	/// Forecast Actual Units
+	measure 'Forecast Actual Units' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(HASONEVALUE(forecast_evaluation[origin]) && NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(SUM(forecast_evaluation[actual_fulfilled_units]),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: dac7d922-6b33-52b2-be7c-f7d1da38d550
+
+	/// Forecast Estimated Units
+	measure 'Forecast Estimated Units' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(HASONEVALUE(forecast_evaluation[origin]) && NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(SUM(forecast_evaluation[forecast_units]),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: 9759a71e-a2e7-5e84-a1bb-93e8ffa632dc
+
+	/// Interval Coverage
+	measure 'Interval Coverage' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(DIVIDE(COUNTROWS(FILTER(forecast_evaluation,forecast_evaluation[covered]=TRUE())),COUNTROWS(forecast_evaluation)),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: 0.0%
+		displayFolder: 10 Forecasting
+		lineageTag: 20addcc5-38f8-580d-8127-261e9e33c3a8
+
+	/// Nominal Conditional Units
+	measure 'Nominal Conditional Units' = VAR H=[Selected Horizon] RETURN CALCULATE(SUM(fact_conditional_forecast[conditional_nominal_fulfilled_units]),fact_conditional_forecast[horizon_days]=H)
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: f360bbc5-b616-591a-a423-01eab75bffcc
+
+	/// Decision Status Color
+	measure 'Decision Status Color' = VAR S=SELECTEDVALUE(decision_review[decision_status]) RETURN SWITCH(TRUE(),S="BLOCKED" || S="INFEASIBLE","#C9475A",S="REVIEW_REQUIRED","#E3AD55","#B8C8DD")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: bf6e194d-a216-5cc6-82b0-ebb73611dc3f
+
+	/// Case Status Color
+	measure 'Case Status Color' = SWITCH(SELECTEDVALUE(source_case_status[status]),"PASS_PROVEN","#1B9E95","NOT_OBSERVED","#B8C8DD","UNVERIFIABLE","#E3AD55","#B8C8DD")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: ff404180-1044-5989-b1e7-4411f17aaf98
+
+	/// Policy Status Color
+	measure 'Policy Status Color' = IF(SELECTEDVALUE(policy_guardrail[status])="BLOCKED_SERVICE_GUARDRAIL","#C9475A","#B8C8DD")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: e2a7ea8f-8e6b-51f8-a5ce-cf88d86cbbc1
+
+	/// Error Color
+	measure 'Error Color' = IF(ISBLANK([Forecast MAE]),"#B8C8DD",IF([Forecast MAE]=0,"#B8C8DD","#E3AD55"))
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 59f9b5a0-9c56-5cae-971f-d1653d703edd
+
+	/// Expiry Risk Color
+	measure 'Expiry Risk Color' = IF(ISBLANK([Expiry Cost SAR]) || [Expiry Cost SAR]=0,"#B8C8DD","#C9475A")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 558a0e7f-ad92-51af-bbe4-c8df6cdad8a5
+
+	/// Supplier Promised Lead Days
+	measure 'Supplier Promised Lead Days' = AVERAGEX(source_po,DATEDIFF(source_po[Event Date],source_po[Promised Date],DAY))
+		formatString: #,##0.00
+		displayFolder: 07 Supplier Performance
+		lineageTag: c399bf45-4387-5181-ae8b-a87e0adae309
+
+	/// Selected Model Count
+	measure 'Selected Model Count' = VAR H=[Selected Horizon] RETURN CALCULATE(DISTINCTCOUNT(forecast_evaluation[method]),forecast_evaluation[selected_on_validation]=TRUE(),forecast_evaluation[horizon_days]=H)
+		formatString: #,##0
+		displayFolder: 15 Navigation & Utility
+		lineageTag: 303f90dc-3975-5fa5-a0c3-7420eee48ca3
+
+	/// Eligible SKU Permissions
+	measure 'Eligible SKU Permissions' = VAR A=[Selected As Of] RETURN CALCULATE(DISTINCTCOUNT(fact_product_policy_asof[sku]),fact_product_policy_asof[as_of]=A,fact_product_policy_asof[sale_allowed]=TRUE())
+		formatString: #,##0
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 09a30fdc-8e4a-5584-9dd6-ec16f4f19a4e
+
+	/// Operational Approval Granted
+	measure 'Operational Approval Granted' = SWITCH(SELECTEDVALUE(dim_world[company_operational_approval]),"NOT_GRANTED",0,"GRANTED",1,BLANK())
+		formatString: 0
+		displayFolder: 13 Data Quality & Governance
+		lineageTag: eb73a948-ad17-5d4d-992b-ff4276ddd21b
+
+	/// Adverse modeled margin coloring, no approval inference.
+	measure 'Modeled Margin Color' = IF(ISBLANK([Modeled Margin Difference SAR]),"#B8C8DD",IF([Modeled Margin Difference SAR]<0,"#C9475A",IF([Modeled Margin Difference SAR]>0,"#4B91F1","#B8C8DD")))
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 89389333-021b-5435-b593-d7f08b045f06
+
+	/// Explicit logical selection predicate, not stock or approval
+	measure 'Candidate Context Ready' = IF(COUNTROWS(ALLSELECTED(source_constraint_component[candidate_id]))=1,1,0)
+		formatString: 0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: c2c6b9c0-2f9e-53f9-9035-345b79236db2
+
+	/// Known pending capacity, same single historical candidate
+	measure 'Constraint Pending Litres' = IF([Candidate Context Ready]=1,MAX(source_constraint_component[pending_litres]),BLANK())
+		formatString: #,##0.00
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 0775b595-173f-5f6f-957d-b606a64677bd
+
+	/// Presentation guidance only; numeric measure retained
+	measure 'Modeled Fulfilled Difference Display' = IF(NOT HASONEVALUE(dim_scenario[scenario]),"Select one policy",IF(ISBLANK([Modeled Fulfilled Difference]),"N/A - no supported outcome",FORMAT([Modeled Fulfilled Difference],"#,##0.00")))
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 0b69898a-aa62-591d-ae52-d4ac488caf44
+
+	/// Presentation guidance only; no BLANK-to-zero conversion
+	measure 'Modeled Margin Difference Display' = IF(NOT HASONEVALUE(dim_scenario[scenario]),"Select one policy",IF(ISBLANK([Modeled Margin Difference SAR]),"N/A - no supported outcome",FORMAT([Modeled Margin Difference SAR],"#,##0.00")))
+		displayFolder: 12 Policy & Guardrails
+		lineageTag: 5668edf8-9884-560e-acec-d955a17e7208
+
+	/// Count of store/SKU exposure records, not fulfilled EACH
+	measure 'ROS Observation Rows' = VAR P=[Selected Period] RETURN CALCULATE(COUNTROWS(mart_store_sku_ros_exposure),mart_store_sku_ros_exposure[period]=P)
+		formatString: #,0
+		displayFolder: 09 ROS & Exposure
+		lineageTag: cb2b2975-daa6-58e5-8f0c-3f8edba21f03
+
+	/// Network Latest Sales
+	measure 'Network Latest Sales' = CALCULATE([Network Sales SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: cad01e01-85be-58c1-9200-c7df11d73101
+
+	/// Network Previous Sales
+	measure 'Network Previous Sales' = CALCULATE([Network Sales SAR],PeriodSelector[Period]="6M") - [Network Latest Sales]
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: cfb4e466-90e6-5f45-9db5-1d0c44dec018
+
+	/// Network Sales Change SAR
+	measure 'Network Sales Change SAR' = [Network Latest Sales]-[Network Previous Sales]
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: ae34c7d3-066b-52aa-9ab4-5fa49bea74b7
+
+	/// Network Sales Change %
+	measure 'Network Sales Change %' = DIVIDE([Network Sales Change SAR],[Network Previous Sales])
+		formatString: 0.0%
+		displayFolder: 01 Executive Finance
+		lineageTag: 58bccc14-68d5-54d8-9dfd-9fe5b59a374a
+
+	/// Network Latest GP
+	measure 'Network Latest GP' = CALCULATE([Network Gross Profit SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 36e951fd-b561-5fa1-b19d-14e7bc782b70
+
+	/// Network Previous GP
+	measure 'Network Previous GP' = CALCULATE([Network Gross Profit SAR],PeriodSelector[Period]="6M") - [Network Latest GP]
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 108401dd-c403-5115-b424-5e019ffd3af1
+
+	/// Network GP Change SAR
+	measure 'Network GP Change SAR' = [Network Latest GP]-[Network Previous GP]
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 32b7216c-5c37-5d8b-979d-3b4af069d505
+
+	/// Network GP Change %
+	measure 'Network GP Change %' = DIVIDE([Network GP Change SAR],[Network Previous GP])
+		formatString: 0.0%
+		displayFolder: 01 Executive Finance
+		lineageTag: b6fd01fb-cd96-5d98-9740-181222bbc457
+
+	/// Category Latest Sales
+	measure 'Category Latest Sales' = CALCULATE([Category Sales SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 4ee4d860-4e5f-5027-960f-2856c69839d5
+
+	/// Category Previous Sales
+	measure 'Category Previous Sales' = CALCULATE([Category Sales SAR],PeriodSelector[Period]="6M") - [Category Latest Sales]
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 6a5bf2c0-1de7-5f11-b25d-d45d896e2967
+
+	/// Category Sales Change SAR
+	measure 'Category Sales Change SAR' = [Category Latest Sales]-[Category Previous Sales]
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance
+		lineageTag: 9898b531-b0b5-5ac7-ace2-1393877aa445
+
+	/// Category Sales Change %
+	measure 'Category Sales Change %' = DIVIDE([Category Sales Change SAR],[Category Previous Sales])
+		formatString: 0.0%
+		displayFolder: 02 Category Performance
+		lineageTag: 711be70c-3fce-5b03-a6b6-a3e2335ea3e2
+
+	/// Branch Latest Sales
+	measure 'Branch Latest Sales' = CALCULATE([Branch Sales SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 432df7c3-1050-569b-999d-7db2fbabc7da
+
+	/// Branch Previous Sales
+	measure 'Branch Previous Sales' = CALCULATE([Branch Sales SAR],PeriodSelector[Period]="6M") - [Branch Latest Sales]
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: b7937e2b-fa27-5465-b8a8-148f0e22c1b1
+
+	/// Branch Sales Change SAR
+	measure 'Branch Sales Change SAR' = [Branch Latest Sales]-[Branch Previous Sales]
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 09d184a7-1352-58bd-8b86-f279d64c2f14
+
+	/// Branch Sales Change %
+	measure 'Branch Sales Change %' = DIVIDE([Branch Sales Change SAR],[Branch Previous Sales])
+		formatString: 0.0%
+		displayFolder: 03 Branch Performance
+		lineageTag: b4640f86-9cdc-51bb-959c-f417c03cb6e7
+
+	/// SKU Latest Sales
+	measure 'SKU Latest Sales' = CALCULATE([SKU Sales SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 684d57ef-e3e4-5b19-8cc1-e704cdf5a28b
+
+	/// SKU Previous Sales
+	measure 'SKU Previous Sales' = CALCULATE([SKU Sales SAR],PeriodSelector[Period]="6M") - [SKU Latest Sales]
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: e4a70cdc-77a2-53bd-8d18-635d7627e68a
+
+	/// SKU Sales Change SAR
+	measure 'SKU Sales Change SAR' = [SKU Latest Sales]-[SKU Previous Sales]
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 2a5fc8ff-754c-56c1-9091-f05d4c2c1419
+
+	/// Network Latest Invoices
+	measure 'Network Latest Invoices' = CALCULATE([Network Invoices],PeriodSelector[Period]="3M")
+		formatString: #,0
+		displayFolder: 01 Executive Finance
+		lineageTag: 0a67edee-f90e-5be7-8d64-6e3ba7a02ccd
+
+	/// Network Previous Invoices
+	measure 'Network Previous Invoices' = CALCULATE([Network Invoices],PeriodSelector[Period]="6M")-[Network Latest Invoices]
+		formatString: #,0
+		displayFolder: 01 Executive Finance
+		lineageTag: ba95dc97-d309-5b3d-b0ca-f31550615773
+
+	/// Network Invoice Change %
+	measure 'Network Invoice Change %' = DIVIDE([Network Latest Invoices]-[Network Previous Invoices],[Network Previous Invoices])
+		formatString: 0.0%
+		displayFolder: 01 Executive Finance
+		lineageTag: 8d97fe0a-8e82-5e81-bfbe-0c903a225c09
+
+	/// Network Latest ABV
+	measure 'Network Latest ABV' = DIVIDE([Network Latest Sales],[Network Latest Invoices])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 57b07dd5-a90c-5728-9aea-c0a66fe8d368
+
+	/// Network Previous ABV
+	measure 'Network Previous ABV' = DIVIDE([Network Previous Sales],[Network Previous Invoices])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: f4f45518-41ff-53bf-aa2b-6037fc27519c
+
+	/// Network ABV Change %
+	measure 'Network ABV Change %' = DIVIDE([Network Latest ABV]-[Network Previous ABV],[Network Previous ABV])
+		formatString: 0.0%
+		displayFolder: 01 Executive Finance
+		lineageTag: 60e520f8-8245-56b8-8ae8-83004fee6fc6
+
+	/// Network Invoice Volume Bridge SAR
+	measure 'Network Invoice Volume Bridge SAR' = ([Network Latest Invoices]-[Network Previous Invoices])*([Network Latest ABV]+[Network Previous ABV])/2
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 0ff5a9ec-bfb6-5dd8-a5d8-8af0b7c48099
+
+	/// Network Basket Value Bridge SAR
+	measure 'Network Basket Value Bridge SAR' = ([Network Latest ABV]-[Network Previous ABV])*([Network Latest Invoices]+[Network Previous Invoices])/2
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 054e642d-1e4b-56bd-83d0-dc22b0347ec5
+
+	/// Branch Latest Invoices
+	measure 'Branch Latest Invoices' = CALCULATE([Branch Invoices],PeriodSelector[Period]="3M")
+		formatString: #,0
+		displayFolder: 03 Branch Performance
+		lineageTag: cdd1a974-be6c-544b-a8f9-1740d1d62c58
+
+	/// Branch Previous Invoices
+	measure 'Branch Previous Invoices' = CALCULATE([Branch Invoices],PeriodSelector[Period]="6M")-[Branch Latest Invoices]
+		formatString: #,0
+		displayFolder: 03 Branch Performance
+		lineageTag: 9669b873-80de-5ac1-9e2f-1e210cdfec82
+
+	/// Branch Invoice Change %
+	measure 'Branch Invoice Change %' = DIVIDE([Branch Latest Invoices]-[Branch Previous Invoices],[Branch Previous Invoices])
+		formatString: 0.0%
+		displayFolder: 03 Branch Performance
+		lineageTag: 7830d7ac-899f-5bde-89cc-9ea30b7955a9
+
+	/// Branch Latest ABV
+	measure 'Branch Latest ABV' = DIVIDE([Branch Latest Sales],[Branch Latest Invoices])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: f552e1d4-a1e3-50c7-8a75-94433f1b8d44
+
+	/// Branch Previous ABV
+	measure 'Branch Previous ABV' = DIVIDE([Branch Previous Sales],[Branch Previous Invoices])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: e4c68cad-749e-506a-aa25-8b015e0a6ef6
+
+	/// Branch ABV Change %
+	measure 'Branch ABV Change %' = DIVIDE([Branch Latest ABV]-[Branch Previous ABV],[Branch Previous ABV])
+		formatString: 0.0%
+		displayFolder: 03 Branch Performance
+		lineageTag: 04c15ae4-f641-59f8-80ab-d7328dc31f8a
+
+	/// Branch Invoice Volume Bridge SAR
+	measure 'Branch Invoice Volume Bridge SAR' = ([Branch Latest Invoices]-[Branch Previous Invoices])*([Branch Latest ABV]+[Branch Previous ABV])/2
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 3cf5fed0-3445-5673-aec0-e1e5a409b463
+
+	/// Branch Basket Value Bridge SAR
+	measure 'Branch Basket Value Bridge SAR' = ([Branch Latest ABV]-[Branch Previous ABV])*([Branch Latest Invoices]+[Branch Previous Invoices])/2
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: cb71d9c2-4305-5718-8367-37d65f9576c1
+
+	/// Network Margin Change pp
+	measure 'Network Margin Change pp' = 100*(DIVIDE([Network Latest GP],[Network Latest Sales])-DIVIDE([Network Previous GP],[Network Previous Sales]))
+		formatString: 0.0000" pp"
+		displayFolder: 01 Executive Finance
+		lineageTag: 72163a29-fe6d-53f6-b711-69fa2a37e594
+
+	/// Network Latest Daily Sales
+	measure 'Network Latest Daily Sales' = [Network Latest Sales]/92
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 003e7897-f55a-53f0-976e-2a900d18a8d8
+
+	/// Network Previous Daily Sales
+	measure 'Network Previous Daily Sales' = [Network Previous Sales]/91
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance
+		lineageTag: 1dabc762-fd29-5d3f-8aa9-53b84bd10db3
+
+	/// Category Sales Share %
+	measure 'Category Sales Share %' = DIVIDE([Category Sales SAR],CALCULATE([Category Sales SAR],ALLSELECTED(dim_category)))
+		formatString: 0.0%
+		displayFolder: 02 Category Performance
+		lineageTag: cd40a04c-bb01-5007-b513-8490a835cf5e
+
+	/// Category GP Share %
+	measure 'Category GP Share %' = DIVIDE([Category Gross Profit SAR],CALCULATE([Category Gross Profit SAR],ALLSELECTED(dim_category)))
+		formatString: 0.0%
+		displayFolder: 02 Category Performance
+		lineageTag: c0ece73a-a508-526d-af27-ecfd6dc1f6e5
+
+	/// Participating Stores
+	measure 'Participating Stores' = VAR P=[Selected Period] RETURN CALCULATE(DISTINCTCOUNT(mart_branch_finance_period[entity]),mart_branch_finance_period[period]=P)
+		formatString: #,0
+		displayFolder: 03 Branch Performance
+		lineageTag: 59ccac09-9218-51b9-8552-ca87dcca9466
+
+	/// Sales per Participating Store
+	measure 'Sales per Participating Store' = DIVIDE([Branch Sales SAR],[Participating Stores])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: e761a419-f728-5a8d-bd49-fba1e4d8f70a
+
+	/// GP per Participating Store
+	measure 'GP per Participating Store' = DIVIDE([Branch Gross Profit SAR],[Participating Stores])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance
+		lineageTag: 27089fa4-921d-51c8-8656-d837aa0f00da
+
+	/// SKU Top 10 Share
+	measure 'SKU Top 10 Share' = DIVIDE(SUMX(TOPN(10,ALLSELECTED(dim_product[sku]),[SKU Sales SAR],DESC,dim_product[sku],ASC),[SKU Sales SAR]),CALCULATE([SKU Sales SAR],ALLSELECTED(dim_product[sku])))
+		formatString: 0.0%
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 10d114c1-8103-5982-adfc-9d12c170b6eb
+
+	/// SKU Top 20 Share
+	measure 'SKU Top 20 Share' = DIVIDE(SUMX(TOPN(20,ALLSELECTED(dim_product[sku]),[SKU Sales SAR],DESC,dim_product[sku],ASC),[SKU Sales SAR]),CALCULATE([SKU Sales SAR],ALLSELECTED(dim_product[sku])))
+		formatString: 0.0%
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 14dee2a7-ac28-5481-989d-b4fe58ba9763
+
+	/// SKU Long Tail Share
+	measure 'SKU Long Tail Share' = IF(NOT ISBLANK([SKU Top 20 Share]),1-[SKU Top 20 Share],BLANK())
+		formatString: 0.0%
+		displayFolder: 04 SKU & Assortment
+		lineageTag: fc3d35fb-eef7-5126-b750-0589f0cbb1ca
+
+	/// Supplier Late Evidence Rate
+	measure 'Supplier Late Evidence Rate' = DIVIDE([Late PO Evidence],[Supplier POs])
+		formatString: 0.0%
+		displayFolder: 07 Supplier Performance
+		lineageTag: cdfdb539-4a08-5183-9865-98b2c5cc3117
+
+	/// Unreceived balance at saved cutoff; not final shortage
+	measure 'Supplier Unreceived Units' = [Supplier Ordered Units]-[Supplier Received Units]
+		formatString: #,0
+		displayFolder: 07 Supplier Performance
+		lineageTag: bd1439f5-f7ab-5b4a-bbaa-4fb3eb84329e
+
+	/// Stocked Exposure %
+	measure 'Stocked Exposure %' = DIVIDE([Stocked Exposure Days],[Trading Exposure Days])
+		formatString: 0.0%
+		displayFolder: 09 ROS & Exposure
+		lineageTag: 7a75d2a0-0972-5368-af28-967ad6ae99a2
+
+	/// Selected Evaluation Partition
+	measure 'Selected Evaluation Partition' = IF(ISFILTERED(forecast_evaluation[partition]),SELECTEDVALUE(forecast_evaluation[partition]),"VALIDATION")
+		displayFolder: 10 Forecasting
+		lineageTag: 167a606d-d9a9-5109-93a0-26d9888987f0
+
+	/// Forecast Error P90
+	measure 'Forecast Error P90' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(PERCENTILEX.INC(forecast_evaluation,forecast_evaluation[absolute_error],0.9),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: fcf680bb-4c79-503d-b4e5-af0fd8d61ec2
+
+	/// Forecast Error Median
+	measure 'Forecast Error Median' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(NOT ISBLANK(H) && NOT ISBLANK(M) && NOT ISBLANK(P),CALCULATE(MEDIAN(forecast_evaluation[absolute_error]),forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P),BLANK())
+		formatString: #,##0.00
+		displayFolder: 10 Forecasting
+		lineageTag: 2e1dfefe-978a-5792-ab3c-335e6839c727
+
+	/// Candidate Selection Guidance
+	measure 'Candidate Selection Guidance' = IF([Candidate Context Ready]=1,"Historical candidate selected; review evidence only","Select one historical candidate to inspect constraints")
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: dfc5eee0-3480-5ccd-ac38-279c1297055a
+
+	/// Exact saved candidate-to-D06 source_object join only; absent historical review stays NULL
+	measure 'Historical Requested EACH' = IF([Candidate Context Ready]=1,CALCULATE(MAX(decision_review[candidate_quantity]),REMOVEFILTERS(dim_date),TREATAS(VALUES(source_constraint_component[candidate_id]),decision_review[source_object]),decision_review[family]="D06"),BLANK())
+		formatString: #,0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: bbdf4b9d-ca50-54ac-8928-87eeeaa284ff
+
+	/// Category Change Color
+	measure 'Category Change Color' = IF(ISBLANK([Category Sales Change SAR]),"#B8C8DD",IF([Category Sales Change SAR]<0,"#C9475A",IF([Category Sales Change SAR]>0,"#1B9E95","#B8C8DD")))
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 5a448060-a0ea-5c82-966f-8c82a1fffdd8
+
+	/// Branch Change Color
+	measure 'Branch Change Color' = VAR _v = [Branch Sales Change SAR] VAR _peer = ALLSELECTED('dim_branch'[location]) VAR _losses = FILTER(_peer, [Branch Sales Change SAR] < 0) VAR _gains = FILTER(_peer, [Branch Sales Change SAR] > 0) VAR _worstLoss = MINX(_losses, [Branch Sales Change SAR]) VAR _smallestLoss = MAXX(_losses, [Branch Sales Change SAR]) VAR _smallestGain = MINX(_gains, [Branch Sales Change SAR]) VAR _largestGain = MAXX(_gains, [Branch Sales Change SAR]) VAR _lossT = DIVIDE(_v - _worstLoss, _smallestLoss - _worstLoss, 0.5) VAR _gainT = DIVIDE(_v - _smallestGain, _largestGain - _smallestGain, 0.5) RETURN SWITCH(TRUE(), ISBLANK(_v), "#8999A9", _v < 0 && _lossT < 0.125, "#AE304B", _v < 0 && _lossT < 0.250, "#BB3A54", _v < 0 && _lossT < 0.375, "#C54863", _v < 0 && _lossT < 0.500, "#CE5770", _v < 0 && _lossT < 0.625, "#D66C81", _v < 0 && _lossT < 0.750, "#DE8394", _v < 0 && _lossT < 0.875, "#E5A0AC", _v < 0, "#EAB7C0", _v > 0 && _gainT < 0.250, "#8BCBB8", _v > 0 && _gainT < 0.500, "#64BAA2", _v > 0 && _gainT < 0.750, "#3DAE91", _v > 0, "#1B927A", "#AAB3BF")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 94c57f75-5485-522f-a50e-e00b583bf043
+
+	/// Executive Narrative
+	measure 'Executive Narrative' = "Latest 3M sales " & FORMAT([Network Sales Change %],"+0.0%;-0.0%;0.0%") & "; invoices " & FORMAT([Network Invoice Change %],"+0.0%;-0.0%;0.0%") & "; ABV " & FORMAT([Network ABV Change %],"+0.0%;-0.0%;0.0%") & ". Arithmetic attribution only; not customer-demand causality. Review category/branch contributors and saved exposure."
+		displayFolder: 01 Executive Finance
+		lineageTag: 7ffe63b4-3e67-5716-a5cf-ad56a941dc6d
+
+	/// Executive Sales Display
+	measure 'Executive Sales Display' = VAR Amount = [Network Latest Sales] VAR CompactValue = SWITCH(TRUE(), ISBLANK(Amount), "N/A", ABS(Amount) >= 1000000000, FORMAT(Amount / 1000000000, "0.00") & "B", ABS(Amount) >= 1000000, FORMAT(Amount / 1000000, "0.00") & "M", ABS(Amount) >= 1000, FORMAT(Amount / 1000, "0.0") & "K", FORMAT(Amount, "#,##0.00")) RETURN CompactValue & " | " & FORMAT([Network Sales Change %], "+0.0%;-0.0%;0.0%")
+		displayFolder: 01 Executive Finance
+		lineageTag: 19a1e917-8eed-5fc1-a674-d4bbf0d32ab7
+
+	/// Executive GP Display
+	measure 'Executive GP Display' = VAR Amount = [Network Latest GP] VAR CompactValue = SWITCH(TRUE(), ISBLANK(Amount), "N/A", ABS(Amount) >= 1000000000, FORMAT(Amount / 1000000000, "0.00") & "B", ABS(Amount) >= 1000000, FORMAT(Amount / 1000000, "0.00") & "M", ABS(Amount) >= 1000, FORMAT(Amount / 1000, "0.0") & "K", FORMAT(Amount, "#,##0.00")) RETURN CompactValue & " | " & FORMAT([Network GP Change %], "+0.0%;-0.0%;0.0%")
+		displayFolder: 01 Executive Finance
+		lineageTag: 684f45c2-e276-5cf0-9936-fda0451cea70
+
+	/// Executive Invoices Display
+	measure 'Executive Invoices Display' = VAR Amount = [Network Latest Invoices] VAR CompactValue = SWITCH(TRUE(), ISBLANK(Amount), "N/A", ABS(Amount) >= 1000000000, FORMAT(Amount / 1000000000, "0.00") & "B", ABS(Amount) >= 1000000, FORMAT(Amount / 1000000, "0.00") & "M", ABS(Amount) >= 1000, FORMAT(Amount / 1000, "0.0") & "K", FORMAT(Amount, "#,0")) RETURN CompactValue & " | " & FORMAT([Network Invoice Change %], "+0.0%;-0.0%;0.0%")
+		displayFolder: 01 Executive Finance
+		lineageTag: fa5ec1b2-0e45-571d-8426-ba8eed94c6d0
+
+	/// Executive ABV Display
+	measure 'Executive ABV Display' = VAR Amount = [Network Latest ABV] VAR CompactValue = SWITCH(TRUE(), ISBLANK(Amount), "N/A", ABS(Amount) >= 1000000000, FORMAT(Amount / 1000000000, "0.00") & "B", ABS(Amount) >= 1000000, FORMAT(Amount / 1000000, "0.00") & "M", ABS(Amount) >= 1000, FORMAT(Amount / 1000, "0.0") & "K", FORMAT(Amount, "#,##0.00")) RETURN CompactValue & " | " & FORMAT([Network ABV Change %], "+0.0%;-0.0%;0.0%")
+		displayFolder: 01 Executive Finance
+		lineageTag: 581e465c-e3e2-5df0-9790-57bfa2b72192
+
+	/// Executive Margin Display
+	measure 'Executive Margin Display' = FORMAT(DIVIDE([Network Latest GP],[Network Latest Sales]),"0.000%") & " | " & FORMAT([Network Margin Change pp],"+0.0000;-0.0000;0.0000") & " pp"
+		displayFolder: 01 Executive Finance
+		lineageTag: 09edac92-26be-5273-bca6-010a837e7533
+
+	/// Color-only gradient for Branch Gross Profit SAR; not a KPI.
+	measure 'Branch GP Gradient Color' = VAR _v = [Branch Gross Profit SAR] VAR _peer = ALLSELECTED('dim_branch'[location]) VAR _low = MINX(_peer, [Branch Gross Profit SAR]) VAR _high = MAXX(_peer, [Branch Gross Profit SAR]) VAR _t = DIVIDE(_v - _low, _high - _low, 0.5) RETURN SWITCH(TRUE(), ISBLANK(_v), "#8999A9", _v < 0, "#CC6674", _t < 0.125, "#ACD7EB", _t < 0.250, "#92CBE6", _t < 0.375, "#7DBDDD", _t < 0.500, "#67AED6", _t < 0.625, "#509DCD", _t < 0.750, "#3E8DC0", _t < 0.875, "#2F7CB4", "#206BA5")
+		displayFolder: 14 Dynamic Formatting
+		lineageTag: 48064df9-a4d5-5f45-82aa-b1b7abccdb26
+
+	/// Distinct historical candidate IDs with at least one binding rule; not purchase orders.
+	measure 'P08 Binding Candidate IDs' = CALCULATE(DISTINCTCOUNT(source_constraint_component[candidate_id]),source_constraint_component[is_binding]=TRUE())
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 847ea004-7140-4600-bb2f-db4ebf8c49f7
+
+	/// Share of candidate IDs with binding rules in the current filter context.
+	measure 'P08 Binding Candidate Share' = DIVIDE([P08 Binding Candidate IDs],[Candidate Count])
+		formatString: 0.0%
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 5f4a6ce0-23cf-4b6d-bb1d-89c605903cde
+
+	/// Recorded D06 review-required rows, not approved replenishment.
+	measure 'P08 D06 Review Required' = CALCULATE(COUNTROWS(decision_review),decision_review[family]="D06",decision_review[decision_status]="REVIEW_REQUIRED")
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: f1c0856d-56db-4e96-a7a4-9860cd9046d2
+
+	/// Recorded D06 infeasible rows; historical decision evidence.
+	measure 'P08 D06 Infeasible' = CALCULATE(COUNTROWS(decision_review),decision_review[family]="D06",decision_review[decision_status]="INFEASIBLE")
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 8132783c-aa5a-4a6d-9bbb-272170c6066c
+
+	/// Recorded D06 executable quantity; does not grant a purchasing approval.
+	measure 'P08 D06 Executable Units' = CALCULATE(SUM(decision_review[executable_quantity]),decision_review[family]="D06")
+		formatString: #,##0
+		displayFolder: 08 Replenishment & Constraints
+		lineageTag: 8433cb9e-cc8c-475d-9b28-4ecba25ad4b8
+
+	measure 'P01 Basket Effect Magnitude' = ABS([Network Basket Value Bridge SAR])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 66c3c8d8-8ed9-4f6f-b6e7-2591dc3ee5a1
+
+	measure 'P01 Branch Intensity' =
+			VAR V = [Branch Sales Change SAR]
+			VAR SelectedItems = ALLSELECTED(dim_branch[location])
+			VAR MaxLoss = MAXX(SelectedItems, ABS(CALCULATE([Branch Sales Change SAR])))
+			VAR MinLoss = MINX(SelectedItems, ABS(CALCULATE([Branch Sales Change SAR])))
+			VAR T = MAX(0, MIN(1, DIVIDE(ABS(V) - MinLoss, MaxLoss - MinLoss, 1)))
+			VAR R = ROUND(IF(V < 0, 243 - 32 * T, 165 - 132 * T), 0)
+			VAR G = ROUND(IF(V < 0, 166 - 127 * T, 228 - 45 * T), 0)
+			VAR B = ROUND(IF(V < 0, 180 - 94 * T, 219 - 55 * T), 0)
+			VAR H = "0123456789ABCDEF"
+			RETURN IF(ISBLANK(V), BLANK(), "#" & MID(H, INT(R/16)+1, 1) & MID(H, MOD(R,16)+1, 1) & MID(H, INT(G/16)+1, 1) & MID(H, MOD(G,16)+1, 1) & MID(H, INT(B/16)+1, 1) & MID(H, MOD(B,16)+1, 1))
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 7af14780-9402-4abf-8fd0-9ebf64208f7a
+
+	measure 'P01 Category Intensity' =
+			VAR V = [Category Sales Change SAR]
+			VAR SelectedItems = ALLSELECTED(dim_category[category])
+			VAR MaxLoss = MAXX(SelectedItems, ABS(CALCULATE([Category Sales Change SAR])))
+			VAR MinLoss = MINX(SelectedItems, ABS(CALCULATE([Category Sales Change SAR])))
+			VAR T = MAX(0, MIN(1, DIVIDE(ABS(V) - MinLoss, MaxLoss - MinLoss, 1)))
+			VAR R = ROUND(IF(V < 0, 243 - 32 * T, 165 - 132 * T), 0)
+			VAR G = ROUND(IF(V < 0, 166 - 127 * T, 228 - 45 * T), 0)
+			VAR B = ROUND(IF(V < 0, 180 - 94 * T, 219 - 55 * T), 0)
+			VAR H = "0123456789ABCDEF"
+			RETURN IF(ISBLANK(V), BLANK(), "#" & MID(H, INT(R/16)+1, 1) & MID(H, MOD(R,16)+1, 1) & MID(H, INT(G/16)+1, 1) & MID(H, MOD(G,16)+1, 1) & MID(H, INT(B/16)+1, 1) & MID(H, MOD(B,16)+1, 1))
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 92e9bfc4-fcbf-43bf-999d-bcd0716d01f4
+
+	measure 'P01 Invoice Effect Magnitude' = ABS([Network Invoice Volume Bridge SAR])
+		formatString: #,##0.00
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 1ab412a1-2a40-42e9-a9eb-cc7823808d6a
+
+	measure 'P01 Latest Margin' = DIVIDE([Network Latest GP], [Network Latest Sales])
+		formatString: 0.000%
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: bede5392-d6ec-4e72-8eff-a562b4746e9d
+
+	measure 'P01 Snapshot Caption' = VAR A = [Selected As Of] RETURN IF(ISBLANK(A), "As of: Not available", "As of " & FORMAT(DATE(VALUE(LEFT(A,4)), VALUE(MID(A,6,2)), VALUE(MID(A,9,2))), "dd MMM yyyy"))
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 0c85143a-324f-464d-bbab-adb778cb2aa8
+
+	measure 'P021 Basket Callout' = FORMAT([Network Latest ABV], "0.00", "en-US") & " EGP"
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: d4507516-351d-4513-83ae-f149204b5967
+
+	measure 'P021 Business Headline' = VAR D = [Network Sales Change %] VAR I = [Network Invoice Volume Bridge SAR] VAR B = [Network Basket Value Bridge SAR] VAR Share = DIVIDE(ABS(I), ABS(I) + ABS(B)) RETURN "Sales " & IF(D < 0, "down ", "up ") & FORMAT(ABS(D), "0%", "en-US") & "; invoice count accounts for " & FORMAT(Share, "0%", "en-US") & " of the change."
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: f6045746-7653-497e-81e6-413be772965b
+
+	measure 'P021 GP Callout' = FORMAT([Network Latest GP] / 1000000, "0.00", "en-US") & "M EGP"
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 6ceb34e5-c86c-4759-a9e2-dc5ed9d4317a
+
+	measure 'P021 Inventory Callout' = VAR A = [Selected As Of] RETURN IF(ISBLANK(A), "Not available", FORMAT([Inventory Cost SAR] / 1000000, "0.00", "en-US") & "M EGP")
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 327cadf0-f852-4d09-b3cb-19322e9221c2
+
+	measure 'P021 Invoices Callout' = FORMAT([Network Latest Invoices] / 1000, "0.0", "en-US") & "K"
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: aa312afc-1ac2-4846-9417-a3763157f8ef
+
+	measure 'P021 Margin Callout' = FORMAT([P01 Latest Margin], "0.000%", "en-US")
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: 303d1e86-28ba-4bcd-b93f-f84f07c85db8
+
+	measure 'P021 Margin Change Callout' = FORMAT([Network Margin Change pp], "+0.0000;-0.0000;0.0000", "en-US") & " pp"
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: f76108a1-90a0-45b8-81fc-b54cc46424d5
+
+	measure 'P021 Sales Callout' = FORMAT([Network Latest Sales] / 1000000, "0.00", "en-US") & "M EGP"
+		displayFolder: 01 Executive Finance\Page 01 Display
+		lineageTag: fede852f-0e89-48e3-a70e-272b6b733c55
+
+	/// PHARMA360-P02-EXECUTION-V02-20261105 additive definitions.
+	measure 'P02 Sales Display' =
+			VAR V = [Category Sales SAR]
+			RETURN IF(ISBLANK(V), "Not available",
+			    SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US") & "M EGP",
+			        ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US") & "K EGP",
+			        FORMAT(V,"#,##0.00","en-US") & " EGP"))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: f37beb4c-285f-5ce4-8b0f-70a116677ecc
+
+	measure 'P02 GP Display' =
+			VAR V = [Category Gross Profit SAR]
+			RETURN IF(ISBLANK(V), "Not available",
+			    SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US") & "M EGP",
+			        ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US") & "K EGP",
+			        FORMAT(V,"#,##0.00","en-US") & " EGP"))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 99486aff-7ee8-54e1-af45-cb31da1ea904
+
+	measure 'P02 Margin Display' = IF(ISBLANK([Category Gross Margin %]),"Not available",FORMAT([Category Gross Margin %],"0.00%","en-US"))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: e2ba565f-0d3b-5a79-af8f-cae676400763
+
+	measure 'P02 GMROI Display' = IF(ISBLANK([Category GMROI]),"Not available",FORMAT([Category GMROI],"0.00","en-US") & "×")
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 1177c7d4-b3a2-57af-b1cb-4be30b0c4e15
+
+	measure 'P02 TWA Display' =
+			VAR V = [Category Inventory TWA SAR]
+			RETURN IF(ISBLANK(V),"Not available",
+			    SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00","en-US") & "M EGP",
+			        ABS(V)>=1000,FORMAT(V/1000,"0.0","en-US") & "K EGP",
+			        FORMAT(V,"#,##0.00","en-US") & " EGP"))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 83dba9b8-83fb-5298-a1cc-9b1a0d7293c7
+
+	measure 'P02 ABV Display' = IF(ISBLANK([Category ABV SAR]),"Not available",FORMAT([Category ABV SAR],"#,##0.00","en-US") & " EGP")
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: ca4e113a-a202-5f8e-b9b6-209c5c1856c6
+
+	measure 'P02 Latest3 GP SAR' = CALCULATE([Category Gross Profit SAR], PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: e3dfbe52-8ac0-5bec-9bd9-dfb3be6808de
+
+	measure 'P02 Latest3 Margin' = CALCULATE([Category Gross Margin %], PeriodSelector[Period]="3M")
+		formatString: 0.000%
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: cbfd7e6e-ed61-5ec5-a0c1-eedabc9ea049
+
+	measure 'P02 Latest3 GMROI' = CALCULATE([Category GMROI], PeriodSelector[Period]="3M")
+		formatString: 0.000
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: e3e2fc84-5a6c-577f-9eb9-d340efb550e4
+
+	measure 'P02 Latest3 TWA SAR' = CALCULATE([Category Inventory TWA SAR], PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: b635b7f0-8ad2-5a9e-ada5-ecea09d6a375
+
+	measure 'P02 Network Latest3 GMROI' = DIVIDE([Network Latest GP], CALCULATE([Network Inventory TWA SAR], PeriodSelector[Period]="3M"))
+		formatString: 0.0000
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 3c7f2909-254a-5f9f-a75c-2eff33cfc0f4
+
+	measure 'P02 Network Latest3 Margin' = DIVIDE([Network Latest GP],[Network Latest Sales])
+		formatString: 0.000%
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 3657e13d-553c-5790-a4e8-4073af3e439b
+
+	measure 'P02 Category Sales Share Network' = DIVIDE([Category Sales SAR],CALCULATE([Category Sales SAR], REMOVEFILTERS(dim_category)))
+		formatString: 0.00%
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 7544d5d5-08c9-5403-a613-efdc525ac146
+
+	measure 'P02 Category GP Share Network' = DIVIDE([Category Gross Profit SAR],CALCULATE([Category Gross Profit SAR],REMOVEFILTERS(dim_category)))
+		formatString: 0.00%
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 7106aa04-6c75-56df-83ad-04c5ad14134a
+
+	measure 'P02 GP Share Advantage pp' = 100*([P02 Category GP Share Network]-[P02 Category Sales Share Network])
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 6c9b5cb7-2900-5e5b-a57c-7fe202345c88
+
+	measure 'P02 Loss Rank' =
+			IF(ISBLANK([Category Sales Change SAR]), BLANK(),
+			   RANKX(ALL(dim_category[category]),[Category Sales Change SAR],,ASC,DENSE))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 8bcd8a10-0263-5e84-b2cf-1a29073709e7
+
+	measure 'P02 Relative Decline Rank' =
+			IF(ISBLANK([Category Sales Change %]), BLANK(),
+			   RANKX(ALL(dim_category[category]),[Category Sales Change %],,ASC,DENSE))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 971ef20e-5e8c-5342-9bb7-ba4586d906c7
+
+	measure 'P02 GMROI Weakness Rank' =
+			IF(ISBLANK([P02 Latest3 GMROI]), BLANK(),
+			   RANKX(ALL(dim_category[category]),[P02 Latest3 GMROI],,ASC,DENSE))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 6542d9cc-fa87-5203-bdbd-8879fca92b91
+
+	measure 'P02 Focus Flag' =
+			IF([Category Sales Change SAR]<0 &&
+			   ([P02 Loss Rank]<=3 || [P02 Relative Decline Rank]=1 || [P02 GMROI Weakness Rank]=1),
+			   1, BLANK())
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 64c70c94-bef8-5f1c-a8e5-87e82bafd914
+
+	measure 'P02 Review Focus' =
+			VAR L=[P02 Loss Rank]
+			VAR R=[P02 Relative Decline Rank]
+			VAR G=[P02 GMROI Weakness Rank]
+			VAR M=[P02 Latest3 Margin]
+			VAR ROI=[P02 Latest3 GMROI]
+			RETURN IF([P02 Focus Flag]<>1, BLANK(),
+			   SWITCH(TRUE(),
+			     R=1 && G=1, "Steep decline & low GMROI",
+			     L<=3 && ROI<[P02 Network Latest3 GMROI], "Sales loss & inventory efficiency",
+			     L<=3 && M>=[P02 Network Latest3 Margin] && ROI>=[P02 Network Latest3 GMROI], "Recover sales • protect margin",
+			     L<=3, "Investigate sales & margin",
+			     G=1, "Inventory efficiency review",
+			     "Review category performance"))
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: fb4b0d96-29e7-5f5b-9561-8bf28394e55c
+
+	measure 'P02 Top3 Network GP SAR' =
+			VAR T =
+			    CALCULATETABLE(
+			        ADDCOLUMNS(VALUES(dim_category[category]), "__GP", [Category Gross Profit SAR]),
+			        REMOVEFILTERS(dim_category)
+			    )
+			VAR N = TOPN(3, T, [__GP], DESC, dim_category[category], ASC)
+			RETURN IF(MINX(T,[__GP])<0, BLANK(), SUMX(N,[__GP]))
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 76ed8abd-44ff-5daf-8ad2-6ac5a71bfc26
+
+	measure 'P02 Remaining Network GP SAR' =
+			VAR NetGP = CALCULATE([Category Gross Profit SAR], REMOVEFILTERS(dim_category))
+			VAR Top3 = [P02 Top3 Network GP SAR]
+			RETURN IF(ISBLANK(Top3) || ISBLANK(NetGP),BLANK(),MAX(0,NetGP-Top3))
+		formatString: #,##0.00
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 4f236b24-7eeb-5572-ad39-f33294373b9d
+
+	measure 'P02 Loss Severity Color' =
+			VAR V = [Category Sales Change SAR]
+			VAR Peers =
+			    ADDCOLUMNS(
+			        ALL(dim_category[category]),
+			        "__Metric", CALCULATE([Category Sales Change SAR])
+			    )
+			VAR SameSign =
+			    FILTER(Peers,
+			        NOT ISBLANK([__Metric]) &&
+			        IF(V < 0, [__Metric] < 0, [__Metric] > 0)
+			    )
+			VAR LowMagnitude = MINX(SameSign, ABS([__Metric]))
+			VAR HighMagnitude = MAXX(SameSign, ABS([__Metric]))
+			VAR Scale = IF(HighMagnitude = LowMagnitude, 0.5,
+			    MAX(0, MIN(1, DIVIDE(ABS(V)-LowMagnitude, HighMagnitude-LowMagnitude, 0.5))))
+			VAR RedBin = MIN(8, 1 + INT(8*Scale))
+			VAR GreenBin = MIN(4, 1 + INT(4*Scale))
+			RETURN SWITCH(TRUE(),
+			    ISBLANK(V) || V=0, "#8999A9",
+			    V<0, SWITCH(RedBin,
+			        1,"#EAB7C0",2,"#E5A0AC",3,"#DE8394",4,"#D66C81",
+			        5,"#CE5770",6,"#C54863",7,"#BB3A54","#AE304B"),
+			    SWITCH(GreenBin,1,"#8BCBB8",2,"#64BAA2",3,"#3DAE91","#1B927A")
+			)
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: b6397f94-8905-5100-912a-69c6ce3321e5
+
+	measure 'P02 Profit Advantage Color' =
+			VAR V = [P02 GP Share Advantage pp]
+			VAR Peers =
+			    ADDCOLUMNS(
+			        ALL(dim_category[category]),
+			        "__Metric", CALCULATE([P02 GP Share Advantage pp])
+			    )
+			VAR SameSign =
+			    FILTER(Peers,
+			        NOT ISBLANK([__Metric]) &&
+			        IF(V < 0, [__Metric] < 0, [__Metric] > 0)
+			    )
+			VAR LowMagnitude = MINX(SameSign, ABS([__Metric]))
+			VAR HighMagnitude = MAXX(SameSign, ABS([__Metric]))
+			VAR Scale = IF(HighMagnitude = LowMagnitude, 0.5,
+			    MAX(0, MIN(1, DIVIDE(ABS(V)-LowMagnitude, HighMagnitude-LowMagnitude, 0.5))))
+			VAR RedBin = MIN(8, 1 + INT(8*Scale))
+			VAR GreenBin = MIN(4, 1 + INT(4*Scale))
+			RETURN SWITCH(TRUE(),
+			    ISBLANK(V) || V=0, "#8999A9",
+			    V<0, SWITCH(RedBin,
+			        1,"#EAB7C0",2,"#E5A0AC",3,"#DE8394",4,"#D66C81",
+			        5,"#CE5770",6,"#C54863",7,"#BB3A54","#AE304B"),
+			    SWITCH(GreenBin,1,"#8BCBB8",2,"#64BAA2",3,"#3DAE91","#1B927A")
+			)
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 4007fd93-3a6a-550e-8360-b61f56498402
+
+	measure 'P02 Scatter Severity Color' = [P02 Loss Severity Color]
+		displayFolder: 02 Category Performance\Page02 V02
+		lineageTag: 309b317d-796e-50df-ad41-e46f589b44bd
+
+	/// PHARMA360-P03-BRANCH-V03-20261105 exact additive definitions.
+	measure 'P03 Sales Display' =
+			VAR V = [Branch Sales SAR]
+			RETURN IF(ISBLANK(V), "Not available", SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US")&"M EGP", ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US")&"K EGP", FORMAT(V,"#,##0.00","en-US")&" EGP"))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 7f02f800-2e01-53df-a080-f72dfc945df4
+
+	measure 'P03 GP Display' =
+			VAR V = [Branch Gross Profit SAR]
+			RETURN IF(ISBLANK(V), "Not available", SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US")&"M EGP", ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US")&"K EGP", FORMAT(V,"#,##0.00","en-US")&" EGP"))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 391be4db-c44a-5dff-a414-755d1206cd27
+
+	measure 'P03 Margin Display' = IF(ISBLANK([Branch Gross Margin %]), "Not available", FORMAT([Branch Gross Margin %],"0.00%","en-US"))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 01fc4116-8393-5429-9ca4-2c82a1d95ef3
+
+	measure 'P03 GMROI Display' = IF(ISBLANK([Branch GMROI]), "Not available", FORMAT([Branch GMROI],"0.00","en-US") & "×")
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 329e387f-f976-52b7-b0cb-1f1e70d23a62
+
+	measure 'P03 Invoices Display' =
+			VAR V = [Branch Invoices]
+			RETURN IF(ISBLANK(V), "Not available", SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US")&"M", ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US")&"K", FORMAT(V,"#,##0","en-US")))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 6735b2e0-ff60-5b95-aaa8-579d35c02d40
+
+	measure 'P03 ABV Display' =
+			VAR V = [Branch ABV SAR]
+			RETURN IF(ISBLANK(V), "Not available", SWITCH(TRUE(), ABS(V)>=1000000, FORMAT(V/1000000,"0.00","en-US")&"M EGP", ABS(V)>=1000, FORMAT(V/1000,"0.0","en-US")&"K EGP", FORMAT(V,"#,##0.00","en-US")&" EGP"))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 82b257b9-0220-512d-91d3-0847d21eff1b
+
+	measure 'P03 Latest3 Sales SAR' = CALCULATE([Branch Sales SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 771baf08-64cf-5fa1-968f-ced941978248
+
+	measure 'P03 Latest3 GP SAR' = CALCULATE([Branch Gross Profit SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 3271f014-0f18-5545-93f0-5840afea430f
+
+	measure 'P03 Latest3 TWA SAR' = CALCULATE([Branch Inventory TWA SAR],PeriodSelector[Period]="3M")
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 7b2f3579-d839-5cfd-ae30-96b2f707b0b7
+
+	measure 'P03 Latest3 Margin %' = DIVIDE([P03 Latest3 GP SAR],[P03 Latest3 Sales SAR])
+		formatString: 0.00%
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 779bdbcf-d897-5ff5-9abd-b469522f2369
+
+	measure 'P03 Latest3 GMROI' = DIVIDE([P03 Latest3 GP SAR],[P03 Latest3 TWA SAR])
+		formatString: 0.0000
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 2e76ec97-31d3-5d7b-ac1e-6404241854df
+
+	measure 'P03 Sales Delta K SAR' = DIVIDE([Branch Sales Change SAR],1000)
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 548582b4-1b6a-52cd-a553-ddb8b8b47e86
+
+	measure 'P03 Daily Rate Change %' =
+			VAR L = [Branch Latest Sales]
+			VAR P = [Branch Previous Sales]
+			RETURN IF(P>0,DIVIDE(L/92,P/91)-1,BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 98e2a39a-a8ce-584c-bf8c-d01b3023a42f
+
+	measure 'P03 Gross Negative Branch Loss SAR' = SUMX(FILTER(ALLSELECTED(dim_branch[location]),[Branch Sales Change SAR]<0),-[Branch Sales Change SAR])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: c03c8694-5edd-522f-9d52-371f5015b1ba
+
+	measure 'P03 Top5 Gross Loss SAR' =
+			VAR Candidates = FILTER(ALLSELECTED(dim_branch[location]),[Branch Sales Change SAR]<0)
+			VAR Largest5 = TOPN(5,Candidates,[Branch Sales Change SAR],ASC,dim_branch[location],ASC)
+			RETURN IF(COUNTROWS(Candidates)=0,BLANK(),SUMX(Largest5,-[Branch Sales Change SAR]))
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 7cba9024-1f0e-5ffb-896a-9b5d1b3e3e44
+
+	measure 'P03 Remaining Gross Loss SAR' =
+			VAR AllLoss = [P03 Gross Negative Branch Loss SAR]
+			VAR Five = [P03 Top5 Gross Loss SAR]
+			RETURN IF(ISBLANK(Five),BLANK(),MAX(0,AllLoss-Five))
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: a4a44b0b-fb1a-529b-9081-184c337392a6
+
+	measure 'P03 Top5 Share of Gross Loss %' = DIVIDE([P03 Top5 Gross Loss SAR],[P03 Gross Negative Branch Loss SAR])
+		formatString: 0.00%
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: b9e0dc6c-35c6-56c5-bfc6-c192712a1e32
+
+	measure 'P03 Declining Branch Count' = COUNTROWS(FILTER(ALLSELECTED(dim_branch[location]),[Branch Sales Change SAR]<0))
+		formatString: #,##0
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 304bdf52-a49f-5844-ae95-8295a1dbec2f
+
+	measure 'P03 Branch Gross Loss Share %' =
+			VAR V = [Branch Sales Change SAR]
+			RETURN IF(V<0,DIVIDE(-V,[P03 Gross Negative Branch Loss SAR]),BLANK())
+		formatString: 0.00%
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 9dabfe3e-fc42-562f-9f95-1b1aa175efb5
+
+	measure 'P03 Format Sales Per Store' = DIVIDE([Branch Sales SAR],[Participating Stores])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 34fd231c-ea22-591a-b06a-1a19ffd87c1c
+
+	measure 'P03 Format GP Per Store' = DIVIDE([Branch Gross Profit SAR],[Participating Stores])
+		formatString: #,##0.00
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 4ee32626-0721-5aa5-a51a-8dbd54c08482
+
+	measure 'P03 Branch Review Focus' =
+			VAR Delta = [Branch Sales Change SAR]
+			VAR PeerBranches = CALCULATETABLE(VALUES(dim_branch[location]),REMOVEFILTERS(dim_branch[location]))
+			VAR WithDelta = ADDCOLUMNS(PeerBranches,"@P03Delta",CALCULATE([Branch Sales Change SAR]))
+			VAR Declines = FILTER(WithDelta,[@P03Delta]<0)
+			VAR LossRank = RANKX(Declines,[@P03Delta],Delta,ASC,Dense)
+			VAR PeerGP = CALCULATE([P03 Latest3 GP SAR],REMOVEFILTERS(dim_branch[location]))
+			VAR PeerSales = CALCULATE([P03 Latest3 Sales SAR],REMOVEFILTERS(dim_branch[location]))
+			VAR PeerTWA = CALCULATE([P03 Latest3 TWA SAR],REMOVEFILTERS(dim_branch[location]))
+			VAR PeerMargin = DIVIDE(PeerGP,PeerSales)
+			VAR PeerGMROI = DIVIDE(PeerGP,PeerTWA)
+			VAR LowMargin = NOT ISBLANK([P03 Latest3 Margin %]) && NOT ISBLANK(PeerMargin) && [P03 Latest3 Margin %] < PeerMargin
+			VAR LowGMROI = NOT ISBLANK([P03 Latest3 GMROI]) && NOT ISBLANK(PeerGMROI) && [P03 Latest3 GMROI] < PeerGMROI
+			RETURN IF(NOT HASONEVALUE(dim_branch[location]),BLANK(),
+			    SWITCH(TRUE(),ISBLANK(Delta),"Not available",Delta>=0,"Monitor performance",
+			        LossRank<=5 && LowMargin && LowGMROI,"Sales, margin & capital review",
+			        LossRank<=5 && LowGMROI,"Sales & inventory review",
+			        LossRank<=5 && LowMargin,"Sales & margin review",
+			        LossRank<=5,"Sales recovery review",
+			        LowMargin && LowGMROI,"Margin & inventory review",
+			        "Monitor performance"))
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 7782be60-8001-58fe-abaa-be26df67af80
+
+	measure 'P03 Daily Invoices' =
+			VAR D = SELECTEDVALUE(dim_date[date])
+			VAR StartDate = IF([Selected Period]="3M",DATE(2026,7,30),DATE(2026,4,30))
+			RETURN IF(
+			    ISBLANK(D) || D < StartDate || D >= DATE(2026,10,30),
+			    BLANK(),
+			    CALCULATE(
+			        DISTINCTCOUNT(source_sale_line[invoice]),
+			        REMOVEFILTERS(dim_date),
+			        TREATAS({D},source_sale_line[Event Date])
+			    )
+			)
+		formatString: #,##0
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: 09624afb-1e32-520d-b286-3c41bc241219
+
+	measure 'P03 Branch Loss Gradient Hex' =
+			VAR V = [Branch Sales Change SAR]
+			VAR Peer = ALLSELECTED(dim_branch[location])
+			VAR Losses = FILTER(Peer,[Branch Sales Change SAR]<0)
+			VAR Gains = FILTER(Peer,[Branch Sales Change SAR]>0)
+			VAR Worst = MINX(Losses,[Branch Sales Change SAR])
+			VAR LeastLoss = MAXX(Losses,[Branch Sales Change SAR])
+			VAR SmallGain = MINX(Gains,[Branch Sales Change SAR])
+			VAR LargeGain = MAXX(Gains,[Branch Sales Change SAR])
+			VAR LossT = DIVIDE(V-Worst,LeastLoss-Worst,0.5)
+			VAR GainT = DIVIDE(V-SmallGain,LargeGain-SmallGain,0.5)
+			RETURN SWITCH(TRUE(),
+			    ISBLANK(V),"#8999A9",
+			    V<0 && LossT<0.125,"#AE304B",
+			    V<0 && LossT<0.250,"#BB3A54",
+			    V<0 && LossT<0.375,"#C54863",
+			    V<0 && LossT<0.500,"#CE5770",
+			    V<0 && LossT<0.625,"#D66C81",
+			    V<0 && LossT<0.750,"#DE8394",
+			    V<0 && LossT<0.875,"#E5A0AC",
+			    V<0,"#EAB7C0",
+			    V>0 && GainT<0.250,"#8BCBB8",
+			    V>0 && GainT<0.500,"#64BAA2",
+			    V>0 && GainT<0.750,"#3DAE91",
+			    V>0,"#1B927A", "#AAB3BF")
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: d1fe4e9b-2950-5a5a-953b-dfa9669382ce
+
+	measure 'P03 Format Sales Gradient Hex' =
+			VAR V = [P03 Format Sales Per Store]
+			VAR Peer = ALLSELECTED(dim_branch[format])
+			VAR Lo = MINX(Peer,[P03 Format Sales Per Store])
+			VAR Hi = MAXX(Peer,[P03 Format Sales Per Store])
+			VAR T = DIVIDE(V-Lo,Hi-Lo,0.5)
+			RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",V<0,"#C54863",
+			    T<0.125,"#ACD7EB",T<0.250,"#92CBE6",T<0.375,"#7DBDDD",
+			    T<0.500,"#67AED6",T<0.625,"#509DCD",T<0.750,"#3E8DC0",
+			    T<0.875,"#2F7CB4","#206BA5")
+		displayFolder: 03 Branch Performance\Page 03 Executive
+		lineageTag: dc3f9338-9509-54e6-b74c-7ee80bf4c8a8
+
+	measure 'P04 Catalog Display' = VAR V=[Products] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: ff3e3626-42ad-5b62-bb03-1a42b4b8957f
+
+	measure 'P04 Eligible Display' = VAR V=[Eligible SKU Permissions] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 21e838f3-4064-5dc1-805a-4e19ae5b08f7
+
+	measure 'P04 Sales Display' = VAR V=[SKU Sales SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: d72000d7-2044-500a-88ec-29727fcf4bf4
+
+	measure 'P04 GP Display' = VAR V=[SKU Gross Profit SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 745dd2b0-d641-575b-89ec-1278b4c54e2d
+
+	measure 'P04 ROS Display' = VAR V=[Observed ROS] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.00"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: b6854b63-6e14-59b2-a58a-7bf6c3f13cf9
+
+	measure 'P04 ABV Display' = VAR V=[SKU ABV SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: e6802879-8809-54ff-b361-fee2c44d6d5c
+
+	measure 'P04 Top20 Display' = VAR V=[SKU Top 20 Share] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.0%"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: fb10766c-b2a9-56cc-8d60-1c8b2871846a
+
+	measure 'P04 Tail Display' = VAR V=[SKU Long Tail Share] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.0%"))
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 7d72adbb-3500-5419-9464-cab122b654ae
+
+	measure 'P04 Top 10 Slice SAR' = SUMX(TOPN(10,FILTER(ALLSELECTED(dim_product[sku]),[SKU Sales SAR]>0),[SKU Sales SAR],DESC,dim_product[sku],ASC),[SKU Sales SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 34df5208-bdd5-53c0-a861-9e0578ac5bbf
+
+	measure 'P04 Top 20 Slice SAR' = SUMX(TOPN(20,FILTER(ALLSELECTED(dim_product[sku]),[SKU Sales SAR]>0),[SKU Sales SAR],DESC,dim_product[sku],ASC),[SKU Sales SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 383a2b06-ff24-51d2-a402-a3be6779ccc3
+
+	measure 'P04 Next 10 Slice SAR' = MAX(0,[P04 Top 20 Slice SAR]-[P04 Top 10 Slice SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: d3b26381-81b7-5a9f-934a-d4a3dcb4181e
+
+	measure 'P04 Tail Slice SAR' = MAX(0,CALCULATE([SKU Sales SAR],ALLSELECTED(dim_product[sku]))-[P04 Top 20 Slice SAR])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 9c250326-6bb5-5ea5-bc50-0e16ba60c796
+
+	measure 'P04 Top 10 Sales Bar' = VAR S=SELECTEDVALUE(dim_product[sku]) VAR T=TOPN(10,FILTER(ALLSELECTED(dim_product[sku]),[SKU Sales SAR]>0),[SKU Sales SAR],DESC,dim_product[sku],ASC) RETURN IF(NOT ISBLANK(S) && CONTAINS(T,dim_product[sku],S),[SKU Sales SAR],BLANK())
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: ae6329e5-c704-54ef-ae3c-8e563c320e60
+
+	measure 'P04 Top 10 GP Bar' = VAR S=SELECTEDVALUE(dim_product[sku]) VAR T=TOPN(10,FILTER(ALLSELECTED(dim_product[sku]),[SKU Gross Profit SAR]>0),[SKU Gross Profit SAR],DESC,dim_product[sku],ASC) RETURN IF(NOT ISBLANK(S) && CONTAINS(T,dim_product[sku],S),[SKU Gross Profit SAR],BLANK())
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: cd72873a-683f-5815-b9f4-cf0f0a4d5373
+
+	measure 'P04 Focus 40 Sales' = VAR S=SELECTEDVALUE(dim_product[sku]) VAR T=TOPN(40,FILTER(ALLSELECTED(dim_product[sku]),[SKU Sales SAR]>0),[SKU Sales SAR],DESC,dim_product[sku],ASC) RETURN IF(NOT ISBLANK(S) && CONTAINS(T,dim_product[sku],S),[SKU Sales SAR],BLANK())
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: c767b9cd-5e08-5a69-8252-74fbf75b12de
+
+	measure 'P04 Focus 40 Bubble' = [P04 Focus 40 Sales]
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: f8ce4a15-4841-5fc3-bf08-d6c5de232264
+
+	measure 'P04 Sales per Catalog SKU' = DIVIDE([SKU Sales SAR],[Products])
+		formatString: #,##0.00
+		displayFolder: 04 SKU & Assortment
+		lineageTag: d1b03e8b-d3f6-5b66-97eb-29bbd1a17fac
+
+	measure 'P04 Sales Gradient Hex' = VAR V=[P04 Top 10 Sales Bar] VAR P=FILTER(ALLSELECTED(dim_product[sku]),NOT ISBLANK([P04 Top 10 Sales Bar])) VAR LO=MINX(P,[P04 Top 10 Sales Bar]) VAR HI=MAXX(P,[P04 Top 10 Sales Bar]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#CDE5F2",T<0.25,"#ABD5EA",T<0.375,"#88C2E0",T<0.5,"#6FAFD3",T<0.625,"#569DCA",T<0.75,"#4189BE",T<0.875,"#3078AF","#206A9F")
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 93de1630-9ee2-53e8-aacf-3ad65d379d29
+
+	measure 'P04 GP Gradient Hex' = VAR V=[P04 Top 10 GP Bar] VAR P=FILTER(ALLSELECTED(dim_product[sku]),NOT ISBLANK([P04 Top 10 GP Bar])) VAR LO=MINX(P,[P04 Top 10 GP Bar]) VAR HI=MAXX(P,[P04 Top 10 GP Bar]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#CDE5F2",T<0.25,"#ABD5EA",T<0.375,"#88C2E0",T<0.5,"#6FAFD3",T<0.625,"#569DCA",T<0.75,"#4189BE",T<0.875,"#3078AF","#206A9F")
+		displayFolder: 04 SKU & Assortment
+		lineageTag: cfe12a2a-da24-58f9-ac82-f7ef9cbaee7f
+
+	measure 'P04 Scatter Gradient Hex' = VAR V=[P04 Focus 40 Sales] VAR P=FILTER(ALLSELECTED(dim_product[sku]),NOT ISBLANK([P04 Focus 40 Sales])) VAR LO=MINX(P,[P04 Focus 40 Sales]) VAR HI=MAXX(P,[P04 Focus 40 Sales]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#CDE5F2",T<0.25,"#ABD5EA",T<0.375,"#88C2E0",T<0.5,"#6FAFD3",T<0.625,"#569DCA",T<0.75,"#4189BE",T<0.875,"#3078AF","#206A9F")
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 06753304-3f3d-5399-af58-91ca565012fe
+
+	measure 'P04 Category Gradient Hex' = VAR V=[P04 Sales per Catalog SKU] VAR P=FILTER(ALLSELECTED(dim_category[category]),NOT ISBLANK([P04 Sales per Catalog SKU])) VAR LO=MINX(P,[P04 Sales per Catalog SKU]) VAR HI=MAXX(P,[P04 Sales per Catalog SKU]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#CDE5F2",T<0.25,"#ABD5EA",T<0.375,"#88C2E0",T<0.5,"#6FAFD3",T<0.625,"#569DCA",T<0.75,"#4189BE",T<0.875,"#3078AF","#206A9F")
+		displayFolder: 04 SKU & Assortment
+		lineageTag: b2610155-8204-5a5f-8df3-a504465faed4
+
+	measure 'P04 Class Gradient Hex' = VAR V=[Fulfilled Units] VAR P=FILTER(ALLSELECTED(mart_store_sku_ros_exposure[value_class]),NOT ISBLANK([Fulfilled Units])) VAR LO=MINX(P,[Fulfilled Units]) VAR HI=MAXX(P,[Fulfilled Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#CDE5F2",T<0.25,"#ABD5EA",T<0.375,"#88C2E0",T<0.5,"#6FAFD3",T<0.625,"#569DCA",T<0.75,"#4189BE",T<0.875,"#3078AF","#206A9F")
+		displayFolder: 04 SKU & Assortment
+		lineageTag: 711f78e4-c68c-5864-ae8e-e9da75ae0939
+
+	measure 'P05 Inventory Value Display' = VAR V=[Inventory Cost SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: bb1727d6-98ee-5610-b1a1-af4659088d68
+
+	measure 'P05 Physical Display' = VAR V=[Physical Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 3bb98196-77cf-5a1c-87d1-7cc8124d2ff3
+
+	measure 'P05 Saleable Display' = VAR V=[Saleable Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 2019be42-52f2-5fd6-917b-b819fb5d9780
+
+	measure 'P05 ATP Display' = VAR V=[ATP Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: edde09a9-28a1-559f-abba-bf7f68e700fd
+
+	measure 'P05 Held Display' = VAR V=[Held Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: af0426ac-94fb-5294-aafc-3dfb140e792f
+
+	measure 'P05 Withdrawn Display' = VAR V=[Withdrawn Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: ca75613a-eeca-508e-91fb-ac0bc13aef90
+
+	measure 'P05 Non-saleable Units' = VAR P=[Physical Units] VAR S=[Saleable Units] RETURN IF(ISBLANK(P)||ISBLANK(S),BLANK(),MAX(0,P-S))
+		formatString: #,##0
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 3d356394-8416-5e9e-a268-9e9dd805c5d9
+
+	measure 'P05 Store Top 10 ATP' = VAR B=SELECTEDVALUE(dim_branch[location]) VAR R=ADDCOLUMNS(ALLSELECTED(dim_branch[location]),"Available",[Store ATP Units]) VAR TopStores=TOPN(10,FILTER(R,[Available]>0),[Available],DESC,dim_branch[location],ASC) RETURN IF(NOT ISBLANK(B) && CONTAINS(TopStores,dim_branch[location],B),[Store ATP Units],BLANK())
+		formatString: #,##0
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 96381f32-7868-573c-9abe-33cbd07ad27f
+
+	measure 'P05 Stock STORE' = CALCULATE([Physical Units],KEEPFILTERS(dim_inventory_location[location_kind]="STORE"))
+		formatString: #,##0
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: af839d94-d7e8-5e26-98f4-1de999098c30
+
+	measure 'P05 Stock DC' = CALCULATE([Physical Units],KEEPFILTERS(dim_inventory_location[location_kind]="DC"))
+		formatString: #,##0
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 645070c8-755a-5db4-9878-82f5fbc554be
+
+	measure 'P05 Stock TRANSIT' = CALCULATE([Physical Units],KEEPFILTERS(dim_inventory_location[location_kind]="TRANSIT"))
+		formatString: #,##0
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 926d8f6e-6b9a-598c-bc01-fe19c361d2d1
+
+	measure 'P05 Observed ROS Latest3' = CALCULATE(DIVIDE([Fulfilled Units],[Trading Exposure Days]),PeriodSelector[Period]="3M")
+		formatString: 0.00
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: fa405e90-5f6b-5b60-b695-8d2deb6f9180
+
+	measure 'P05 Store ATP Gradient Hex' = VAR V=[P05 Store Top 10 ATP] VAR P=FILTER(ALLSELECTED(dim_branch[location]),NOT ISBLANK([P05 Store Top 10 ATP])) VAR LO=MINX(P,[P05 Store Top 10 ATP]) VAR HI=MAXX(P,[P05 Store Top 10 ATP]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#BCDDEC",T<0.25,"#A7D2E9",T<0.375,"#92C4E1",T<0.5,"#7CB7DB",T<0.625,"#65A7D0",T<0.75,"#4D97C5",T<0.875,"#3386B8","#1D72A9")
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 53065a3b-9c32-5964-9e06-b1e97b9237c5
+
+	measure 'P05 NonSaleable Gradient Hex' = VAR V=[P05 Non-saleable Units] VAR P=FILTER(ALLSELECTED(dim_category[category]),NOT ISBLANK([P05 Non-saleable Units])) VAR LO=MINX(P,[P05 Non-saleable Units]) VAR HI=MAXX(P,[P05 Non-saleable Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F0CBD1",T<0.25,"#E6B3BD",T<0.375,"#DC99A9",T<0.5,"#D37B90",T<0.625,"#C9657E",T<0.75,"#BE506C",T<0.875,"#B83D5E","#A6264B")
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 151c2c0c-7ca0-5e69-b913-f03bfd35170a
+
+	measure 'P05 STORE Slice Color' = VAR V=[P05 Stock STORE] VAR M=MAX([P05 Stock STORE],MAX([P05 Stock DC],[P05 Stock TRANSIT])) VAR T=DIVIDE(V,M,0) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#BDDDEB",T<0.25,"#A7D2E6",T<0.375,"#8DC4DF",T<0.5,"#73B4D5",T<0.625,"#59A3CD",T<0.75,"#418FC2",T<0.875,"#2D7CB5","#1D6AA4")
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 3fd287fc-724f-549a-a9d9-ee08d4e0a1c9
+
+	measure 'P05 DC Slice Color' = VAR V=[P05 Stock DC] VAR M=MAX([P05 Stock STORE],MAX([P05 Stock DC],[P05 Stock TRANSIT])) VAR T=DIVIDE(V,M,0) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#BDDDEB",T<0.25,"#A7D2E6",T<0.375,"#8DC4DF",T<0.5,"#73B4D5",T<0.625,"#59A3CD",T<0.75,"#418FC2",T<0.875,"#2D7CB5","#1D6AA4")
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: d1e207f6-b1fc-5bce-831d-1b374173920b
+
+	measure 'P05 TRANSIT Slice Color' = VAR V=[P05 Stock TRANSIT] VAR M=MAX([P05 Stock STORE],MAX([P05 Stock DC],[P05 Stock TRANSIT])) VAR T=DIVIDE(V,M,0) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#BDDDEB",T<0.25,"#A7D2E6",T<0.375,"#8DC4DF",T<0.5,"#73B4D5",T<0.625,"#59A3CD",T<0.75,"#418FC2",T<0.875,"#2D7CB5","#1D6AA4")
+		displayFolder: 05 Inventory & Distribution
+		lineageTag: 9d471b0b-39a9-5121-836b-f1dffb2401ad
+
+	measure 'P06 Withdrawal Value Display' = VAR V=[Expiry Cost SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 86f5667c-48c8-5d66-a61c-00cf70ed3ea1
+
+	measure 'P06 Due Units Display' = VAR V=[Withdrawal Due Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 11d22d3f-70a8-5c5c-981a-718ad8bd3cb4
+
+	measure 'P06 Overdue Display' = VAR V=[Overdue Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: bd9e19a6-6469-5f69-b4d6-5a7547510404
+
+	measure 'P06 QA Display' = VAR V=[Expiry QA Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 46deda50-66cf-58dd-987d-a7ae817abce5
+
+	measure 'P06 Withdrawn Display' = VAR V=[Expiry Withdrawn Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 711c6abc-3eee-5c4e-97ef-f92107cc41c7
+
+	measure 'P06 Disposal Display' = VAR V=[Realized Disposal SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 5791d093-cde6-5206-8905-a0c20abd875f
+
+	measure 'P06 Withdrawal Cost Gradient Hex' = VAR V=[Expiry Cost SAR] VAR P=FILTER(ALLSELECTED(dim_category[category]),NOT ISBLANK([Expiry Cost SAR])) VAR LO=MINX(P,[Expiry Cost SAR]) VAR HI=MAXX(P,[Expiry Cost SAR]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F3CAD4",T<0.25,"#EBB1C0",T<0.375,"#E39CAF",T<0.5,"#D9859B",T<0.625,"#D06D87",T<0.75,"#C65A78",T<0.875,"#BA4669","#A62B54")
+		displayFolder: 06 Expiry & Quality
+		lineageTag: a2a8d041-f86f-5074-a495-9c7bf3e909a4
+
+	measure 'P06 Cohort Volume Gradient Hex' = VAR V=[Expiry Physical Units] VAR P=FILTER(ALLSELECTED(fact_expiry_flags[printed_expiry_period]),NOT ISBLANK([Expiry Physical Units])) VAR LO=MINX(P,[Expiry Physical Units]) VAR HI=MAXX(P,[Expiry Physical Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#C7DEE9",T<0.25,"#B5D5E7",T<0.375,"#9ECADD",T<0.5,"#86BAD7",T<0.625,"#6AA8CE",T<0.75,"#4D98C4",T<0.875,"#3786B8","#2072AC")
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 0039efc8-be4d-56d2-8948-065c72a46ecc
+
+	measure 'P06 Due Units Gradient Hex' = VAR V=[Withdrawal Due Units] VAR P=FILTER(ALLSELECTED(dim_category[category]),NOT ISBLANK([Withdrawal Due Units])) VAR LO=MINX(P,[Withdrawal Due Units]) VAR HI=MAXX(P,[Withdrawal Due Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F2DFC0",T<0.25,"#EECFA1",T<0.375,"#E8BB81",T<0.5,"#E3AB6A",T<0.625,"#D99B53",T<0.75,"#CF893D",T<0.875,"#BF792A","#A96A1E")
+		displayFolder: 06 Expiry & Quality
+		lineageTag: 735ef32f-3718-5cf2-86b0-f7a7ffe852c3
+
+	measure 'P06 Physical QA Hold' = [Held Units]
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: dba8f793-8e66-5d30-88b0-0ed2b8c7d6ca
+
+	measure 'P06 Physical Withdrawn' = [Withdrawn Units]
+		formatString: #,##0
+		displayFolder: 06 Expiry & Quality
+		lineageTag: ece4d453-9949-57bb-ab82-8a74b27fd9ac
+
+	measure 'P07 Ordered Display' = VAR V=[Supplier Ordered Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 07 Supplier Performance
+		lineageTag: 3a0d694e-b185-5cbf-85cf-bb55867c29c9
+
+	measure 'P07 Received Display' = VAR V=[Supplier Received Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 07 Supplier Performance
+		lineageTag: f61eaccc-681f-564a-b701-731da952c582
+
+	measure 'P07 Fill Display' = VAR V=[Supplier Fill Rate] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.0%"))
+		displayFolder: 07 Supplier Performance
+		lineageTag: 95aafca0-1d2b-5a71-b694-5e69fb9e6b53
+
+	measure 'P07 Outstanding Display' = VAR V=[Supplier POs] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 07 Supplier Performance
+		lineageTag: 0b8f8868-318b-517e-94f9-127099fa3685
+
+	measure 'P07 Late Flags Display' = VAR V=[Late PO Evidence] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 07 Supplier Performance
+		lineageTag: c2501e2a-d928-5a85-84ce-1295201a6c34
+
+	measure 'P07 Credits Display' = VAR V=[Issued Credits SAR] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M EGP",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K EGP",FORMAT(V,"#,##0.00")&" EGP"))
+		displayFolder: 07 Supplier Performance
+		lineageTag: 58c0f901-2588-59c3-85b2-e43d6cabceb0
+
+	measure 'P07 Unreceived Gradient Hex' = VAR V=[Supplier Unreceived Units] VAR P=FILTER(ALLSELECTED(dim_supplier[supplier]),NOT ISBLANK([Supplier Unreceived Units])) VAR LO=MINX(P,[Supplier Unreceived Units]) VAR HI=MAXX(P,[Supplier Unreceived Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F0CAD2",T<0.250,"#E9B4C0",T<0.375,"#E3A0B0",T<0.500,"#DB8B9E",T<0.625,"#D36F88",T<0.750,"#CA5577",T<0.875,"#C04768","#A62B54")
+		displayFolder: 07 Supplier Performance
+		lineageTag: 6bcff70d-c214-5b22-a65a-b8cba05ef5c9
+
+	measure 'P07 Promised Lead Gradient Hex' = VAR V=[Supplier Promised Lead Days] VAR P=FILTER(ALLSELECTED(dim_supplier[supplier]),NOT ISBLANK([Supplier Promised Lead Days])) VAR LO=MINX(P,[Supplier Promised Lead Days]) VAR HI=MAXX(P,[Supplier Promised Lead Days]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#C7DFEF",T<0.250,"#ADD2E7",T<0.375,"#95C6E1",T<0.500,"#7CB8D9",T<0.625,"#60A9D0",T<0.750,"#4699C6",T<0.875,"#3187BB","#2373A7")
+		displayFolder: 07 Supplier Performance
+		lineageTag: d439c6aa-90d9-538b-8807-a0071799dd6f
+
+	measure 'P07 Late Risk Gradient Hex' = VAR V=[Supplier Late Evidence Rate] VAR P=FILTER(ALLSELECTED(dim_supplier[supplier]),NOT ISBLANK([Supplier Late Evidence Rate])) VAR LO=MINX(P,[Supplier Late Evidence Rate]) VAR HI=MAXX(P,[Supplier Late Evidence Rate]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F3E2C5",T<0.250,"#EED4AC",T<0.375,"#E7C68E",T<0.500,"#E2B578",T<0.625,"#DAA362",T<0.750,"#D1924B",T<0.875,"#C38136","#A97025")
+		displayFolder: 07 Supplier Performance
+		lineageTag: 0bbe80b4-e605-5473-9f3c-163344e8b2f2
+
+	measure 'P08 Review Cases Text' = VAR V=[P08 D06 Review Required] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: aa727510-bd69-5060-8de7-ed4d3e6a37ee
+
+	measure 'P08 Candidate IDs Text' = VAR V=[Candidate Count] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: 2e89b0ab-b073-5efb-830f-3d8e81d2aca7
+
+	measure 'P08 Constraint Checks Text' = VAR V=[Constraints] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: 014b1099-1de9-5ff6-ae1b-830ce2a23152
+
+	measure 'P08 Infeasible Cases Text' = VAR V=[P08 D06 Infeasible] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: 3e864d21-e228-54d2-b7f4-8860944e4c98
+
+	measure 'P08 Inbound Units Text' = VAR V=[Firm Inbound Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: 5b2bbafc-17a7-5f75-b84a-4e21dee1ee3f
+
+	measure 'P08 Executable Units Text' = VAR V=[P08 D06 Executable Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=10000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0")))
+		displayFolder: 08 Replenishment Review
+		lineageTag: 1860942b-824b-5550-8f8b-9d10c156dcc4
+
+	measure 'P08 Binding Family Color' = VAR V=[P08 Binding Candidate IDs] VAR F=ALLSELECTED(source_constraint_component[family]) VAR LO=MINX(F,[P08 Binding Candidate IDs]) VAR HI=MAXX(F,[P08 Binding Candidate IDs]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8194AB",T<0.125,"#F4D6BD",T<0.250,"#F0C49B",T<0.375,"#EBB27E",T<0.500,"#E5A069",T<0.625,"#DC8B55",T<0.750,"#D27644",T<0.875,"#C6683A","#AA4C2F")
+		displayFolder: 08 Replenishment Review
+		lineageTag: 70dcd753-3f05-537f-8106-3c128a179fed
+
+	measure 'P08 Applicability Color' = VAR A=SELECTEDVALUE(source_constraint_component[applicability]) RETURN SWITCH(A,"APPLICABLE","#32C6AA","NOT_APPLICABLE","#9CAABD","#8C9EB3")
+		displayFolder: 08 Replenishment Review
+		lineageTag: 972e7079-3b5c-5deb-8b39-62cb0ae7caa9
+
+	measure 'P08 D06 Outcome Color' = VAR S=SELECTEDVALUE(decision_review[decision_status]) RETURN SWITCH(S,"REVIEW_REQUIRED","#E7AD58","INFEASIBLE","#B63D5E","#8C9EB3")
+		displayFolder: 08 Replenishment Review
+		lineageTag: 5901deff-e8bb-55d7-aff2-8033b2b816ec
+
+	measure 'P09 Fulfilled Units Text' = VAR V=[Fulfilled Units] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K",FORMAT(V,"#,##0.0")&""))
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: f81ff339-fd81-56fc-9896-3a945736a58d
+
+	measure 'P09 Trading Days Text' = VAR V=[Trading Exposure Days] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M d",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K d",FORMAT(V,"#,##0.0")&" d"))
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 878e9590-b800-565f-bf76-58e1cdacbef1
+
+	measure 'P09 Stocked Days Text' = VAR V=[Stocked Exposure Days] RETURN IF(ISBLANK(V),"—",SWITCH(TRUE(),ABS(V)>=1000000,FORMAT(V/1000000,"0.00")&"M d",ABS(V)>=1000,FORMAT(V/1000,"0.0")&"K d",FORMAT(V,"#,##0.0")&" d"))
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 5a1edc3d-36cf-5707-894f-9fab8a6bc249
+
+	measure 'P09 Stocked Share Text' = VAR V=[Stocked Exposure %] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.0%"))
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: bddf825e-1f5c-5959-807a-f7ced396ed0e
+
+	measure 'P09 Observed ROS Text' = VAR V=[Observed ROS] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.00")&" u/day")
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 86610b12-3671-5087-a20a-9f339fcea495
+
+	measure 'P09 InStock ROS Text' = VAR V=[In Stock ROS] RETURN IF(ISBLANK(V),"—",FORMAT(V,"0.00")&" u/day")
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 611ad686-1e5b-52a5-9f30-39bab5c5269e
+
+	measure 'P09 Censored Observation Share' = DIVIDE([Censored Rows],[ROS Observation Rows])
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: dd2b6b85-6ead-5619-a025-45898c578e1f
+
+	measure 'P09 Category Coverage Gradient Hex' = VAR V=[Stocked Exposure %] VAR P=FILTER(ALLSELECTED(dim_category[category]),NOT ISBLANK([Stocked Exposure %])) VAR LO=MINX(P,[Stocked Exposure %]) VAR HI=MAXX(P,[Stocked Exposure %]) VAR T=DIVIDE(HI-V,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#F2C4CC",T<0.250,"#ECA9B8",T<0.375,"#E58EA4",T<0.500,"#DB7591",T<0.625,"#D05B7D",T<0.750,"#C4486D",T<0.875,"#B63D5E","#9F244E")
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 4fc90ba5-ca96-50aa-a080-e59835e3d348
+
+	measure 'P09 Branch Coverage Gradient Hex' = VAR V=[Stocked Exposure %] VAR P=FILTER(ALLSELECTED(mart_store_sku_ros_exposure[location]),NOT ISBLANK([Stocked Exposure %])) VAR LO=MINX(P,[Stocked Exposure %]) VAR HI=MAXX(P,[Stocked Exposure %]) VAR T=DIVIDE(HI-V,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8999A9",T<0.125,"#F2C4CC",T<0.250,"#ECA9B8",T<0.375,"#E58EA4",T<0.500,"#DB7591",T<0.625,"#D05B7D",T<0.750,"#C4486D",T<0.875,"#B63D5E","#9F244E")
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 3efddeca-189c-5177-8c7d-3712a9ed5f3b
+
+	measure 'P09 Censored State Hex' = VAR V=SELECTEDVALUE(mart_store_sku_ros_exposure[censored]) RETURN IF(ISBLANK(V),"#8999A9",IF(V,"#B63D5E","#32C6AA"))
+		displayFolder: 09 ROS Exposure & Availability
+		lineageTag: 00721b21-388d-5d71-96e5-72d79cdaaa11
+
+	measure 'P10 Validation MAE' = VAR H = [Selected Horizon] VAR M = [Selected Method] RETURN IF(ISBLANK(H) || ISBLANK(M), BLANK(), CALCULATE(AVERAGE(forecast_evaluation[absolute_error]), REMOVEFILTERS(forecast_evaluation[partition]), forecast_evaluation[partition]="VALIDATION", forecast_evaluation[horizon_days]=H, forecast_evaluation[method]=M))
+		formatString: 0.00
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 8387dc81-298c-5683-8d14-8a69a760cdf4
+
+	measure 'P10 Holdout MAE' = VAR H = [Selected Horizon] VAR M = [Selected Method] RETURN IF(ISBLANK(H) || ISBLANK(M), BLANK(), CALCULATE(AVERAGE(forecast_evaluation[absolute_error]), REMOVEFILTERS(forecast_evaluation[partition]), forecast_evaluation[partition]="FINAL_HOLDOUT", forecast_evaluation[horizon_days]=H, forecast_evaluation[method]=M))
+		formatString: 0.00
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 322e89df-5522-51be-bafd-36dbc8bc0645
+
+	measure 'P10 MAE Difference' = VAR V=[P10 Validation MAE] VAR H=[P10 Holdout MAE] RETURN IF(ISBLANK(V) || ISBLANK(H),BLANK(),H-V)
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: d11629aa-a9dd-52d3-a3fa-72a97c657aa9
+
+	measure 'P10 Holdout WAPE' = VAR H=[Selected Horizon] VAR M=[Selected Method] RETURN IF(ISBLANK(H) || ISBLANK(M),BLANK(), CALCULATE(DIVIDE(SUM(forecast_evaluation[absolute_error]),SUM(forecast_evaluation[actual_fulfilled_units])), REMOVEFILTERS(forecast_evaluation[partition]),forecast_evaluation[partition]="FINAL_HOLDOUT", forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M))
+		formatString: 0.0%
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 2d38fdbc-2d29-5329-a059-584c526e7220
+
+	measure 'P10 Holdout Rows' = VAR H=[Selected Horizon] VAR M=[Selected Method] RETURN IF(ISBLANK(H) || ISBLANK(M),BLANK(), CALCULATE(COUNTROWS(forecast_evaluation), REMOVEFILTERS(forecast_evaluation[partition]),forecast_evaluation[partition]="FINAL_HOLDOUT", forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M))
+		formatString: #,##0
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 96737927-1443-527b-a399-ee0036a0dde2
+
+	measure 'P10 Holdout Censored Share' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR N=CALCULATE(COUNTROWS(forecast_evaluation),REMOVEFILTERS(forecast_evaluation[partition]), forecast_evaluation[partition]="FINAL_HOLDOUT", forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M) VAR C=CALCULATE(COUNTROWS(forecast_evaluation),REMOVEFILTERS(forecast_evaluation[partition]), forecast_evaluation[partition]="FINAL_HOLDOUT",forecast_evaluation[availability_censored]=TRUE(), forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M) RETURN IF(ISBLANK(H)||ISBLANK(M),BLANK(),DIVIDE(COALESCE(C,0),N))
+		formatString: 0.0%
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 3b04131c-0344-565a-8a44-b29b224d5a89
+
+	measure 'P10 Origin MAE' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(ISBLANK(H)||ISBLANK(M)||ISBLANK(P),BLANK(), CALCULATE(AVERAGE(forecast_evaluation[absolute_error]),forecast_evaluation[horizon_days]=H, forecast_evaluation[method]=M,forecast_evaluation[partition]=P))
+		formatString: 0.00
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: c538b7a5-1ca2-5f59-849c-b04cfc378039
+
+	measure 'P10 Origin P90' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(ISBLANK(H)||ISBLANK(M)||ISBLANK(P),BLANK(), CALCULATE(PERCENTILEX.INC(forecast_evaluation,forecast_evaluation[absolute_error],0.9), forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M, forecast_evaluation[partition]=P))
+		formatString: 0.00
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 7bb9f43a-ecd6-5b34-b28d-504a833debf7
+
+	measure 'P10 Segment WAPE' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] RETURN IF(ISBLANK(H)||ISBLANK(M)||ISBLANK(P),BLANK(), CALCULATE(DIVIDE(SUM(forecast_evaluation[absolute_error]),SUM(forecast_evaluation[actual_fulfilled_units])), forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M, forecast_evaluation[partition]=P))
+		formatString: 0.0%
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 6103b79e-8a97-5caf-9bc5-ac3ebd9471bc
+
+	measure 'P10 Active Censored Share' = VAR H=[Selected Horizon] VAR M=[Selected Method] VAR P=[Selected Evaluation Partition] VAR N=CALCULATE(COUNTROWS(forecast_evaluation),forecast_evaluation[horizon_days]=H, forecast_evaluation[method]=M, forecast_evaluation[partition]=P) VAR C=CALCULATE(COUNTROWS(forecast_evaluation),forecast_evaluation[availability_censored]=TRUE(), forecast_evaluation[horizon_days]=H,forecast_evaluation[method]=M,forecast_evaluation[partition]=P) RETURN IF(ISBLANK(H)||ISBLANK(M)||ISBLANK(P),BLANK(),DIVIDE(COALESCE(C,0),N))
+		formatString: 0.0%
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 526921b5-2fca-574b-b8d7-b62d35aa0335
+
+	measure 'P10 Model Error Gradient Hex' = VAR V=[P10 Holdout MAE] VAR P=FILTER(ALLSELECTED(forecast_evaluation[method]),NOT ISBLANK([P10 Holdout MAE])) VAR LOW=MINX(P,[P10 Holdout MAE]) VAR HIGH=MAXX(P,[P10 Holdout MAE]) VAR T=DIVIDE(V-LOW,HIGH-LOW,0.5) RETURN SWITCH(TRUE(), ISBLANK(V),"#A6B0BB",T<0.125,"#F4CAD1",T<0.250,"#EDB3BE",T<0.375,"#E69AA9",T<0.500,"#DD8095",T<0.625,"#D36683",T<0.750,"#C54C70",T<0.875,"#B33B60","#9D284D")
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: 8afd120a-ef23-5483-ad08-3eb96ff43da0
+
+	measure 'P10 Segment Error Gradient Hex' = VAR V=[P10 Segment WAPE] VAR P=FILTER(ALLSELECTED(forecast_evaluation[segment]),NOT ISBLANK([P10 Segment WAPE])) VAR LOW=MINX(P,[P10 Segment WAPE]) VAR HIGH=MAXX(P,[P10 Segment WAPE]) VAR T=DIVIDE(V-LOW,HIGH-LOW,0.5) RETURN SWITCH(TRUE(), ISBLANK(V),"#A6B0BB",T<0.125,"#F4CAD1",T<0.250,"#EDB3BE",T<0.375,"#E69AA9",T<0.500,"#DD8095",T<0.625,"#D36683",T<0.750,"#C54C70",T<0.875,"#B33B60","#9D284D")
+		displayFolder: 10 Forecast Evaluation & Risk
+		lineageTag: ec9786f7-8b47-5380-bc8d-174e33c3fd6f
+
+	measure 'P11 Case Count' = COUNTROWS(decision_review)
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 330da0ca-6c87-5410-8a5c-eacc08bde338
+
+	measure 'P11 Pending Cases' = CALCULATE(COUNTROWS(decision_review),decision_review[decision_status]="REVIEW_REQUIRED")
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 9742467c-f614-54e4-a87f-e3bcea6a7080
+
+	measure 'P11 Restricted Cases' = CALCULATE(COUNTROWS(decision_review),decision_review[decision_status] IN {"BLOCKED","INFEASIBLE"})
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: c133f7cc-f7b0-5f5b-bcaa-a8b44d6c21d6
+
+	measure 'P11 Pending Share' = DIVIDE(COALESCE([P11 Pending Cases],0),[P11 Case Count])
+		formatString: 0.0%
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 660ff408-a141-5efe-a12f-ba81841a754b
+
+	measure 'P11 Restricted Share' = DIVIDE(COALESCE([P11 Restricted Cases],0),[P11 Case Count])
+		formatString: 0.0%
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 863cdb18-4a69-5629-b1ca-acc6a51dda5d
+
+	measure 'P11 Approval Required Cases' = CALCULATE(COUNTROWS(decision_review),decision_review[approval_required]=TRUE())
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: f16ce6a3-fc04-543c-bf75-8778a4f480ab
+
+	measure 'P11 Approval Required Share' = DIVIDE(COALESCE([P11 Approval Required Cases],0),[P11 Case Count])
+		formatString: 0.0%
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 463650c0-74db-5185-841e-eb12e0d45073
+
+	measure 'P11 Proposal Exceptions' = COUNTROWS(FILTER(mart_overstock_proposal_validation,NOT ISBLANK(mart_overstock_proposal_validation[reason_codes]) && LEN(TRIM(mart_overstock_proposal_validation[reason_codes]))>0))
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 1abed55d-c9c0-5862-be3a-ac658d213c98
+
+	measure 'P11 Executable Units Recorded' = SUM(decision_review[executable_quantity])
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: ac03f3d2-adb1-5c4b-808b-bb35fbb53373
+
+	measure 'P11 Candidate Qty Per Case' = IF(HASONEVALUE(decision_review[decision_id]),MAX(decision_review[candidate_quantity]),BLANK())
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: a8213d47-ab45-5cc1-b8d5-0f11e64e3fb8
+
+	measure 'P11 Case Status Label' = VAR S=SELECTEDVALUE(decision_review[decision_status],"") RETURN SWITCH(S,"REVIEW_REQUIRED","Awaiting review","BLOCKED","Blocked","INFEASIBLE","Not feasible","No single status")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 5b65265e-cab3-5d8a-9a49-d22654d573d9
+
+	measure 'P11 Owner Label' = VAR O=SELECTEDVALUE(decision_review[owner_role],"") RETURN IF(O="","Not assigned",SUBSTITUTE(O,"_"," "))
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 493568d9-7be9-5b25-b012-a342e351d366
+
+	measure 'P11 Case Reason Brief' = VAR R=COALESCE(SELECTEDVALUE(decision_review[reason]),"") VAR U=UPPER(R) RETURN SWITCH(TRUE(), R="","Reason not recorded",CONTAINSSTRING(U,"TERMINAL INCOMPLETE"),"Supplier order still open",CONTAINSSTRING(U,"HISTORICAL SOURCE CANDIDATE"),"Historic request needs review",CONTAINSSTRING(U,"ALREADY_EXPIRED"),"Expired stock restriction",CONTAINSSTRING(U,"WITHDRAWAL"),"Withdrawal timing review",CONTAINSSTRING(U,"EXPIRY"),"Expiry status review",CONTAINSSTRING(U,"CLINICAL SUBSTITUTION"),"Clinical review needed",CONTAINSSTRING(U,"CATEGORY PERFORMANCE"),"Category performance review","Additional evidence review")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: aac8ff87-c26a-534c-a134-64edf5100a32
+
+	measure 'P11 Proposal Reason Brief' = VAR R=COALESCE(SELECTEDVALUE(mart_overstock_proposal_validation[reason_codes]),"") RETURN SWITCH(TRUE(),R="","No issue recorded",CONTAINSSTRING(R,"ABOVE_PHYSICAL"),"Above physical stock",CONTAINSSTRING(R,"ABOVE_ATP"),"Above available stock",CONTAINSSTRING(R,"DUPLICATE"),"Duplicate stock reference","Other recorded checks")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 80f5675a-ecde-5e8e-896f-920ebeef7fb1
+
+	measure 'P11 Pending Family Color' = VAR V=[P11 Pending Cases] VAR P=FILTER(ALLSELECTED(decision_review[family]),NOT ISBLANK([P11 Pending Cases])) VAR LO=MINX(P,[P11 Pending Cases]) VAR HI=MAXX(P,[P11 Pending Cases]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.125,"#F4E3C8",T<0.250,"#EED7B3",T<0.375,"#E9C89B",T<0.500,"#E3BA85",T<0.625,"#DAA86B",T<0.750,"#D29B55",T<0.875,"#BE813C","#A76B2D")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 8e7f80ce-81b9-518e-ad20-6bb9103aed2a
+
+	measure 'P11 Outcome Color' = VAR V=[P11 Case Count] VAR P=FILTER(ALLSELECTED(decision_review[decision_status]),NOT ISBLANK([P11 Case Count])) VAR LO=MINX(P,[P11 Case Count]) VAR HI=MAXX(P,[P11 Case Count]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.125,"#CFE4F1",T<0.250,"#B8D8EB",T<0.375,"#9FCEE5",T<0.500,"#86C1DE",T<0.625,"#6BB1D7",T<0.750,"#529FCB",T<0.875,"#398FC1","#2378AC")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 7ddf24a5-cadf-5a77-92e4-30e25bad6672
+
+	measure 'P11 Restricted Family Color' = VAR V=[P11 Restricted Share] VAR P=FILTER(ALLSELECTED(decision_review[family]),NOT ISBLANK([P11 Restricted Share])) VAR LO=MINX(P,[P11 Restricted Share]) VAR HI=MAXX(P,[P11 Restricted Share]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.125,"#EED1D8",T<0.250,"#E8BECA",T<0.375,"#E2A8B8",T<0.500,"#DB91A6",T<0.625,"#D57994",T<0.750,"#C96083",T<0.875,"#BB486E","#A52A57")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: fce98294-b417-59b0-ab57-98af788324cd
+
+	measure 'P11 Pending Branch Color' = VAR V=[P11 Pending Cases] VAR P=FILTER(ALLSELECTED(decision_review[branch_id]),NOT ISBLANK([P11 Pending Cases])) VAR LO=MINX(P,[P11 Pending Cases]) VAR HI=MAXX(P,[P11 Pending Cases]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.125,"#F4E3C8",T<0.250,"#EED7B3",T<0.375,"#E9C89B",T<0.500,"#E3BA85",T<0.625,"#DAA86B",T<0.750,"#D29B55",T<0.875,"#BE813C","#A76B2D")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: eb3a36fa-8703-50c6-a593-79136e0d5106
+
+	measure 'P11 Pending Named Branch' = VAR B = SELECTEDVALUE(decision_review[branch_id]) RETURN IF( NOT ISINSCOPE(decision_review[branch_id]) || ISBLANK(B) || LEN(TRIM(B & "")) = 0, BLANK(), [P11 Pending Cases] )
+		formatString: #,##0
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: c806e05a-f78b-5232-89fc-78fdcd2f09c7
+
+	measure 'P11 Named Branch Color' = VAR V = [P11 Pending Named Branch] VAR Peers = FILTER(ALLSELECTED(decision_review[branch_id]), NOT ISBLANK([P11 Pending Named Branch])) VAR Lo = MINX(Peers, [P11 Pending Named Branch]) VAR Hi = MAXX(Peers, [P11 Pending Named Branch]) VAR T = DIVIDE(V-Lo,Hi-Lo,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.125,"#F4E3C8",T<0.250,"#EED7B3",T<0.375,"#E9C89B",T<0.500,"#E3BA85",T<0.625,"#DAA86B",T<0.750,"#D29B55",T<0.875,"#BE813C","#A76B2D")
+		displayFolder: 11 Decision Review & Approvals
+		lineageTag: 38b62106-d487-55fd-b27b-6dbd1cef9293
+
+	measure 'P12 Paired Test Seeds' = DISTINCTCOUNT(policy_evaluation[evaluation_unit_seed])
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 3690f017-8bb7-5c39-bc4e-d5a20b37bfe8
+
+	measure 'P12 Blocked Alternative Policies' = CALCULATE(COUNTROWS(policy_guardrail),policy_guardrail[status]="BLOCKED_SERVICE_GUARDRAIL")
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: b45aa3b2-e4c8-5b29-a92d-2ae611931e51
+
+	measure 'P12 Worst Donor Failures' = MAX(policy_guardrail[donor_service_violations])
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 03088f0e-ca8e-58d9-afe3-58adee03c7b3
+
+	measure 'P12 Best Modeled Fulfillment Gain' = MAX(policy_guardrail[mean_fulfilled_delta])
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 94ac0d2a-0934-562f-922c-85bec65ed5ac
+
+	measure 'P12 Worst Modeled Margin EGP' = DIVIDE(MIN(policy_guardrail[mean_modeled_margin_delta_minor]),100)
+		formatString: #,##0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 1febd76e-6f15-5ade-96b7-e352f51add1b
+
+	measure 'P12 Executable Transfer Units' = IF(COALESCE(MAX(policy_guardrail[executable_qty]),0)=0,0,BLANK())
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 72576bde-dd26-5522-a1ae-9c22914874cc
+
+	measure 'P12 Mean Donor Fulfillment' = AVERAGE(policy_evaluation[donor_fulfilled])
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: f0fa7d48-0fd3-5490-8dc7-c2f073ceb522
+
+	measure 'P12 Mean Receiver Fulfillment' = AVERAGE(policy_evaluation[receiver_fulfilled])
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: ecafc341-c1bf-5465-bf3b-ad1be70a2a42
+
+	measure 'P12 Donor Service Failures' = MAX(policy_guardrail[donor_service_violations])
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: da33bab3-7aad-5ba6-b948-dba867f58245
+
+	measure 'P12 Donor Breach Share' = DIVIDE([P12 Donor Service Failures],MAX(policy_guardrail[paired_seed_count]))
+		formatString: 0.0%
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 59160564-e007-5af3-912d-ef10fc605115
+
+	measure 'P12 Seed Paired Impact' = IF(HASONEVALUE(policy_evaluation[evaluation_unit_seed]) && HASONEVALUE(policy_evaluation[policy]),VAR F=CALCULATE(AVERAGE(policy_evaluation[total_fulfilled])) VAR B=CALCULATE(AVERAGE(policy_evaluation[total_fulfilled]),REMOVEFILTERS(dim_scenario),REMOVEFILTERS(policy_evaluation[policy]),policy_evaluation[policy]="NO_TRANSFER") RETURN IF(NOT ISBLANK(F) && NOT ISBLANK(B),F-B,BLANK()),BLANK())
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 93a29303-3c16-50ca-acbd-f4a8b131c14c
+
+	measure 'P12 Mean Paired Fulfillment Delta' = IF(HASONEVALUE(policy_evaluation[policy]),AVERAGEX(VALUES(policy_evaluation[evaluation_unit_seed]),CALCULATE([P12 Seed Paired Impact])),BLANK())
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: a4416da3-f351-5b65-9cc3-799dc911eee9
+
+	measure 'P12 Favorable Paired Seeds' = IF(HASONEVALUE(policy_evaluation[policy]),SUMX(VALUES(policy_evaluation[evaluation_unit_seed]),VAR V=CALCULATE([P12 Seed Paired Impact]) RETURN IF(NOT ISBLANK(V) && V>0.0000001,1,0)),BLANK())
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 01657c9a-f2e2-55de-b3e1-7000c47ed1d5
+
+	measure 'P12 Unfavorable Paired Seeds' = IF(HASONEVALUE(policy_evaluation[policy]),SUMX(VALUES(policy_evaluation[evaluation_unit_seed]),VAR V=CALCULATE([P12 Seed Paired Impact]) RETURN IF(NOT ISBLANK(V) && V< -0.0000001,1,0)),BLANK())
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 337a7a1c-e63d-5a18-af49-04c8c0f3e120
+
+	measure 'P12 Unchanged Paired Seeds' = IF(HASONEVALUE(policy_evaluation[policy]),SUMX(VALUES(policy_evaluation[evaluation_unit_seed]),VAR V=CALCULATE([P12 Seed Paired Impact]) RETURN IF(NOT ISBLANK(V) && ABS(V)<=0.0000001,1,0)),BLANK())
+		formatString: #,##0
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 17d54470-9d7d-51ef-ab36-3650ac456526
+
+	measure 'P12 CI95 Lower' = SELECTEDVALUE(policy_guardrail[ci95_low])
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 48160325-1c52-57fd-8908-03bdcd7735e0
+
+	measure 'P12 CI95 Upper' = SELECTEDVALUE(policy_guardrail[ci95_high])
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 0f97142d-7809-5b8e-ae32-d52aa0c764fd
+
+	measure 'P12 Policy Margin EGP' = DIVIDE(SELECTEDVALUE(policy_guardrail[mean_modeled_margin_delta_minor]),100)
+		formatString: #,##0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 05523320-a106-5f1b-aa4e-687cb405e177
+
+	measure 'P12 Policy Safety Gate' = VAR S=SELECTEDVALUE(policy_guardrail[status],"") RETURN SWITCH(TRUE(),S="BLOCKED_SERVICE_GUARDRAIL","Blocked: donor service",S="REFERENCE_BASELINE_ONLY","Reference: no transfer",S="","Select one policy","Not approved")
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: c4234159-4931-56ac-93fc-de362e231641
+
+	measure 'P12 Paired Gain Color' = VAR V=[P12 Mean Paired Fulfillment Delta] VAR P=FILTER(ALLSELECTED(dim_scenario[scenario]),NOT ISBLANK([P12 Mean Paired Fulfillment Delta])) VAR LO=MINX(P,[P12 Mean Paired Fulfillment Delta]) VAR HI=MAXX(P,[P12 Mean Paired Fulfillment Delta]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",T<0.25,"#D6E8F3",T<0.50,"#AACFE4",T<0.75,"#76B3D8","#358AC1")
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 9e5172d1-08f6-5611-89fe-652d8557a61b
+
+	measure 'P12 Breach Color' = VAR V=[P12 Donor Service Failures] VAR P=FILTER(ALLSELECTED(policy_guardrail[policy]),NOT ISBLANK([P12 Donor Service Failures])) VAR LO=MINX(P,[P12 Donor Service Failures]) VAR HI=MAXX(P,[P12 Donor Service Failures]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#95A6BA",V=0,"#63AFC0",T<0.25,"#EAC4CE",T<0.50,"#DC94AA",T<0.75,"#C85B83","#A93258")
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 3bacc2a9-9427-575c-b78e-e590e6e4236c
+
+	measure 'P12 Best Permitted Gain' = VAR ApprovedPolicies = FILTER(policy_guardrail, policy_guardrail[status] = "APPROVED_FOR_EXECUTION" && policy_guardrail[executable_qty] > 0) RETURN MAX(0, COALESCE(MAXX(ApprovedPolicies, policy_guardrail[mean_fulfilled_delta]), 0))
+		formatString: 0.00
+		displayFolder: 12 Policy Evidence & Guardrails
+		lineageTag: 05409158-0def-5723-a88a-b87acd29524f
+
+	measure 'P13 Evidence Cases' = COUNTROWS(source_case_status)
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 1f554537-9107-59a1-9c81-0de2d3854763
+
+	measure 'P13 Supported Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="PASS_PROVEN")
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 604d1ce1-a58b-55e2-b6fb-542c7656bf62
+
+	measure 'P13 Not Observed Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="NOT_OBSERVED")
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 5a549238-0a92-5b4f-8f97-4388f3672672
+
+	measure 'P13 Unverifiable Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]="UNVERIFIABLE")
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: dadadd3a-2483-5eb3-9b4c-40a751cf13af
+
+	measure 'P13 Unresolved Evidence Cases' = CALCULATE(COUNTROWS(source_case_status),source_case_status[status]<>"PASS_PROVEN")
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: d826397f-c32b-5c99-b3e1-97b45978b50e
+
+	measure 'P13 Evidence Coverage' = DIVIDE([P13 Supported Cases],[P13 Evidence Cases])
+		formatString: 0.0%
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: d1ebbbe5-81c9-5a14-9331-e24bd8bf5439
+
+	measure 'P13 Evidence Gap Share' = DIVIDE([P13 Unresolved Evidence Cases],[P13 Evidence Cases])
+		formatString: 0.0%
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: edeae8d6-9efe-5fe0-ab16-6eb229c15d59
+
+	measure 'P13 Unavailable Indicators' = COUNTROWS(mart_unavailable_evidence)
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 49b1f8cb-efc4-536d-9152-5bfa17976b25
+
+	measure 'P13 Defined Indicators' = COUNTROWS(mart_kpi_dictionary)
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 2bd075d1-8b62-5c6f-9be4-886af8db0e28
+
+	measure 'P13 Evidence Status Rows' = COUNTROWS(source_case_status)
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: d9c63b78-b1be-5f4b-869d-5fd7ae0cb12d
+
+	measure 'P13 Case Attention Rank' = SWITCH(SELECTEDVALUE(source_case_status[status]),"UNVERIFIABLE",3,"NOT_OBSERVED",2,"PASS_PROVEN",1,0)
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: dc19450b-33a5-5356-8433-02563e1f9108
+
+	measure 'P13 Case Review Status' = SWITCH(SELECTEDVALUE(source_case_status[status]),"PASS_PROVEN","Verified","NOT_OBSERVED","Not yet observed","UNVERIFIABLE","Further evidence needed","Review required")
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 2fd0e841-ce62-5a36-bf6e-d5771a52e007
+
+	measure 'P13 Reference Recorded' = VAR P=SELECTEDVALUE(source_case_status[source_evidence_path]) RETURN IF(NOT ISBLANK(P) && LEN(TRIM(P))>0,"Reference recorded","Not recorded")
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 059b6bf6-7a48-51d6-a1a8-6b160812681c
+
+	measure 'P13 Recorded Reference Cases' = COUNTROWS(FILTER(source_case_status,NOT ISBLANK(source_case_status[source_evidence_path]) && LEN(TRIM(source_case_status[source_evidence_path]))>0))
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: acdcd9c6-59c5-5858-af74-5dd44d7fdaca
+
+	measure 'P13 Recorded Executable Units' = IF(COALESCE(SUM(source_case_status[executable_qty]),0)=0,0,BLANK())
+		formatString: #,##0
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 9c414e07-d7d5-5424-b251-7e2413ab7d5f
+
+	measure 'P13 Evidence Outcome Color' = VAR S=SELECTEDVALUE(source_case_status[status],"") VAR V=[P13 Evidence Status Rows] VAR MX=MAXX(ALLSELECTED(source_case_status[status]),CALCULATE([P13 Evidence Status Rows])) VAR T=DIVIDE(V,MX,0) RETURN SWITCH(TRUE(),S="PASS_PROVEN",IF(T>=0.65,"#169E94","#86D0C2"),S="NOT_OBSERVED",IF(T>=0.35,"#D18C32","#E7AD58"),S="UNVERIFIABLE",IF(T>=0.35,"#AD2F5A","#CC6687"),"#96A6B8")
+		displayFolder: 13 Data Confidence & Evidence
+		lineageTag: 65616729-1a10-533f-b1ca-527d1b07e757
+
+	column _MeasureAnchor
+		dataType: int64
+		isHidden
+		lineageTag: 2fc0eeb5-1326-4391-95cf-58801964f8ce
+		summarizeBy: none
+		sourceColumn: [_MeasureAnchor]
+
+	partition 00_Measures = calculated
+		mode: import
+		source = DATATABLE("_MeasureAnchor",INTEGER,{{0}})
+

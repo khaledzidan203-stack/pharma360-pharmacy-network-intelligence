@@ -1,0 +1,97 @@
+table mart_store_space_assortment
+	lineageTag: 7937595a-351c-59d6-b22b-166e562ad41a
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: fbc3d757-951a-5cec-bc0d-80ec732b819f
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 827749e7-1d0f-554c-bc8f-30eaeb69bb82
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 78a385c8-6767-5876-a547-821397ac7a52
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: be8f1755-d4c5-5b5b-a390-055fac9623a4
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 1cde3a49-fc73-5b61-954d-0f8596889080
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column category.
+	column category
+		dataType: string
+		lineageTag: d68aff1b-3687-5bcd-8acc-f04a9a956b1f
+		summarizeBy: none
+		sourceColumn: category
+
+	/// Manifest-authorized source column zone_id.
+	column zone_id
+		dataType: string
+		lineageTag: 0747eef9-baa2-57df-b630-639f339d7534
+		summarizeBy: none
+		sourceColumn: zone_id
+
+	/// Manifest-authorized source column area_sqm.
+	column area_sqm
+		dataType: double
+		lineageTag: 7786ec07-1e1b-586a-b2f2-ca89364634d6
+		summarizeBy: none
+		sourceColumn: area_sqm
+
+	/// Manifest-authorized source column allocation_litres.
+	column allocation_litres
+		dataType: double
+		lineageTag: 1c3877b5-120b-5b4f-8341-3975bfe0fa85
+		summarizeBy: none
+		sourceColumn: allocation_litres
+
+	/// Manifest-authorized source column temperature.
+	column temperature
+		dataType: string
+		lineageTag: c489848f-ccd6-54bc-bdeb-5e37534b1a27
+		summarizeBy: none
+		sourceColumn: temperature
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: f3d8aa46-9eb2-5045-a7e2-2c061c3e1f2b
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_store_space_assortment = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_store_space_assortment.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"location", type text}, {"category", type text}, {"zone_id", type text}, {"area_sqm", type number}, {"allocation_litres", type number}, {"temperature", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

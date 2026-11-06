@@ -1,0 +1,202 @@
+table mart_store_sku_ros_exposure
+	lineageTag: 0cbff996-14fb-5211-8c55-7d5b85ca6f7d
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 781c1b06-efcd-56c1-90f1-ffefe3e33c53
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 6677a6a2-d90a-5a9a-b1cc-a698bd325b45
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: d1b1850c-6308-558b-94ff-581e0296de2a
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 749eb99a-68d2-52c6-8090-3556225ececf
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column period.
+	column period
+		dataType: string
+		lineageTag: 396d0ae7-9f70-53ff-87c9-874ab52115f4
+		summarizeBy: none
+		sourceColumn: period
+
+	/// Manifest-authorized source column period_start.
+	column period_start
+		dataType: string
+		lineageTag: e5cd0415-28a8-529c-a028-d3776c9a3c0b
+		summarizeBy: none
+		sourceColumn: period_start
+
+	/// Manifest-authorized source column period_end.
+	column period_end
+		dataType: string
+		lineageTag: f2e6b364-8185-5eef-8d3a-061a83a9ac33
+		summarizeBy: none
+		sourceColumn: period_end
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 8e1d70d7-f554-5555-869e-23194cc33899
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 7a3cfd99-055e-51d2-9c5f-bc4e07906c51
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column value_class.
+	column value_class
+		dataType: string
+		lineageTag: 9b6541bf-4287-5fe2-b8eb-be6988f65549
+		summarizeBy: none
+		sourceColumn: value_class
+
+	/// Manifest-authorized source column class_scope.
+	column class_scope
+		dataType: string
+		lineageTag: 25d615ee-f10f-58b6-a9b1-364d43a9ba7d
+		summarizeBy: none
+		sourceColumn: class_scope
+
+	/// Manifest-authorized source column class_version.
+	column class_version
+		dataType: string
+		lineageTag: a914a278-d334-5b20-bb3f-61bd06b90503
+		summarizeBy: none
+		sourceColumn: class_version
+
+	/// Manifest-authorized source column xyz_class.
+	column xyz_class
+		dataType: string
+		lineageTag: dde2e721-a2d1-5c5f-8dfb-dabe067cc03c
+		summarizeBy: none
+		sourceColumn: xyz_class
+
+	/// Manifest-authorized source column xyz_reason.
+	column xyz_reason
+		dataType: string
+		lineageTag: 8279b7e6-d433-58ef-a99a-14bc733549e1
+		summarizeBy: none
+		sourceColumn: xyz_reason
+
+	/// Manifest-authorized source column fulfilled_units.
+	column fulfilled_units
+		dataType: int64
+		lineageTag: dd4566b3-58bb-55b7-9b0d-b8f6432f89fd
+		summarizeBy: none
+		sourceColumn: fulfilled_units
+
+	/// Manifest-authorized source column ranged_calendar_days.
+	column ranged_calendar_days
+		dataType: double
+		lineageTag: 6667c5c9-9cba-5a49-8dbf-b989f1a8f3a2
+		summarizeBy: none
+		sourceColumn: ranged_calendar_days
+
+	/// Manifest-authorized source column trading_days.
+	column trading_days
+		dataType: double
+		lineageTag: 1123e381-77cf-5df2-a931-7208e9a65f9a
+		summarizeBy: none
+		sourceColumn: trading_days
+
+	/// Manifest-authorized source column stocked_day_equivalents.
+	column stocked_day_equivalents
+		dataType: double
+		lineageTag: 87022cd0-5582-5568-a020-a37f6200b2a5
+		summarizeBy: none
+		sourceColumn: stocked_day_equivalents
+
+	/// Manifest-authorized source column observed_ros.
+	column observed_ros
+		dataType: double
+		lineageTag: 99a50824-d72e-5888-99f7-f1a112bddfae
+		summarizeBy: none
+		sourceColumn: observed_ros
+
+	/// Manifest-authorized source column in_stock_ros.
+	column in_stock_ros
+		dataType: double
+		lineageTag: f0a6df77-d70e-52cf-81ed-3c88de5ac465
+		summarizeBy: none
+		sourceColumn: in_stock_ros
+
+	/// Manifest-authorized source column censored.
+	column censored
+		dataType: boolean
+		lineageTag: 5cf3ac2c-202a-5c09-a6b9-6583cb4cc289
+		summarizeBy: none
+		sourceColumn: censored
+
+	/// Manifest-authorized source column coverage_days.
+	column coverage_days
+		dataType: double
+		lineageTag: e4a39d5e-0d8e-5dee-bd3a-063c56285ce9
+		summarizeBy: none
+		sourceColumn: coverage_days
+
+	/// Manifest-authorized source column true_demand.
+	column true_demand
+		dataType: double
+		lineageTag: 3fdfcb82-9596-5f26-b4ca-7542ffe90fb0
+		summarizeBy: none
+		sourceColumn: true_demand
+
+	/// Manifest-authorized source column lost_sales.
+	column lost_sales
+		dataType: double
+		lineageTag: da40f8a9-7c93-5b3e-8237-5e96acdfe931
+		summarizeBy: none
+		sourceColumn: lost_sales
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: 2765c39e-6790-5639-95c4-6a354fc66b14
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 2fa16722-8805-5433-8407-513b828404a7
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_store_sku_ros_exposure = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_store_sku_ros_exposure.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"period", type text}, {"period_start", type text}, {"period_end", type text}, {"location", type text}, {"sku", type text}, {"value_class", type text}, {"class_scope", type text}, {"class_version", type text}, {"xyz_class", type text}, {"xyz_reason", type text}, {"fulfilled_units", Int64.Type}, {"ranged_calendar_days", type number}, {"trading_days", type number}, {"stocked_day_equivalents", type number}, {"observed_ros", type number}, {"in_stock_ros", type number}, {"censored", type logical}, {"coverage_days", type number}, {"true_demand", type number}, {"lost_sales", type number}, {"reason", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

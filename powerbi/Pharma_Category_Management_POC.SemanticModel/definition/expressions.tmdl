@@ -1,0 +1,5 @@
+expression PharmaDataRoot = "D:/PHARMA360_CLEAN_WORKSPACE/data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 48eb6efc-d217-50a7-ab46-8c3ec7e16cba
+
+	annotation PBI_ResultType = Text
+

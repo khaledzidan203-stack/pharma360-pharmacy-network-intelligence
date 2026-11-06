@@ -1,0 +1,118 @@
+table fact_lot_stock_asof
+	lineageTag: f914bdfb-65d1-5cd0-ba80-5356dc8ce3b2
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: ab6c7569-f087-582a-9a62-b731f41676d8
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 8498984a-b3ea-5f36-96ef-b441dd145a3d
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 9e9a8476-cee2-5b51-b0b4-b7876c17b09c
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: d8b33bd4-4fb4-5b15-a12b-844e9e18e7e2
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: d2050372-c7e5-529b-ae99-4f15b9682ec7
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 8fc71f1e-066e-5e43-ac5f-776e3d2e0fb8
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: 5929b52d-2eb7-51bc-9f20-91385d48af23
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 9338a990-b19b-566d-9e62-98a69108685a
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column physical_qty.
+	column physical_qty
+		dataType: int64
+		lineageTag: c4e90381-19f3-5eb6-baa1-6e13d7122ba3
+		summarizeBy: none
+		sourceColumn: physical_qty
+
+	/// Manifest-authorized source column saleable_qty.
+	column saleable_qty
+		dataType: int64
+		lineageTag: e6ae22c0-e40d-56fd-8162-3bb81ba590af
+		summarizeBy: none
+		sourceColumn: saleable_qty
+
+	/// Manifest-authorized source column reserved_qty.
+	column reserved_qty
+		dataType: int64
+		lineageTag: 21d51d90-0a35-52bb-b97f-512803e435b0
+		summarizeBy: none
+		sourceColumn: reserved_qty
+
+	/// Manifest-authorized source column atp_qty.
+	column atp_qty
+		dataType: int64
+		lineageTag: 2e4595c1-4525-541c-98c1-20b1401514c7
+		summarizeBy: none
+		sourceColumn: atp_qty
+
+	/// Manifest-authorized source column cost_minor.
+	column cost_minor
+		dataType: int64
+		lineageTag: 1c6c27eb-6ee9-5533-9cd2-c5768d78d820
+		summarizeBy: none
+		sourceColumn: cost_minor
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 1219af0e-a583-5d0a-92a1-2c98ba9822b7
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fact_lot_stock_asof = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/fact_lot_stock_asof.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"location", type text}, {"sku", type text}, {"lot", type text}, {"status", type text}, {"physical_qty", Int64.Type}, {"saleable_qty", Int64.Type}, {"reserved_qty", Int64.Type}, {"atp_qty", Int64.Type}, {"cost_minor", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

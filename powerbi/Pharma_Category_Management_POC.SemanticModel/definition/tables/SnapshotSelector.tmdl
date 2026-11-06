@@ -1,0 +1,19 @@
+table SnapshotSelector
+	lineageTag: b8c583f1-4ff1-5667-9ea3-b6c4ec7545f6
+
+	column AsOf
+		dataType: string
+		lineageTag: 38ee3f56-bad2-449a-ac98-fa8332747f0e
+		summarizeBy: none
+		sourceColumn: [AsOf]
+
+	column Snapshot
+		dataType: string
+		lineageTag: b87ee406-5080-46f4-b5d8-854a21182084
+		summarizeBy: none
+		sourceColumn: [Snapshot]
+
+	partition SnapshotSelector = calculated
+		mode: import
+		source = DATATABLE("AsOf",STRING,"Snapshot",STRING,{{"2026-04-30T00:00:00+03:00","30 Apr 2026"},{"2026-09-30T00:00:00+03:00","30 Sep 2026"},{"2026-10-30T00:00:00+03:00","30 Oct 2026"}})
+

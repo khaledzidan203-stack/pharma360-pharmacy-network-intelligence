@@ -1,0 +1,107 @@
+table dim_category
+	lineageTag: e5142ced-eeda-52a2-89fe-f6c8a1b1fddd
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: fab25cdd-cc2a-5f53-b49c-2e752bbd4dd6
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 6d67f97a-852a-5573-badd-304974a95ad6
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: cc9fd6a7-40ed-5706-9136-9b4e1ad8a38d
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 5465e0a8-ef6e-5fa1-8712-1748c6462dd3
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: 37034e95-2e82-5c8b-8ae8-60b85ad397c8
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: 4f53517d-c9d8-5395-9c3f-b0623de75608
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column category.
+	column category
+		dataType: string
+		lineageTag: e3b662ea-051b-5a15-bf64-d4cfecb31394
+		summarizeBy: none
+		sourceColumn: category
+
+	/// Manifest-authorized source column parent.
+	column parent
+		dataType: string
+		lineageTag: dbf78e7a-6740-55f8-950f-724a003f511e
+		summarizeBy: none
+		sourceColumn: parent
+
+	/// Manifest-authorized source column role.
+	column role
+		dataType: string
+		lineageTag: 0bb37e7a-d327-59c9-a8c4-a5a8cf165f45
+		summarizeBy: none
+		sourceColumn: role
+
+	/// Manifest-authorized source column definition.
+	column definition
+		dataType: string
+		lineageTag: b65ec56e-2fd7-53c7-a205-cf9ff679a38a
+		summarizeBy: none
+		sourceColumn: definition
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 776d18fe-f28b-5ca6-bbbe-0432beaa2864
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 71fbabe7-b019-54ab-8a10-034e836fa7cf
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_category = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_category.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"category", type text}, {"parent", type text}, {"role", type text}, {"definition", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

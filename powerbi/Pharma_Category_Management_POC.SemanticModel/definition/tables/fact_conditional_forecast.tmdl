@@ -1,0 +1,131 @@
+table fact_conditional_forecast
+	lineageTag: a64a0183-b4ff-5ee7-8e42-45a93eca7e1d
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 0235d75d-5242-5548-96eb-89ad358ce1b5
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 13d90ab6-ffce-5c89-b13a-ca3f743e5bb1
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: bf817c78-e1bd-50ba-9983-a40e2e5f88d3
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column forecast_origin.
+	column forecast_origin
+		dataType: string
+		lineageTag: 35d0b6ed-fef0-5c0b-9047-c8c026005e7b
+		summarizeBy: none
+		sourceColumn: forecast_origin
+
+	/// Manifest-authorized source column horizon_days.
+	column horizon_days
+		dataType: int64
+		lineageTag: 13357dc5-35e0-5dea-a860-0ea3ccb14493
+		summarizeBy: none
+		sourceColumn: horizon_days
+
+	/// Manifest-authorized source column model.
+	column model
+		dataType: string
+		lineageTag: 613da1e5-efd1-524d-933d-a3a10e646762
+		summarizeBy: none
+		sourceColumn: model
+
+	/// Manifest-authorized source column segment.
+	column segment
+		dataType: string
+		lineageTag: 8466dfb9-8fc3-5908-8a14-4247ca6bb0cf
+		summarizeBy: none
+		sourceColumn: segment
+
+	/// Manifest-authorized source column conditional_nominal_fulfilled_units.
+	column conditional_nominal_fulfilled_units
+		dataType: double
+		lineageTag: 2922d5e6-c3fd-5d5d-be0e-68dcd4a4618f
+		summarizeBy: none
+		sourceColumn: conditional_nominal_fulfilled_units
+
+	/// Manifest-authorized source column approved_calendar_fulfilled_forecast.
+	column approved_calendar_fulfilled_forecast
+		dataType: string
+		lineageTag: 9d11dea9-fe34-5d84-a3b7-0338f5016a0f
+		summarizeBy: none
+		sourceColumn: approved_calendar_fulfilled_forecast
+
+	/// Manifest-authorized source column latent_demand.
+	column latent_demand
+		dataType: string
+		lineageTag: 83a552d1-6b51-5168-9279-d1e671399b68
+		summarizeBy: none
+		sourceColumn: latent_demand
+
+	/// Manifest-authorized source column lost_sales.
+	column lost_sales
+		dataType: string
+		lineageTag: cd2456a5-bf56-505d-801f-339ce4bfb59d
+		summarizeBy: none
+		sourceColumn: lost_sales
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: a78ad824-207b-5705-8605-71d91c940059
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: bac48e8c-0848-5432-8fe3-15930bc02e19
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 835e5997-25da-5b76-91c9-64c57e8728a9
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 65430d42-9456-5940-a557-1440693677d0
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Forecast Origin Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: db1af09f-7eb8-5274-a86c-1a8e7b289605
+		summarizeBy: none
+		sourceColumn: Forecast Origin Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fact_conditional_forecast = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/facts/fact_conditional_forecast.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"location", type text}, {"sku", type text}, {"forecast_origin", type text}, {"horizon_days", Int64.Type}, {"model", type text}, {"segment", type text}, {"conditional_nominal_fulfilled_units", type number}, {"approved_calendar_fulfilled_forecast", type text}, {"latent_demand", type text}, {"lost_sales", type text}, {"status", type text}, {"reason", type text}, {"source_manifest_sha256", type text}, {"executable_qty", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Forecast Origin Date", each if Record.Field(_, "forecast_origin") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "forecast_origin")), 3)), type date)
+				in
+				  Dates0
+

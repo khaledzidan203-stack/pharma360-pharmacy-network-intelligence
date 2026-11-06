@@ -1,0 +1,115 @@
+table fact_inbound_asof
+	lineageTag: 401dc394-1a81-5d01-a0f6-22e6f19dc453
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 31faac34-ebde-5c1e-8c4c-fab7b58e1dbf
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 3a061c44-3657-5860-8d99-9a63d05b9a51
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: b2a4df03-f759-55c3-a5e3-13327e2dfe66
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 01739158-8504-5483-b673-d0d914261ead
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column po.
+	column po
+		dataType: string
+		lineageTag: fd555399-1f16-5992-9aeb-e3027932fda8
+		summarizeBy: none
+		sourceColumn: po
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 3314c983-173e-5085-b8ab-29863936e627
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 4d006a89-52bb-5a89-a031-84b7dc2365f1
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column firm_unreceived_qty.
+	column firm_unreceived_qty
+		dataType: int64
+		lineageTag: 2c95c287-a78a-5f11-9159-f751387743b3
+		summarizeBy: none
+		sourceColumn: firm_unreceived_qty
+
+	/// Manifest-authorized source column due_at.
+	column due_at
+		dataType: string
+		lineageTag: 71cb81da-5906-5a04-9d94-2e492f3b36d9
+		summarizeBy: none
+		sourceColumn: due_at
+
+	/// Manifest-authorized source column qualified_for_retail.
+	column qualified_for_retail
+		dataType: boolean
+		lineageTag: 6f271842-b0fd-5821-b2c2-a2e00c96af51
+		summarizeBy: none
+		sourceColumn: qualified_for_retail
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: 9d0809f2-7a40-52fe-b33b-16913bca7ecc
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: e071ee1a-fade-5a8f-9505-a6d014d48718
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: e4eba652-2382-5aac-b41f-cef459659c54
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fact_inbound_asof = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/fact_inbound_asof.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"po", type text}, {"location", type text}, {"sku", type text}, {"firm_unreceived_qty", Int64.Type}, {"due_at", type text}, {"qualified_for_retail", type logical}, {"reason", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Promised Date", each if Record.Field(_, "due_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "due_at")), 3)), type date)
+				in
+				  Dates1
+

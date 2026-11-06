@@ -1,0 +1,83 @@
+table fact_product_policy_asof
+	lineageTag: b5f14b35-da29-5bb9-aab3-bff59518eaec
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 97959131-1356-5f7f-acfc-2409aadac309
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 68e642fb-ad1a-5312-8b5b-ea271b5cbeb5
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 1c24b2c1-a898-5535-997f-0c6eb7e315a1
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 793341e5-6fd9-53a8-8539-4fe930997380
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: dbff3408-a33e-5e37-bcd0-7d20cf66ada4
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column sale_allowed.
+	column sale_allowed
+		dataType: boolean
+		lineageTag: 90753a3a-23d8-5c3b-8c28-cffed7a01db4
+		summarizeBy: none
+		sourceColumn: sale_allowed
+
+	/// Manifest-authorized source column promotion_allowed.
+	column promotion_allowed
+		dataType: boolean
+		lineageTag: 63d77392-7201-5e68-9f31-d70bd4e67b21
+		summarizeBy: none
+		sourceColumn: promotion_allowed
+
+	/// Manifest-authorized source column evidence.
+	column evidence
+		dataType: string
+		lineageTag: 4f60bf48-7a20-530d-a1d6-a85bc2e275fb
+		summarizeBy: none
+		sourceColumn: evidence
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: a5626cdb-1594-50bf-9179-4906b60778c3
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fact_product_policy_asof = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/fact_product_policy_asof.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"sku", type text}, {"sale_allowed", type logical}, {"promotion_allowed", type logical}, {"evidence", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

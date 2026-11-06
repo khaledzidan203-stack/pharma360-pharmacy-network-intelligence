@@ -1,0 +1,235 @@
+table mart_expiry_withdrawal_review_v01
+	lineageTag: 9e6d3786-3505-5b2a-873a-cab08fdc65df
+
+	measure 'P14 Withdrawal Due Units' = SUM(mart_expiry_withdrawal_review_v01[withdrawal_due_physical_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 8660de51-f0a1-5207-b5ac-238b404fefd2
+
+	measure 'P14 Short Life ATP' = SUM(mart_expiry_withdrawal_review_v01[short_life_atp_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 6b795e84-618f-5366-9a6b-b1c26f51493a
+
+	measure 'P14 Long Life ATP' = SUM(mart_expiry_withdrawal_review_v01[long_life_atp_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: ecadfc6e-0507-5dbc-96ee-f31d2cd802fb
+
+	measure 'P14 Uncertain Released ATP' = SUM(mart_expiry_withdrawal_review_v01[uncertain_atp_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: e87db903-1511-5237-848c-f83becbe2bcd
+
+	measure 'P14 Hypothetical Excess Units' = SUM(mart_expiry_withdrawal_review_v01[hypothetical_excess_lane_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 6eee7044-123a-5e76-9e2e-d2314126e468
+
+	measure 'P14 Executable Units' = SUM(mart_expiry_withdrawal_review_v01[approved_movement_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 774c2bcd-97b1-5a7e-9ddb-2a5805e5d9d4
+
+	measure 'P14 Released ATP' = SUM(mart_expiry_withdrawal_review_v01[released_atp_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 98db9e1c-bcb3-5d50-a99e-e59cae6ceddf
+
+	measure 'P14 Physical Qty' = SUM(mart_expiry_withdrawal_review_v01[physical_qty])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 102cd2f5-3473-5d31-930e-4f68af660905
+
+	measure 'P14 QA Held Units' = SUM(mart_expiry_withdrawal_review_v01[qa_held_physical_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 897c0f9e-8b9a-5085-be9c-915b498b9c94
+
+	measure 'P14 Withdrawn Units' = SUM(mart_expiry_withdrawal_review_v01[withdrawn_physical_units])
+		formatString: #,##0
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 07d6ab98-af98-5d48-ae01-f6bc638d8cde
+
+	measure 'P14 Due Category Gradient Hex' = VAR V=[P14 Withdrawal Due Units] VAR Items=FILTER(ALLSELECTED(mart_expiry_withdrawal_review_v01[category]),NOT ISBLANK([P14 Withdrawal Due Units])) VAR LO=MINX(Items,[P14 Withdrawal Due Units]) VAR HI=MAXX(Items,[P14 Withdrawal Due Units]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8092A8",T<0.125,"#F6D6E0",T<0.250,"#EDB6C6",T<0.375,"#E9A8BA",T<0.500,"#DF92AA",T<0.625,"#D77D99",T<0.750,"#CD6287",T<0.875,"#BE4A72","#9B2A55")
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: 2519b13d-ba34-582f-8589-85cea55117d9
+
+	measure 'P14 Expiry Month Gradient Hex' = VAR V=[P14 Physical Qty] VAR Items=FILTER(ALLSELECTED(mart_expiry_withdrawal_review_v01[expiry_month_label]),NOT ISBLANK([P14 Physical Qty])) VAR LO=MINX(Items,[P14 Physical Qty]) VAR HI=MAXX(Items,[P14 Physical Qty]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8092A8",T<0.125,"#C6E8F6",T<0.250,"#B2DDF2",T<0.375,"#9ED1EA",T<0.500,"#86C1E3",T<0.625,"#65AED9",T<0.750,"#4B9ACA",T<0.875,"#3287BC","#1B70AC")
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: dbb410b3-c273-5330-8791-9d8ed67d3fb7
+
+	measure 'P14 Long Category Gradient Hex' = VAR V=[P14 Long Life ATP] VAR Items=FILTER(ALLSELECTED(mart_expiry_withdrawal_review_v01[category]),NOT ISBLANK([P14 Long Life ATP])) VAR LO=MINX(Items,[P14 Long Life ATP]) VAR HI=MAXX(Items,[P14 Long Life ATP]) VAR T=DIVIDE(V-LO,HI-LO,0.5) RETURN SWITCH(TRUE(),ISBLANK(V),"#8092A8",T<0.125,"#F4E5C9",T<0.250,"#F0D9B4",T<0.375,"#ECCD9F",T<0.500,"#E4BC85",T<0.625,"#DCAE68",T<0.750,"#CF974C",T<0.875,"#BD7B32","#98601B")
+		displayFolder: 14 Expiry Decision Review
+		lineageTag: dc657d0e-5b11-5fb9-b089-d518b9e9b7c6
+
+	column id
+		dataType: string
+		lineageTag: ddfa565d-4cf8-5596-a91a-6351ce2c51ac
+		summarizeBy: none
+		sourceColumn: id
+
+	column world_id
+		dataType: string
+		lineageTag: ae41c565-1a9a-5fe2-a3d8-2b7b5c7a76b2
+		summarizeBy: none
+		sourceColumn: world_id
+
+	column as_of_label
+		dataType: string
+		lineageTag: 94387429-748d-5622-8b4e-cd3f8fcfeed5
+		summarizeBy: none
+		sourceColumn: as_of_label
+
+	column location
+		dataType: string
+		lineageTag: b4fd0197-f80f-5d71-bb3f-2cdcd481461f
+		summarizeBy: none
+		sourceColumn: location
+
+	column sku
+		dataType: string
+		lineageTag: 0802aae3-604a-5087-af76-d87cfdaa2dfe
+		summarizeBy: none
+		sourceColumn: sku
+
+	column category
+		dataType: string
+		lineageTag: 71d874b1-e652-5da5-b296-26145f6f4bd5
+		summarizeBy: none
+		sourceColumn: category
+
+	column lot
+		dataType: string
+		lineageTag: a02b6495-31d9-545b-82e4-6140aaeca8e3
+		summarizeBy: none
+		sourceColumn: lot
+
+	column status
+		dataType: string
+		lineageTag: 252c57cd-4001-58de-90b7-585a948236bb
+		summarizeBy: none
+		sourceColumn: status
+
+	column expiry_month_label
+		dataType: string
+		lineageTag: 98137b41-c89e-554e-9d2e-deec30429d92
+		summarizeBy: none
+		sourceColumn: expiry_month_label
+
+	column expiry_precision
+		dataType: string
+		lineageTag: 3522fc04-9f5a-5f3a-8450-48760877fd37
+		summarizeBy: none
+		sourceColumn: expiry_precision
+
+	column three_month_risk_band
+		dataType: string
+		lineageTag: 4ea8a4a2-14b0-5e73-961e-274ba8606b9f
+		summarizeBy: none
+		sourceColumn: three_month_risk_band
+
+	column six_month_age_bucket
+		dataType: string
+		lineageTag: 53650557-4b7c-5afe-b8fa-dde8f4d9ee9c
+		summarizeBy: none
+		sourceColumn: six_month_age_bucket
+
+	column review_lane
+		dataType: string
+		lineageTag: cca0fc8f-324b-567f-9263-201af6f3109d
+		summarizeBy: none
+		sourceColumn: review_lane
+
+	column policy_status
+		dataType: string
+		lineageTag: 9a345b44-21f4-5ba2-a8e1-0b5b4a582212
+		summarizeBy: none
+		sourceColumn: policy_status
+
+	column source_world
+		dataType: string
+		lineageTag: e4b75d79-ec35-5e6d-b029-f966f2fc7c25
+		summarizeBy: none
+		sourceColumn: source_world
+
+	column scenario_assumption
+		dataType: string
+		lineageTag: 9f3d3b54-7b19-5db0-8c46-75e1a75297a3
+		summarizeBy: none
+		sourceColumn: scenario_assumption
+
+	column physical_qty
+		dataType: int64
+		lineageTag: 181efa69-5cee-5e68-a9a1-6af441a95d4f
+		summarizeBy: none
+		sourceColumn: physical_qty
+
+	column released_atp_units
+		dataType: int64
+		lineageTag: 9c17b2a0-1ac7-5099-88c5-b9725f8c5e4e
+		summarizeBy: none
+		sourceColumn: released_atp_units
+
+	column withdrawal_due_physical_units
+		dataType: int64
+		lineageTag: c1e15abf-3178-5f7c-8807-3ec276183d33
+		summarizeBy: none
+		sourceColumn: withdrawal_due_physical_units
+
+	column short_life_atp_units
+		dataType: int64
+		lineageTag: c99257d2-d1ef-58b6-8dca-7f0f41431aa4
+		summarizeBy: none
+		sourceColumn: short_life_atp_units
+
+	column long_life_atp_units
+		dataType: int64
+		lineageTag: ab14a27c-cae6-5fc8-a7dd-fe86681193aa
+		summarizeBy: none
+		sourceColumn: long_life_atp_units
+
+	column uncertain_atp_units
+		dataType: int64
+		lineageTag: 3f00b928-f194-5360-8604-189fa8c5e308
+		summarizeBy: none
+		sourceColumn: uncertain_atp_units
+
+	column qa_held_physical_units
+		dataType: int64
+		lineageTag: c9c0a857-3dd2-5f50-ba44-c50bc107992a
+		summarizeBy: none
+		sourceColumn: qa_held_physical_units
+
+	column withdrawn_physical_units
+		dataType: int64
+		lineageTag: bf2c94c6-7a06-5930-89fc-5e9d68174135
+		summarizeBy: none
+		sourceColumn: withdrawn_physical_units
+
+	column hypothetical_excess_lane_units
+		dataType: int64
+		lineageTag: bcd6ae9f-a3cf-50f6-a682-01b9f3d2e307
+		summarizeBy: none
+		sourceColumn: hypothetical_excess_lane_units
+
+	column approved_movement_units
+		dataType: int64
+		lineageTag: 093faf02-9b24-5f66-b65f-29c743f060b1
+		summarizeBy: none
+		sourceColumn: approved_movement_units
+
+	partition mart_expiry_withdrawal_review_v01 = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(PharmaDataRoot & "\marts\mart_expiry_withdrawal_review_v01.parquet")),
+					#"Type Checked" = Table.TransformColumnTypes(Source, {{"id", type text}, {"world_id", type text}, {"as_of_label", type text}, {"location", type text}, {"sku", type text}, {"category", type text}, {"lot", type text}, {"status", type text}, {"expiry_month_label", type text}, {"expiry_precision", type text}, {"three_month_risk_band", type text}, {"six_month_age_bucket", type text}, {"review_lane", type text}, {"policy_status", type text}, {"source_world", type text}, {"scenario_assumption", type text}, {"physical_qty", Int64.Type}, {"released_atp_units", Int64.Type}, {"withdrawal_due_physical_units", Int64.Type}, {"short_life_atp_units", Int64.Type}, {"long_life_atp_units", Int64.Type}, {"uncertain_atp_units", Int64.Type}, {"qa_held_physical_units", Int64.Type}, {"withdrawn_physical_units", Int64.Type}, {"hypothetical_excess_lane_units", Int64.Type}, {"approved_movement_units", Int64.Type}}, "en-US"),
+					#"No Approved Actions" = if List.Sum(#"Type Checked"[approved_movement_units]) = 0 then #"Type Checked" else error "UNAUTHORIZED_ACTION_QUANTITY",
+					#"Original Synthetic World Only" = if Table.RowCount(Table.SelectRows(#"No Approved Actions", each [source_world] <> "ORIGINAL_SYNTHETIC_NO_INJECTED_TEST_STOCK")) = 0 then #"No Approved Actions" else error "TEST_STOCK_FORBIDDEN",
+					#"Lot Grain" = if Table.RowCount(Table.Distinct(#"Original Synthetic World Only", {"id"})) = 4175 and Table.RowCount(#"Original Synthetic World Only") = 4175 then #"Original Synthetic World Only" else error "LOT_REVIEW_GRAIN_CHANGED"
+				in
+					#"Lot Grain"
+
+	annotation PHARMA360_ReviewStatus = HYPOTHETICAL_NOT_APPROVED
+

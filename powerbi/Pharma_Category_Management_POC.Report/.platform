@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Pharma_Category_Management_POC"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fa3aa45c-ff65-4cbf-8524-74d565900c92"
+  }
+}

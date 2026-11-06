@@ -1,0 +1,129 @@
+table mart_supplier_service_returns
+	lineageTag: 7d8be84f-5d08-5d20-b838-77e8a32ea86b
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: aa230fe8-d579-5330-87d6-a81e79d3abb8
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 68a65d08-78f2-514f-8113-7828544cf4a7
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: f34ee52d-b25f-5990-b653-24981738be94
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 9f2bfb22-743c-5337-9f25-ac7eb66da127
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column po.
+	column po
+		dataType: string
+		lineageTag: ec62d2c2-9616-5c67-9cef-0860ea10d070
+		summarizeBy: none
+		sourceColumn: po
+
+	/// Manifest-authorized source column supplier.
+	column supplier
+		dataType: string
+		lineageTag: 32110f87-64f1-575f-b334-9438a541356a
+		summarizeBy: none
+		sourceColumn: supplier
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 991b360f-c801-5fc3-a699-11f9e348d0f0
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column ordered_qty.
+	column ordered_qty
+		dataType: int64
+		lineageTag: eac2f93e-0a66-55d2-b949-237bef36d508
+		summarizeBy: none
+		sourceColumn: ordered_qty
+
+	/// Manifest-authorized source column received_qty.
+	column received_qty
+		dataType: int64
+		lineageTag: 728b90db-4f60-592e-b808-6b7c463031d7
+		summarizeBy: none
+		sourceColumn: received_qty
+
+	/// Manifest-authorized source column due_at.
+	column due_at
+		dataType: string
+		lineageTag: 7787a3af-abdd-5955-b8da-56e284af101b
+		summarizeBy: none
+		sourceColumn: due_at
+
+	/// Manifest-authorized source column late.
+	column late
+		dataType: boolean
+		lineageTag: 8f962794-8ef5-5077-b4e7-e9f7da57fa5a
+		summarizeBy: none
+		sourceColumn: late
+
+	/// Manifest-authorized source column issued_credit_minor.
+	column issued_credit_minor
+		dataType: int64
+		lineageTag: cd58b49c-cb50-5b98-8fd5-b71e0061b698
+		summarizeBy: none
+		sourceColumn: issued_credit_minor
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: 59e8b857-bfb1-5e81-856c-c84946822800
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 9b16a9f0-384c-5fb2-a142-4f371c26c853
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: e654fcd6-b384-58f9-9a1f-75b00664f980
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_supplier_service_returns = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_supplier_service_returns.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"po", type text}, {"supplier", type text}, {"sku", type text}, {"ordered_qty", Int64.Type}, {"received_qty", Int64.Type}, {"due_at", type text}, {"late", type logical}, {"issued_credit_minor", Int64.Type}, {"reason", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Promised Date", each if Record.Field(_, "due_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "due_at")), 3)), type date)
+				in
+				  Dates1
+

@@ -1,0 +1,380 @@
+relationship 843c8c35-1177-53b6-bb9c-ebcd47a828da
+	fromColumn: source_sale_line.sku
+	toColumn: dim_product.sku
+
+relationship 3a56d4e3-f5f2-5889-abd2-fb977442fec7
+	fromColumn: source_sale_line.lot
+	toColumn: dim_lot.lot
+
+relationship 0760227a-930f-57a0-8c51-deaf5398c419
+	fromColumn: source_sale_line.location
+	toColumn: dim_inventory_location.location
+
+relationship ab6928e3-d7fa-5ccf-9927-7a688eae3800
+	fromColumn: source_invoice.location
+	toColumn: dim_inventory_location.location
+
+relationship 8b7eb068-d6cb-5b94-8197-010c2ef65e68
+	fromColumn: source_customer_return.sku
+	toColumn: dim_product.sku
+
+relationship c01fd99e-d973-517a-b89f-6c77e1519973
+	fromColumn: source_customer_return.lot
+	toColumn: dim_lot.lot
+
+relationship 9281fa13-4961-5b58-a9af-55e158cf64d7
+	fromColumn: source_customer_return.location
+	toColumn: dim_inventory_location.location
+
+relationship 9a5a88ba-5f4d-57cb-8b76-1c039c9ffce4
+	fromColumn: source_stock_leg.sku
+	toColumn: dim_product.sku
+
+relationship 246b6483-c706-5b46-8a8b-7554d9bfa944
+	fromColumn: source_stock_leg.lot
+	toColumn: dim_lot.lot
+
+relationship 7e94cd95-ae4c-5c37-b91d-b4205a514e3a
+	fromColumn: source_stock_leg.location
+	toColumn: dim_inventory_location.location
+
+relationship f034d358-e611-5258-8b57-57353ee0310f
+	fromColumn: source_po.sku
+	toColumn: dim_product.sku
+
+relationship fad3c8b4-0526-507a-a4d3-0c9cb444582e
+	fromColumn: source_po.supplier
+	toColumn: dim_supplier.supplier
+
+relationship b245b87d-09da-512e-8462-8d38aebd3ec1
+	fromColumn: source_po.location
+	toColumn: dim_inventory_location.location
+
+relationship 7f22d0bb-af4e-504f-8603-cdce0d1b3775
+	fromColumn: source_vendor_claim.sku
+	toColumn: dim_product.sku
+
+relationship 8684a015-75e8-5f20-b669-9e1580812e99
+	fromColumn: source_vendor_claim.lot
+	toColumn: dim_lot.lot
+
+relationship ccedfc11-c4e1-5d90-9840-ab75fd6c6239
+	fromColumn: source_vendor_claim.supplier
+	toColumn: dim_supplier.supplier
+
+relationship b9a1b0f0-233c-5c95-b2e4-311e7adfb71c
+	fromColumn: source_vendor_claim.location
+	toColumn: dim_inventory_location.location
+
+relationship 24db82d5-38a8-5de3-b274-2f56216d3b70
+	fromColumn: source_vendor_credit.sku
+	toColumn: dim_product.sku
+
+relationship f33e1920-271b-5c61-8446-842a94fbb02b
+	fromColumn: source_vendor_credit.lot
+	toColumn: dim_lot.lot
+
+relationship a40e2a0f-29aa-5700-a843-045beed91076
+	fromColumn: source_quality.lot
+	toColumn: dim_lot.lot
+
+relationship 1043ce1d-6285-54f2-b943-4d7843960691
+	fromColumn: source_quality.location
+	toColumn: dim_inventory_location.location
+
+relationship 76243d99-6dde-519d-80e7-858d9201afcc
+	fromColumn: source_proposal.sku
+	toColumn: dim_product.sku
+
+relationship d26bb97a-25ae-5183-9221-7158f122f117
+	fromColumn: source_proposal.lot
+	toColumn: dim_lot.lot
+
+relationship a38f7952-c467-5dd6-86db-32cc0325fd56
+	fromColumn: source_proposal.location
+	toColumn: dim_inventory_location.location
+
+relationship 341985c2-ddc4-5ff5-9287-a8abdd126963
+	fromColumn: source_constraint_component.sku
+	toColumn: dim_product.sku
+
+relationship dfc31b3a-92f0-5303-825a-8f58b566ceb0
+	fromColumn: source_constraint_component.location
+	toColumn: dim_inventory_location.location
+
+relationship adb1d0ef-1075-5771-b7b0-6e224bcdff12
+	fromColumn: fact_lot_stock_asof.sku
+	toColumn: dim_product.sku
+
+relationship 8f1b216a-9424-5f06-a826-a109e9e19579
+	fromColumn: fact_lot_stock_asof.lot
+	toColumn: dim_lot.lot
+
+relationship 50462a19-6878-5df5-8df2-09c7bdeaa085
+	fromColumn: fact_lot_stock_asof.location
+	toColumn: dim_inventory_location.location
+
+relationship 8912c1d5-c411-5145-9f08-c0bf79e55519
+	fromColumn: fact_store_sku_stock_asof.sku
+	toColumn: dim_product.sku
+
+relationship 55fe8d14-c091-5706-8d82-62f9fc151b38
+	fromColumn: fact_store_sku_stock_asof.location
+	toColumn: dim_inventory_location.location
+
+relationship 174e9323-ea6e-5556-92bf-5252707cc321
+	fromColumn: fact_dc_stock_asof.sku
+	toColumn: dim_product.sku
+
+relationship 399adaca-3431-5d95-bb4a-e05c0bd2ea38
+	fromColumn: fact_dc_stock_asof.location
+	toColumn: dim_inventory_location.location
+
+relationship 872aa52a-6934-5bac-929f-87361822204b
+	fromColumn: fact_inbound_asof.sku
+	toColumn: dim_product.sku
+
+relationship c57cf017-f476-509d-aaad-ea45a7e1787c
+	fromColumn: fact_inbound_asof.location
+	toColumn: dim_inventory_location.location
+
+relationship 9eaa0f16-c5da-5762-8cd3-45b0e2a75315
+	fromColumn: fact_product_policy_asof.sku
+	toColumn: dim_product.sku
+
+relationship ce03dfdb-6875-5ad3-95e0-2e617f578bb5
+	fromColumn: mart_store_sku_ros_exposure.sku
+	toColumn: dim_product.sku
+
+relationship 0a5fff44-53d7-5f1a-a38c-6bf135ef8859
+	fromColumn: mart_store_sku_ros_exposure.location
+	toColumn: dim_inventory_location.location
+
+relationship e9016f6f-5455-53ee-83cd-1ef472bcb98a
+	fromColumn: mart_lot_expiry_and_withdrawal.sku
+	toColumn: dim_product.sku
+
+relationship a38a6c59-fcb2-57ab-9441-fb960e07548e
+	fromColumn: mart_lot_expiry_and_withdrawal.lot
+	toColumn: dim_lot.lot
+
+relationship 959061a1-7754-539a-ab62-f34351720bf8
+	fromColumn: mart_lot_expiry_and_withdrawal.location
+	toColumn: dim_inventory_location.location
+
+relationship 5e360b6a-a3e8-5de4-ad1a-3ee8012b22c1
+	fromColumn: mart_overstock_proposal_validation.sku
+	toColumn: dim_product.sku
+
+relationship 381d1874-2266-57b6-90da-ded9f3fb0522
+	fromColumn: mart_overstock_proposal_validation.lot
+	toColumn: dim_lot.lot
+
+relationship 849bb136-43b5-578f-b37e-cd5c4b587d59
+	fromColumn: mart_overstock_proposal_validation.location
+	toColumn: dim_inventory_location.location
+
+relationship 46809b29-7fe7-5ae4-a2bf-9265c67e58a2
+	fromColumn: mart_supplier_service_returns.sku
+	toColumn: dim_product.sku
+
+relationship 007c8a2a-a26b-55c3-b692-ec7f8bd4de96
+	fromColumn: mart_supplier_service_returns.supplier
+	toColumn: dim_supplier.supplier
+
+relationship 22887d0b-3875-5b7a-a09d-82ae25772ea2
+	fromColumn: mart_store_space_assortment.location
+	toColumn: dim_inventory_location.location
+
+relationship 946ebee6-9cfa-5ca9-8f5e-ef88e3133620
+	fromColumn: mart_sales_finance_period.entity
+	toColumn: dim_branch.location
+
+relationship 0f3f20eb-5477-583b-92c1-a3918b59bc37
+	fromColumn: mart_sales_finance_period.item
+	toColumn: dim_product.sku
+
+relationship 53641a0a-0484-5e9c-8b70-4f0fc3a0b43c
+	fromColumn: mart_category_finance_period.item
+	toColumn: dim_category.category
+
+relationship bb1de677-b16a-597c-a377-0540f7dc1020
+	fromColumn: mart_branch_finance_period.entity
+	toColumn: dim_branch.location
+
+relationship 68b82c84-fff0-5545-9eeb-d6b91c4b9a26
+	fromColumn: fact_expiry_flags.sku_id
+	toColumn: dim_product.sku
+
+relationship 8636269c-14c6-517b-9cd4-61afc777157f
+	fromColumn: fact_expiry_flags.lot_id
+	toColumn: dim_lot.lot
+
+relationship 58609974-2831-514a-92da-32202c2b2bd3
+	fromColumn: fact_expiry_flags.location_id
+	toColumn: dim_inventory_location.location
+
+relationship 1a4c1d54-c38c-5c77-a164-4fa5d8e8adbf
+	fromColumn: fact_conditional_forecast.sku
+	toColumn: dim_product.sku
+
+relationship 42fdc6a9-0967-550c-ad96-34819c059aed
+	fromColumn: fact_conditional_forecast.location
+	toColumn: dim_inventory_location.location
+
+relationship f3d93a5f-f884-5ef3-ae08-2695f1017169
+	fromColumn: forecast_evaluation.sku
+	toColumn: dim_product.sku
+
+relationship 8b66f86f-ce64-5940-b457-a4c26d5b480f
+	fromColumn: forecast_evaluation.location
+	toColumn: dim_inventory_location.location
+
+relationship f3a64154-518a-5a87-8e2b-6d0a00ecbc32
+	fromColumn: decision_review.branch_id
+	toColumn: dim_branch.location
+
+relationship f34ce40b-4a7c-5eb5-b297-0772e0891a04
+	fromColumn: decision_review.sku_id
+	toColumn: dim_product.sku
+
+relationship 5dc8fc5f-5a18-581a-b748-edad0a03df14
+	fromColumn: decision_review.lot_id
+	toColumn: dim_lot.lot
+
+relationship e01b2209-9e0a-5a68-8dc0-2f0836b077e4
+	fromColumn: policy_evaluation.sku
+	toColumn: dim_product.sku
+
+relationship 6f74f28f-4928-5f56-94ef-6d4b1fd048ce
+	fromColumn: policy_guardrail.policy
+	toColumn: dim_scenario.scenario
+
+relationship 8041e8ec-216b-5d4e-bb20-423b1bcfb047
+	fromColumn: policy_evaluation.policy
+	toColumn: dim_scenario.scenario
+
+relationship 1c39843c-1d3e-5794-8d17-53ca38d333ae
+	fromColumn: decision_review.decision_status
+	toColumn: dim_decision_status.status
+
+relationship 0ac50c51-dacf-53d3-9429-452be84c2535
+	fromColumn: fact_conditional_forecast.status
+	toColumn: dim_decision_status.status
+
+relationship 6fdac262-660a-529d-a76b-48552b56b5ea
+	fromColumn: dim_product.category
+	toColumn: dim_category.category
+
+relationship eb202a32-87b1-5364-970c-fa05ab9e3cf3
+	fromColumn: dim_inventory_location.branch_identity
+	toColumn: dim_branch.location
+
+relationship c02ab09d-9acf-54ef-b733-8fcb0ff526a2
+	fromColumn: mart_store_space_assortment.category
+	toColumn: dim_category.category
+
+relationship d2845b81-3f4f-5384-83c8-551edd44296a
+	fromColumn: source_sale_line.'Event Date'
+	toColumn: dim_date.date
+
+relationship 5a9e5ac5-442a-5b73-8919-312beda83c31
+	fromColumn: source_invoice.'Event Date'
+	toColumn: dim_date.date
+
+relationship c508c848-45dc-550f-9f31-3d1de5aa76c5
+	fromColumn: source_customer_return.'Event Date'
+	toColumn: dim_date.date
+
+relationship ab611c90-2084-548a-8730-025b992f4075
+	fromColumn: source_stock_leg.'Event Date'
+	toColumn: dim_date.date
+
+relationship d0de6b5f-0362-5661-b006-3b4157214351
+	fromColumn: source_po.'Event Date'
+	toColumn: dim_date.date
+
+relationship 335d60f3-1e8d-5962-b1f0-1171e0874e7d
+	fromColumn: source_po_event.'Event Date'
+	toColumn: dim_date.date
+
+relationship 1526da92-54cb-5458-9d35-642a83314e01
+	fromColumn: source_vendor_claim.'Event Date'
+	toColumn: dim_date.date
+
+relationship 87551081-d0e3-5e23-b74b-c17d6bc69187
+	fromColumn: source_vendor_credit.'Event Date'
+	toColumn: dim_date.date
+
+relationship 2ed2fcb9-e60f-50a3-a048-6a8dbd5ce5f0
+	fromColumn: source_quality.'Event Date'
+	toColumn: dim_date.date
+
+relationship 85e27411-f2b6-56ff-bf80-7e10e362363c
+	fromColumn: source_proposal.'Event Date'
+	toColumn: dim_date.date
+
+relationship f67162c5-6d91-5073-9505-cae3d623e95c
+	fromColumn: source_constraint_component.'Event Date'
+	toColumn: dim_date.date
+
+relationship b1ba8e81-58dc-5e70-b943-cf28750be99c
+	fromColumn: fact_lot_stock_asof.'As Of Date'
+	toColumn: dim_date.date
+
+relationship b7313a14-9d54-5552-b475-9db55c6b03b8
+	fromColumn: fact_store_sku_stock_asof.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 5e2030ad-2581-5dee-90a3-b760d4b058ba
+	fromColumn: fact_dc_stock_asof.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 0eb1fe97-aa15-55d5-959b-67b99ceb4fce
+	fromColumn: fact_inbound_asof.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 7a7b9e9f-5854-5089-a258-a87b2973d395
+	fromColumn: fact_product_policy_asof.'As Of Date'
+	toColumn: dim_date.date
+
+relationship faaf6216-0720-5938-949c-a543856225d1
+	fromColumn: mart_store_sku_ros_exposure.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 2920d0fd-d8d3-5b9e-bdcd-f4ece2686caa
+	fromColumn: mart_lot_expiry_and_withdrawal.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 1de41727-1e33-5543-9567-1207d635722d
+	fromColumn: mart_overstock_proposal_validation.'As Of Date'
+	toColumn: dim_date.date
+
+relationship b5bbc1aa-474e-5eb9-8dd6-b4bbb084060e
+	fromColumn: mart_supplier_service_returns.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 838a2f1f-6823-5904-ae5f-3e3c206aa7f9
+	fromColumn: mart_store_space_assortment.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 1fca8480-f95e-5c58-ada4-a45c345149ff
+	fromColumn: fact_expiry_flags.'As Of Date'
+	toColumn: dim_date.date
+
+relationship 114e905c-61b8-54e9-ac78-aea9c5220e14
+	fromColumn: fact_conditional_forecast.'Forecast Origin Date'
+	toColumn: dim_date.date
+
+relationship 94c94538-e005-5d37-bc01-faf6f995ee36
+	fromColumn: forecast_evaluation.'Forecast Origin Date'
+	toColumn: dim_date.date
+
+relationship 63ba2a21-011d-55f4-ad6b-7dc639d0f204
+	fromColumn: decision_review.'Decision Date'
+	toColumn: dim_date.date
+
+relationship 17ee7b89-0a24-563a-8341-7219d22c866d
+	fromColumn: source_case_status.'As Of Date'
+	toColumn: dim_date.date
+

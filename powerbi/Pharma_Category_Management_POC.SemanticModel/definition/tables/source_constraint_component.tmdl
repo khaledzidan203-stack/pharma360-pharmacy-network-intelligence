@@ -1,0 +1,312 @@
+table source_constraint_component
+	lineageTag: 9036572f-c0b2-5708-9cba-5828c3df65fc
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 3ff0616d-7f5e-5c9b-9054-afdbec66c0a7
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: a0f7d390-df00-5b9e-a741-2d4ade2b3d45
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: b59ad37d-6310-5ed0-a71f-ae7a6cbce153
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 1d3afba3-fd9d-5254-9b30-3e594ff866c2
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: 80f3ea30-1f56-5596-a44f-84fa41845cc0
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: d1f5fbe9-8505-5f8b-884d-ea0e39376ee9
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column candidate_id.
+	column candidate_id
+		dataType: string
+		lineageTag: 779ed2ad-6fed-5289-b91b-d001b795fbed
+		summarizeBy: none
+		sourceColumn: candidate_id
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 46d3e27e-57f4-5fd2-a426-7699ca832b59
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: a999f73e-1481-54a5-92a8-5971c688dbe0
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column family.
+	column family
+		dataType: string
+		lineageTag: 43649c72-7cf6-583a-9092-0b399216678f
+		summarizeBy: none
+		sourceColumn: family
+
+	/// Manifest-authorized source column ceiling_units.
+	column ceiling_units
+		dataType: int64
+		lineageTag: 11a17bbb-110f-5148-90e4-798d32cf8226
+		summarizeBy: none
+		sourceColumn: ceiling_units
+
+	/// Manifest-authorized source column is_binding.
+	column is_binding
+		dataType: boolean
+		lineageTag: 67668e2c-262f-52b8-b372-678ddfe5150c
+		summarizeBy: none
+		sourceColumn: is_binding
+
+	/// Manifest-authorized source column policy_id.
+	column policy_id
+		dataType: string
+		lineageTag: 8b587b4e-c851-5869-ac0a-d4e7479307c2
+		summarizeBy: none
+		sourceColumn: policy_id
+
+	/// Manifest-authorized source column applicability.
+	column applicability
+		dataType: string
+		lineageTag: dd0b2222-635a-5ae5-aae1-fd297d7dca62
+		summarizeBy: none
+		sourceColumn: applicability
+
+	/// Manifest-authorized source column applicability_evidence_id.
+	column applicability_evidence_id
+		dataType: string
+		lineageTag: 54f3d932-e4b3-554f-997c-c1a4db9da949
+		summarizeBy: none
+		sourceColumn: applicability_evidence_id
+
+	/// Manifest-authorized source column source_record_ids_json.
+	column source_record_ids_json
+		dataType: string
+		isHidden
+		lineageTag: c5a44cf9-7a34-5390-a130-ebe56cebe9bd
+		summarizeBy: none
+		sourceColumn: source_record_ids_json
+
+	/// Manifest-authorized source column capacity_evaluation_id.
+	column capacity_evaluation_id
+		dataType: string
+		lineageTag: 02384250-3af8-5166-b863-da14ee8dba31
+		summarizeBy: none
+		sourceColumn: capacity_evaluation_id
+
+	/// Manifest-authorized source column effective_from.
+	column effective_from
+		dataType: string
+		lineageTag: df81362b-b780-5fbb-9aa9-0947a087af5a
+		summarizeBy: none
+		sourceColumn: effective_from
+
+	/// Manifest-authorized source column effective_to.
+	column effective_to
+		dataType: string
+		lineageTag: 3116f90e-44cf-5478-87da-2906b7ebb2cc
+		summarizeBy: none
+		sourceColumn: effective_to
+
+	/// Manifest-authorized source column quantity_unit.
+	column quantity_unit
+		dataType: string
+		lineageTag: 785f7442-3d39-5347-a972-2376afc116df
+		summarizeBy: none
+		sourceColumn: quantity_unit
+
+	/// Manifest-authorized source column volume_unit.
+	column volume_unit
+		dataType: string
+		lineageTag: d67bc969-9d92-594c-9da5-40e594efc42a
+		summarizeBy: none
+		sourceColumn: volume_unit
+
+	/// Manifest-authorized source column rule_version.
+	column rule_version
+		dataType: string
+		lineageTag: 891c2e54-c37a-57a9-9a36-a00ee6fab702
+		summarizeBy: none
+		sourceColumn: rule_version
+
+	/// Manifest-authorized source column life_offer_id.
+	column life_offer_id
+		dataType: string
+		lineageTag: 9f97068f-1224-58aa-8c2c-7b313ff1fcbd
+		summarizeBy: none
+		sourceColumn: life_offer_id
+
+	/// Manifest-authorized source column offered_minimum_remaining_seconds.
+	column offered_minimum_remaining_seconds
+		dataType: double
+		lineageTag: dcb86040-98e6-5472-8e4a-cfb4c0c90abe
+		summarizeBy: none
+		sourceColumn: offered_minimum_remaining_seconds
+
+	/// Manifest-authorized source column mean_daily.
+	column mean_daily
+		dataType: double
+		lineageTag: 61c71c72-9394-5b15-8051-08ecee724e1b
+		summarizeBy: none
+		sourceColumn: mean_daily
+
+	/// Manifest-authorized source column shelf_months.
+	column shelf_months
+		dataType: int64
+		lineageTag: c922f341-afc5-5895-9a65-9f9228d98b84
+		summarizeBy: none
+		sourceColumn: shelf_months
+
+	/// Manifest-authorized source column buffer_days.
+	column buffer_days
+		dataType: int64
+		lineageTag: b2f5b0be-d4ba-57a1-8092-830e30b1ea93
+		summarizeBy: none
+		sourceColumn: buffer_days
+
+	/// Manifest-authorized source column occupied_litres.
+	column occupied_litres
+		dataType: double
+		lineageTag: 28fa4f11-2b39-5293-9864-4b785ee47920
+		summarizeBy: none
+		sourceColumn: occupied_litres
+
+	/// Manifest-authorized source column pending_litres.
+	column pending_litres
+		dataType: double
+		lineageTag: 24213587-6c14-5b0d-a92f-ce092447c73a
+		summarizeBy: none
+		sourceColumn: pending_litres
+
+	/// Manifest-authorized source column capacity_litres.
+	column capacity_litres
+		dataType: double
+		lineageTag: 1b0405ea-0bb0-5aad-9725-1db7aeba037e
+		summarizeBy: none
+		sourceColumn: capacity_litres
+
+	/// Manifest-authorized source column unit_litres.
+	column unit_litres
+		dataType: double
+		lineageTag: 3177df8b-88ef-58b3-bc41-167aaca5a7e1
+		summarizeBy: none
+		sourceColumn: unit_litres
+
+	/// Manifest-authorized source column capital_limit_minor.
+	column capital_limit_minor
+		dataType: int64
+		lineageTag: 1896aedb-f423-5feb-8c7f-fe408beafa78
+		summarizeBy: none
+		sourceColumn: capital_limit_minor
+
+	/// Manifest-authorized source column occupied_cost_minor.
+	column occupied_cost_minor
+		dataType: int64
+		lineageTag: f9e40432-60de-5c68-8774-53c8566d8b7b
+		summarizeBy: none
+		sourceColumn: occupied_cost_minor
+
+	/// Manifest-authorized source column pending_cost_minor.
+	column pending_cost_minor
+		dataType: int64
+		lineageTag: f40d7ecc-75e4-5ac8-8164-3e0544eb757b
+		summarizeBy: none
+		sourceColumn: pending_cost_minor
+
+	/// Manifest-authorized source column unit_cost_minor.
+	column unit_cost_minor
+		dataType: int64
+		lineageTag: 6b80ada0-32d9-554e-b85f-23681f24d434
+		summarizeBy: none
+		sourceColumn: unit_cost_minor
+
+	/// Manifest-authorized source column fixture_free_units.
+	column fixture_free_units
+		dataType: int64
+		lineageTag: 41bab2fc-9d3a-545d-8cff-2d26c8abe22f
+		summarizeBy: none
+		sourceColumn: fixture_free_units
+
+	/// Manifest-authorized source column source_frontier.
+	column source_frontier
+		dataType: string
+		isHidden
+		lineageTag: 3c2f5542-4e05-53d5-922f-d707a64d34c4
+		summarizeBy: none
+		sourceColumn: source_frontier
+
+	/// Manifest-authorized source column decision_at.
+	column decision_at
+		dataType: string
+		lineageTag: af1f591e-bf27-5c33-969a-5bddbc9c8637
+		summarizeBy: none
+		sourceColumn: decision_at
+
+	/// Manifest-authorized source column formula_id.
+	column formula_id
+		dataType: string
+		lineageTag: 82e1828c-8747-518f-b465-8f615b5d07c0
+		summarizeBy: none
+		sourceColumn: formula_id
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: b440dd5f-12b2-5590-9cce-3494f7587204
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 5e07f593-8898-59cf-9086-5898b7ba0554
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_constraint_component = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/source/constraint_component.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"candidate_id", type text}, {"location", type text}, {"sku", type text}, {"family", type text}, {"ceiling_units", Int64.Type}, {"is_binding", type logical}, {"policy_id", type text}, {"applicability", type text}, {"applicability_evidence_id", type text}, {"source_record_ids_json", type text}, {"capacity_evaluation_id", type text}, {"effective_from", type text}, {"effective_to", type text}, {"quantity_unit", type text}, {"volume_unit", type text}, {"rule_version", type text}, {"life_offer_id", type text}, {"offered_minimum_remaining_seconds", type number}, {"mean_daily", type number}, {"shelf_months", Int64.Type}, {"buffer_days", Int64.Type}, {"occupied_litres", type number}, {"pending_litres", type number}, {"capacity_litres", type number}, {"unit_litres", type number}, {"capital_limit_minor", Int64.Type}, {"occupied_cost_minor", Int64.Type}, {"pending_cost_minor", Int64.Type}, {"unit_cost_minor", Int64.Type}, {"fixture_free_units", Int64.Type}, {"source_frontier", type text}, {"decision_at", type text}, {"formula_id", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

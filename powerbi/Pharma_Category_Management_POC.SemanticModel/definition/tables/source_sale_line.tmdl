@@ -1,0 +1,128 @@
+table source_sale_line
+	lineageTag: 943b17c7-9cbe-5703-8adc-4a88da3a3d3d
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 7ed76e16-779a-5d66-bd5f-533e66d85ed9
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 2e36182b-9634-5830-8f48-fa216a0c06d5
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 28b9fb48-e9f6-5d96-9e0e-9c9dbec33aac
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: e9bd2d36-db4d-5edb-915a-6a5ee7318d3a
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: e51adc5b-2165-5019-987b-fac4ebd34b6a
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: c8fecb71-3e78-58a1-b0e7-cc5fa1dec35f
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column invoice.
+	column invoice
+		dataType: string
+		lineageTag: f957f3ee-41d9-5ab0-87ef-05f23da720f8
+		summarizeBy: none
+		sourceColumn: invoice
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 4c255ffd-c8ec-5777-8008-045a50e3cbe1
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: c6780691-f0a5-5a16-978a-ceeebc28d908
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: 39c457f6-fb83-5ae7-a427-4f0d6781e8d1
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column qty.
+	column qty
+		dataType: int64
+		lineageTag: 92177528-839a-5d16-bb7e-8d3e1d46e6ba
+		summarizeBy: none
+		sourceColumn: qty
+
+	/// Manifest-authorized source column revenue_minor.
+	column revenue_minor
+		dataType: int64
+		lineageTag: 9c78d5bc-547d-53e5-aea0-004f5004cb05
+		summarizeBy: none
+		sourceColumn: revenue_minor
+
+	/// Manifest-authorized source column cogs_minor.
+	column cogs_minor
+		dataType: int64
+		lineageTag: a950a024-3d8b-5ffd-b2ed-661bfd3ef82a
+		summarizeBy: none
+		sourceColumn: cogs_minor
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 667e1b72-d01c-5de0-ba0c-de206ab8cb7c
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: da3ffa48-f213-5b6a-9b81-4cf6a5193596
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_sale_line = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/source/sale_line.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"invoice", type text}, {"location", type text}, {"sku", type text}, {"lot", type text}, {"qty", Int64.Type}, {"revenue_minor", Int64.Type}, {"cogs_minor", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

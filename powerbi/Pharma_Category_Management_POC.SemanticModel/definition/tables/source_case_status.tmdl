@@ -1,0 +1,89 @@
+table source_case_status
+	lineageTag: 34502a0f-2e53-5064-b0fe-f1aa750e2ecf
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 63da606b-d2ce-58a6-9c68-054f0883c906
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column case_id.
+	column case_id
+		dataType: string
+		lineageTag: 1e00ef2f-b72d-537b-b1bd-9a050befc68a
+		summarizeBy: none
+		sourceColumn: case_id
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 9a1578a0-fae9-5a4b-be66-d461e0cd83c8
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 8b315bf0-173d-523b-9f49-34a794a630f7
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: 33f90300-162d-5176-bcd7-ce6e92644e1c
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Manifest-authorized source column supporting_event_ids.
+	column supporting_event_ids
+		dataType: string
+		lineageTag: a80ab190-83a4-58f1-bbd1-e34128f03e83
+		summarizeBy: none
+		sourceColumn: supporting_event_ids
+
+	/// Manifest-authorized source column source_evidence_path.
+	column source_evidence_path
+		dataType: string
+		lineageTag: 32344c76-3878-50be-9d3b-e59968e932f0
+		summarizeBy: none
+		sourceColumn: source_evidence_path
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: a6aa0efd-8a96-5ff5-b5fb-f9f45bd5e7fb
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 34101b6e-b8ed-58ca-832f-30b38290b7a5
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 7b3772ae-4eb6-5541-95fd-38a66cdd5f21
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_case_status = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/facts/fact_source_case_status.parquet")),
+				  Nested = Table.TransformColumns(Source, {{"supporting_event_ids", each if _ = null then null else Text.FromBinary(Json.FromValue(_), TextEncoding.Utf8), type text}}),
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"case_id", type text}, {"status", type text}, {"as_of", type text}, {"reason", type text}, {"supporting_event_ids", type text}, {"source_evidence_path", type text}, {"source_manifest_sha256", type text}, {"executable_qty", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

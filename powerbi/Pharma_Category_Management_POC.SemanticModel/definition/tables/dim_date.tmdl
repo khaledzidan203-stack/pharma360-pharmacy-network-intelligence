@@ -1,0 +1,58 @@
+table dim_date
+	lineageTag: 7aabc09d-87ec-55fd-b12e-f3781245965a
+
+	/// Manifest-authorized source column date.
+	column date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: bf6fc4fb-5ff1-5ba3-880d-f6b45a00d559
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Manifest-authorized source column date_key.
+	column date_key
+		dataType: int64
+		lineageTag: b1098458-fe84-51e2-8b18-10f2f7a4aae7
+		summarizeBy: none
+		sourceColumn: date_key
+
+	/// Manifest-authorized source column year.
+	column year
+		dataType: int64
+		lineageTag: 868b52b0-af4a-5508-9435-03b71b977b8a
+		summarizeBy: none
+		sourceColumn: year
+
+	/// Manifest-authorized source column month.
+	column month
+		dataType: int64
+		lineageTag: e644afae-3147-51e5-9a03-13c6c1b12b50
+		summarizeBy: none
+		sourceColumn: month
+
+	/// Manifest-authorized source column day.
+	column day
+		dataType: int64
+		lineageTag: aab75b20-717e-5d73-8048-cf5f0b8af7c6
+		summarizeBy: none
+		sourceColumn: day
+
+	/// Manifest-authorized source column source_history.
+	column source_history
+		dataType: boolean
+		lineageTag: e43dd64e-9915-59fa-bfa0-82ccae7b5ac8
+		summarizeBy: none
+		sourceColumn: source_history
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_date.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"date", type date}, {"date_key", Int64.Type}, {"year", Int64.Type}, {"month", Int64.Type}, {"day", Int64.Type}, {"source_history", type logical}}, "en-US")
+				in
+				  Typed
+

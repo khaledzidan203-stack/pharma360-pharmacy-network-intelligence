@@ -1,0 +1,58 @@
+table mart_unavailable_evidence
+	lineageTag: 5e2198d9-399c-5ddd-8a29-bfedc55cdfe7
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 37899afa-3ae8-5828-9b00-48081818e290
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: de1cb7ba-47e0-5ebb-b6af-4718ed4d4fc4
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 6f2b8b4b-cf82-5135-8924-fd132148e9c8
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column metric.
+	column metric
+		dataType: string
+		lineageTag: c236ef39-9c08-5c01-b683-8ae49183454f
+		summarizeBy: none
+		sourceColumn: metric
+
+	/// Manifest-authorized source column value.
+	column value
+		dataType: double
+		lineageTag: 2f97fa35-67f7-5fab-9be4-89a64202247f
+		summarizeBy: none
+		sourceColumn: value
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: e549db22-db0b-5c5f-a64a-bc68384fed8b
+		summarizeBy: none
+		sourceColumn: reason
+
+	partition mart_unavailable_evidence = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_unavailable_evidence.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"metric", type text}, {"value", type number}, {"reason", type text}}, "en-US")
+				in
+				  Typed
+

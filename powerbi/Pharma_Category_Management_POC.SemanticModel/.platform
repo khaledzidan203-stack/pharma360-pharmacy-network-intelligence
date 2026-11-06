@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Pharma_Category_Management_POC"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "637b5626-479a-406a-860f-789471681a85"
+  }
+}

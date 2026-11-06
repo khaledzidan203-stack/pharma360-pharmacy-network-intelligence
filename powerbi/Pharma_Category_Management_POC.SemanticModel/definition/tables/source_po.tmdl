@@ -1,0 +1,153 @@
+table source_po
+	lineageTag: 57c0bfe2-467c-55a8-81ce-551e18749c1a
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 3f0a92fe-9cdb-534f-adea-5bfab41b1616
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: c6448a04-b5bd-532b-aab8-df601fdaf555
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 6c0c4d10-4a10-515f-b315-fb9cb7acacdc
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 58216c74-5674-5f6c-8a40-3e1840a77ed2
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: d62959bc-1dcd-54c9-9371-0e8ee14968ba
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: 2e7e3528-6290-5cab-9b23-0c3448b100cc
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column supplier.
+	column supplier
+		dataType: string
+		lineageTag: e3307b2b-aba7-52b9-ad79-23aa472d4e65
+		summarizeBy: none
+		sourceColumn: supplier
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: f7315b08-3030-5964-88a4-14252e816697
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: a845113d-88ba-5594-9ea8-52cad783bfae
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column ordered_qty.
+	column ordered_qty
+		dataType: int64
+		lineageTag: bd0c8991-7109-593d-bb21-dcf37d268dab
+		summarizeBy: none
+		sourceColumn: ordered_qty
+
+	/// Manifest-authorized source column pack.
+	column pack
+		dataType: int64
+		lineageTag: 0a55fddf-20d8-514e-bbe0-4415a24f6bd0
+		summarizeBy: none
+		sourceColumn: pack
+
+	/// Manifest-authorized source column moq.
+	column moq
+		dataType: int64
+		lineageTag: bbf4184a-81c6-5196-9691-67b5d771e933
+		summarizeBy: none
+		sourceColumn: moq
+
+	/// Manifest-authorized source column trace.
+	column trace
+		dataType: string
+		lineageTag: 9b74cfc4-3b53-53c8-9267-0465ac7493e5
+		summarizeBy: none
+		sourceColumn: trace
+
+	/// Manifest-authorized source column due_at.
+	column due_at
+		dataType: string
+		lineageTag: 0a3c779e-0f4c-57d2-9737-760fff873ead
+		summarizeBy: none
+		sourceColumn: due_at
+
+	/// Manifest-authorized source column supplier_lot_offer_id.
+	column supplier_lot_offer_id
+		dataType: string
+		lineageTag: 7d20d182-d313-54f1-89c7-96a9327e0742
+		summarizeBy: none
+		sourceColumn: supplier_lot_offer_id
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 7cef6a7a-f8fe-5814-86e1-5703cc720016
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 9a5e98cf-9498-5048-beae-a25772fee294
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: fa4be944-df59-5037-a552-944200262e49
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_po = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/source/po.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"supplier", type text}, {"location", type text}, {"sku", type text}, {"ordered_qty", Int64.Type}, {"pack", Int64.Type}, {"moq", Int64.Type}, {"trace", type text}, {"due_at", type text}, {"supplier_lot_offer_id", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date),
+				  Dates2 = Table.AddColumn(Dates1, "Promised Date", each if Record.Field(_, "due_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "due_at")), 3)), type date)
+				in
+				  Dates2
+

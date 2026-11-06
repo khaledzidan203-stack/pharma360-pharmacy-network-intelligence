@@ -1,0 +1,299 @@
+table fact_expiry_flags
+	lineageTag: 104fd59c-0cee-5bb0-89fd-4f4d3219a787
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: d1c7f543-6a3f-5e5b-b685-2fd306593c25
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column lot_id.
+	column lot_id
+		dataType: string
+		lineageTag: 0392693e-3e47-53b0-b9ec-6f68a1f71cbb
+		summarizeBy: none
+		sourceColumn: lot_id
+
+	/// Manifest-authorized source column sku_id.
+	column sku_id
+		dataType: string
+		lineageTag: a2586548-7e49-58ba-9d48-74c35c9953d1
+		summarizeBy: none
+		sourceColumn: sku_id
+
+	/// Manifest-authorized source column location_id.
+	column location_id
+		dataType: string
+		lineageTag: 12e9e7cf-d118-5534-bcba-d145fb5fa41b
+		summarizeBy: none
+		sourceColumn: location_id
+
+	/// Manifest-authorized source column expiry_year.
+	column expiry_year
+		dataType: int64
+		lineageTag: 9b8af03b-7ce2-5f43-9eb4-a3a965b9f66d
+		summarizeBy: none
+		sourceColumn: expiry_year
+
+	/// Manifest-authorized source column expiry_month.
+	column expiry_month
+		dataType: int64
+		lineageTag: 5603de62-4d65-559e-bc5f-52524f68c375
+		summarizeBy: none
+		sourceColumn: expiry_month
+
+	/// Manifest-authorized source column expiry_day.
+	column expiry_day
+		dataType: string
+		lineageTag: 7da4f760-0235-588b-a5b3-d8a5d374f712
+		summarizeBy: none
+		sourceColumn: expiry_day
+
+	/// Manifest-authorized source column expiry_precision.
+	column expiry_precision
+		dataType: string
+		lineageTag: 2b704dd5-95df-57a6-b7cb-cd157c5a6e4f
+		summarizeBy: none
+		sourceColumn: expiry_precision
+
+	/// Manifest-authorized source column printed_expiry_period.
+	column printed_expiry_period
+		dataType: string
+		lineageTag: ee7c78f7-9644-57c1-b8af-b6edfacb2e1d
+		summarizeBy: none
+		sourceColumn: printed_expiry_period
+
+	/// Manifest-authorized source column mandatory_withdrawal_at.
+	column mandatory_withdrawal_at
+		dataType: string
+		lineageTag: 8ed196db-6f20-53f5-8597-b3dd2c70263d
+		summarizeBy: none
+		sourceColumn: mandatory_withdrawal_at
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 0ff0ebfa-f576-5c74-bf47-3626fd919945
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column already_expired.
+	column already_expired
+		dataType: boolean
+		lineageTag: 384bcad7-3979-5f53-8914-c60d1a57ea09
+		summarizeBy: none
+		sourceColumn: already_expired
+
+	/// Manifest-authorized source column expires_current_month.
+	column expires_current_month
+		dataType: boolean
+		lineageTag: 756fd984-e30c-5d31-a41d-556f33cf3169
+		summarizeBy: none
+		sourceColumn: expires_current_month
+
+	/// Manifest-authorized source column expires_next_calendar_month.
+	column expires_next_calendar_month
+		dataType: boolean
+		lineageTag: f4089dcf-a4a0-5c7d-b6dd-09b761d81e50
+		summarizeBy: none
+		sourceColumn: expires_next_calendar_month
+
+	/// Manifest-authorized source column withdrawal_due.
+	column withdrawal_due
+		dataType: boolean
+		lineageTag: 25c544b4-04f7-5344-9a86-73705835acf2
+		summarizeBy: none
+		sourceColumn: withdrawal_due
+
+	/// Manifest-authorized source column withdrawal_overdue.
+	column withdrawal_overdue
+		dataType: boolean
+		lineageTag: 466e5cd5-a579-5c7e-8de1-abffb89862a1
+		summarizeBy: none
+		sourceColumn: withdrawal_overdue
+
+	/// Manifest-authorized source column physical_quantity.
+	column physical_quantity
+		dataType: int64
+		lineageTag: 2c97909e-20ae-5f21-b777-81bd1f4b8c18
+		summarizeBy: none
+		sourceColumn: physical_quantity
+
+	/// Manifest-authorized source column physical_cost_minor.
+	column physical_cost_minor
+		dataType: int64
+		lineageTag: 2952c2b0-51c8-5182-816b-13c18a881ced
+		summarizeBy: none
+		sourceColumn: physical_cost_minor
+
+	/// Manifest-authorized source column retail_saleable_quantity.
+	column retail_saleable_quantity
+		dataType: int64
+		lineageTag: e5ad49b9-dad3-53eb-9816-b238112351be
+		summarizeBy: none
+		sourceColumn: retail_saleable_quantity
+
+	/// Manifest-authorized source column QA_or_withdrawn_quantity.
+	column QA_or_withdrawn_quantity
+		dataType: int64
+		lineageTag: 27246e5b-cd1d-53bd-9471-cac609d1130f
+		summarizeBy: none
+		sourceColumn: QA_or_withdrawn_quantity
+
+	/// Manifest-authorized source column withdrawn_quantity.
+	column withdrawn_quantity
+		dataType: int64
+		lineageTag: bb82821f-e3b3-5bab-b498-b2fe77823881
+		summarizeBy: none
+		sourceColumn: withdrawn_quantity
+
+	/// Manifest-authorized source column QA_held_quantity.
+	column QA_held_quantity
+		dataType: int64
+		lineageTag: 1c2fdd9a-41fe-5f04-9ad1-31e4f11c14bb
+		summarizeBy: none
+		sourceColumn: QA_held_quantity
+
+	/// Manifest-authorized source column overdue_unprocessed_quantity.
+	column overdue_unprocessed_quantity
+		dataType: int64
+		lineageTag: 5d5aa201-3827-58d9-bae5-c112e465abd4
+		summarizeBy: none
+		sourceColumn: overdue_unprocessed_quantity
+
+	/// Manifest-authorized source column disposed_quantity.
+	column disposed_quantity
+		dataType: int64
+		lineageTag: 29bb701a-b2fc-5353-9ee8-53d556299fb1
+		summarizeBy: none
+		sourceColumn: disposed_quantity
+
+	/// Manifest-authorized source column realized_disposal_cost_minor.
+	column realized_disposal_cost_minor
+		dataType: int64
+		lineageTag: 6817cb37-bd87-56b4-8b52-a776802b7cba
+		summarizeBy: none
+		sourceColumn: realized_disposal_cost_minor
+
+	/// Manifest-authorized source column pending_supplier_claim_minor.
+	column pending_supplier_claim_minor
+		dataType: int64
+		lineageTag: b9743a04-b660-5f29-a82f-71f252b4242c
+		summarizeBy: none
+		sourceColumn: pending_supplier_claim_minor
+
+	/// Manifest-authorized source column issued_vendor_credit_minor.
+	column issued_vendor_credit_minor
+		dataType: int64
+		lineageTag: 99ed5b2f-bf83-53a2-b312-71fb92e09809
+		summarizeBy: none
+		sourceColumn: issued_vendor_credit_minor
+
+	/// Manifest-authorized source column source_status.
+	column source_status
+		dataType: string
+		lineageTag: 21737780-00af-5105-a763-558746117f36
+		summarizeBy: none
+		sourceColumn: source_status
+
+	/// Manifest-authorized source column status_reason.
+	column status_reason
+		dataType: string
+		lineageTag: 0158988f-5470-5223-990b-9fbe31a0e5de
+		summarizeBy: none
+		sourceColumn: status_reason
+
+	/// Manifest-authorized source column supporting_event_ids.
+	column supporting_event_ids
+		dataType: string
+		lineageTag: c25c6ebb-be6a-5bf4-8568-519efd06d643
+		summarizeBy: none
+		sourceColumn: supporting_event_ids
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: 7d6a1cf5-deac-5a24-9d00-d4ca9e03da45
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column actual_expiry_exclusive_at.
+	column actual_expiry_exclusive_at
+		dataType: string
+		lineageTag: 6a9ce4e1-8e55-5cd8-9c73-db3121bc04eb
+		summarizeBy: none
+		sourceColumn: actual_expiry_exclusive_at
+
+	/// Manifest-authorized source column expiry_day_rule.
+	column expiry_day_rule
+		dataType: string
+		lineageTag: 67dd6ec0-9c42-5da0-8dcc-c846e7f7420d
+		summarizeBy: none
+		sourceColumn: expiry_day_rule
+
+	/// Manifest-authorized source column flags_overlap.
+	column flags_overlap
+		dataType: boolean
+		lineageTag: fae2e02e-e760-52ab-8ecf-6e4cb658371d
+		summarizeBy: none
+		sourceColumn: flags_overlap
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: f39291ac-0642-5417-8d0e-447ed895a49b
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	/// Manifest-authorized source column claim_reason.
+	column claim_reason
+		dataType: string
+		lineageTag: bea6fb62-241d-5572-9384-76cabfee87e6
+		summarizeBy: none
+		sourceColumn: claim_reason
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Withdrawal Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: c93d20dd-6d68-58cc-b5a8-e00c37a9fe9d
+		summarizeBy: none
+		sourceColumn: Withdrawal Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: a3d3064b-d4ec-54ed-b1d7-ff8ac8434597
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 61d0c956-6068-54cc-8015-fdf72907a65a
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fact_expiry_flags = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/facts/fact_expiry_flags.parquet")),
+				  Nested = Table.TransformColumns(Source, {{"source_status", each if _ = null then null else Text.FromBinary(Json.FromValue(_), TextEncoding.Utf8), type text}, {"status_reason", each if _ = null then null else Text.FromBinary(Json.FromValue(_), TextEncoding.Utf8), type text}, {"supporting_event_ids", each if _ = null then null else Text.FromBinary(Json.FromValue(_), TextEncoding.Utf8), type text}}),
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"lot_id", type text}, {"sku_id", type text}, {"location_id", type text}, {"expiry_year", Int64.Type}, {"expiry_month", Int64.Type}, {"expiry_day", type text}, {"expiry_precision", type text}, {"printed_expiry_period", type text}, {"mandatory_withdrawal_at", type text}, {"as_of", type text}, {"already_expired", type logical}, {"expires_current_month", type logical}, {"expires_next_calendar_month", type logical}, {"withdrawal_due", type logical}, {"withdrawal_overdue", type logical}, {"physical_quantity", Int64.Type}, {"physical_cost_minor", Int64.Type}, {"retail_saleable_quantity", Int64.Type}, {"QA_or_withdrawn_quantity", Int64.Type}, {"withdrawn_quantity", Int64.Type}, {"QA_held_quantity", Int64.Type}, {"overdue_unprocessed_quantity", Int64.Type}, {"disposed_quantity", Int64.Type}, {"realized_disposal_cost_minor", Int64.Type}, {"pending_supplier_claim_minor", Int64.Type}, {"issued_vendor_credit_minor", Int64.Type}, {"source_status", type text}, {"status_reason", type text}, {"supporting_event_ids", type text}, {"known_at", type text}, {"actual_expiry_exclusive_at", type text}, {"expiry_day_rule", type text}, {"flags_overlap", type logical}, {"executable_qty", Int64.Type}, {"claim_reason", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Withdrawal Date", each if Record.Field(_, "mandatory_withdrawal_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "mandatory_withdrawal_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date),
+				  Dates2 = Table.AddColumn(Dates1, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates2
+

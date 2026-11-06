@@ -1,0 +1,76 @@
+table policy_guardrail
+	lineageTag: 1136268e-30f3-5fc5-8b0a-15ad871c2bfc
+
+	/// Manifest-authorized source column policy.
+	column policy
+		dataType: string
+		lineageTag: 123dac61-80b5-5425-a893-b7e8c89202bc
+		summarizeBy: none
+		sourceColumn: policy
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 4e538962-7798-5df9-b69b-ff8dbe54a721
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Manifest-authorized source column paired_seed_count.
+	column paired_seed_count
+		dataType: int64
+		lineageTag: 1e49fd17-5862-56c0-9e87-efe28bd814a8
+		summarizeBy: none
+		sourceColumn: paired_seed_count
+
+	/// Manifest-authorized source column donor_service_violations.
+	column donor_service_violations
+		dataType: int64
+		lineageTag: 7fd70cc9-235e-5a80-b6d2-30bef1771651
+		summarizeBy: none
+		sourceColumn: donor_service_violations
+
+	/// Manifest-authorized source column mean_fulfilled_delta.
+	column mean_fulfilled_delta
+		dataType: double
+		lineageTag: b36014e8-4bc3-5717-9a68-ab9999c33a64
+		summarizeBy: none
+		sourceColumn: mean_fulfilled_delta
+
+	/// Manifest-authorized source column ci95_low.
+	column ci95_low
+		dataType: double
+		lineageTag: 2a548cd2-b659-59ab-965b-7201c9a373a0
+		summarizeBy: none
+		sourceColumn: ci95_low
+
+	/// Manifest-authorized source column ci95_high.
+	column ci95_high
+		dataType: double
+		lineageTag: 6ba50dff-d16e-5e2c-ace5-5c300f4cd447
+		summarizeBy: none
+		sourceColumn: ci95_high
+
+	/// Manifest-authorized source column mean_modeled_margin_delta_minor.
+	column mean_modeled_margin_delta_minor
+		dataType: double
+		lineageTag: 200daf04-75d9-5403-9b3f-3134d1e2b2c1
+		summarizeBy: none
+		sourceColumn: mean_modeled_margin_delta_minor
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 493d7958-b49e-5006-a86a-8820c0ee8dbc
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	partition policy_guardrail = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/facts/fact_policy_guardrail.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"policy", type text}, {"status", type text}, {"paired_seed_count", Int64.Type}, {"donor_service_violations", Int64.Type}, {"mean_fulfilled_delta", type number}, {"ci95_low", type number}, {"ci95_high", type number}, {"mean_modeled_margin_delta_minor", type number}, {"executable_qty", Int64.Type}}, "en-US")
+				in
+				  Typed
+

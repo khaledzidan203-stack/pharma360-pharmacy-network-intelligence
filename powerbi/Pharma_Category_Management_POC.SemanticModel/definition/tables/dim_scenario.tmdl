@@ -1,0 +1,34 @@
+table dim_scenario
+	lineageTag: 0f729f47-9295-5f70-b61a-105dbefb50d6
+
+	/// Manifest-authorized source column scenario.
+	column scenario
+		dataType: string
+		lineageTag: cf082708-a3ea-5ea4-9800-28edc01be6ff
+		summarizeBy: none
+		sourceColumn: scenario
+
+	/// Manifest-authorized source column scenario_kind.
+	column scenario_kind
+		dataType: string
+		lineageTag: 91f0a560-a67e-53fc-ae0b-ec57231c9863
+		summarizeBy: none
+		sourceColumn: scenario_kind
+
+	/// Manifest-authorized source column operational_approval.
+	column operational_approval
+		dataType: string
+		lineageTag: 84ed4a37-2d4e-52be-8904-02d323b943f5
+		summarizeBy: none
+		sourceColumn: operational_approval
+
+	partition dim_scenario = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_scenario.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"scenario", type text}, {"scenario_kind", type text}, {"operational_approval", type text}}, "en-US")
+				in
+				  Typed
+

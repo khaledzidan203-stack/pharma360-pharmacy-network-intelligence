@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "6e8b9c0d1a2b3c4d5e6f",
+  "displayName": "07 EXPIRY & WITHDRAWAL DECISION REVIEW",
+  "displayOption": "FitToPage",
+  "height": 1260,
+  "width": 1920,
+  "pageBinding": {
+    "name": "7a55539b350798556026",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "468d7b1ced704a07845b_lot_parameter",
+        "boundFilter": "468d7b1ced704a07845b_lot_filter"
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

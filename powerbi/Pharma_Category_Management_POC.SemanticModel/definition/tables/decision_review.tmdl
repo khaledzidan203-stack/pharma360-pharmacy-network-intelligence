@@ -1,0 +1,160 @@
+table decision_review
+	lineageTag: fb833a5b-850f-5c63-936b-6befefdf2459
+
+	/// Manifest-authorized source column decision_id.
+	column decision_id
+		dataType: string
+		lineageTag: b35ff381-510a-56a4-87c4-503c826a09bf
+		summarizeBy: none
+		sourceColumn: decision_id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 53c6eed8-953b-5b6d-b36a-9f83693ab51b
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column family.
+	column family
+		dataType: string
+		lineageTag: 9890379a-1172-567a-8486-c35b59c98d46
+		summarizeBy: none
+		sourceColumn: family
+
+	/// Manifest-authorized source column source_object.
+	column source_object
+		dataType: string
+		lineageTag: 64837b48-95f7-54b9-9f6e-64056ddad332
+		summarizeBy: none
+		sourceColumn: source_object
+
+	/// Manifest-authorized source column branch_id.
+	column branch_id
+		dataType: string
+		lineageTag: 93c55fee-d1d9-5ed4-8a12-773bf7ea08b3
+		summarizeBy: none
+		sourceColumn: branch_id
+
+	/// Manifest-authorized source column sku_id.
+	column sku_id
+		dataType: string
+		lineageTag: 31c67e83-09c0-5c09-8739-8ad19a0fe810
+		summarizeBy: none
+		sourceColumn: sku_id
+
+	/// Manifest-authorized source column lot_id.
+	column lot_id
+		dataType: string
+		lineageTag: 03833183-ac52-5339-b24c-fd1d5b36f7fc
+		summarizeBy: none
+		sourceColumn: lot_id
+
+	/// Manifest-authorized source column data_as_of.
+	column data_as_of
+		dataType: string
+		lineageTag: a2e01f6e-313b-5ffa-9124-b053b80fd1de
+		summarizeBy: none
+		sourceColumn: data_as_of
+
+	/// Manifest-authorized source column decision_as_of.
+	column decision_as_of
+		dataType: string
+		lineageTag: b894b803-cef9-583f-81ea-2b56673e192c
+		summarizeBy: none
+		sourceColumn: decision_as_of
+
+	/// Manifest-authorized source column evidence_status.
+	column evidence_status
+		dataType: string
+		lineageTag: a07eae4b-2340-5adc-a3e0-2ec9670661f1
+		summarizeBy: none
+		sourceColumn: evidence_status
+
+	/// Manifest-authorized source column decision_status.
+	column decision_status
+		dataType: string
+		lineageTag: d64330d1-308e-5d04-a3ca-b35d00177075
+		summarizeBy: none
+		sourceColumn: decision_status
+
+	/// Manifest-authorized source column reason.
+	column reason
+		dataType: string
+		lineageTag: 1e41b897-798e-5d00-a022-10de4e7b0d5a
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Manifest-authorized source column candidate_quantity.
+	column candidate_quantity
+		dataType: int64
+		lineageTag: 5a94021c-7aa1-5cb4-905f-1d3b180dc606
+		summarizeBy: none
+		sourceColumn: candidate_quantity
+
+	/// Manifest-authorized source column executable_quantity.
+	column executable_quantity
+		dataType: int64
+		lineageTag: 9ffbccda-8330-5a3a-9569-bbc2b6fadc20
+		summarizeBy: none
+		sourceColumn: executable_quantity
+
+	/// Manifest-authorized source column approval_required.
+	column approval_required
+		dataType: boolean
+		lineageTag: bd11bb1c-8b86-5cf9-9c43-ee20b6a20c5b
+		summarizeBy: none
+		sourceColumn: approval_required
+
+	/// Manifest-authorized source column owner_role.
+	column owner_role
+		dataType: string
+		lineageTag: fa5080da-9587-5714-9aa8-fb759007da28
+		summarizeBy: none
+		sourceColumn: owner_role
+
+	/// Manifest-authorized source column source_tier.
+	column source_tier
+		dataType: string
+		lineageTag: 030b4747-c416-5540-9086-26c46bafd8da
+		summarizeBy: none
+		sourceColumn: source_tier
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: fdcf4836-f423-5850-adb1-8340bec6adb0
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column evidence_json.
+	column evidence_json
+		dataType: string
+		isHidden
+		lineageTag: b57f7b96-5161-55e1-92c8-415c6646cebb
+		summarizeBy: none
+		sourceColumn: evidence_json
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Decision Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 22f499f2-8f33-5110-af9f-d12def433cb5
+		summarizeBy: none
+		sourceColumn: Decision Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition decision_review = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/04_analytics/DECISION_ALTERNATIVES.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"decision_id", type text}, {"world_id", type text}, {"family", type text}, {"source_object", type text}, {"branch_id", type text}, {"sku_id", type text}, {"lot_id", type text}, {"data_as_of", type text}, {"decision_as_of", type text}, {"evidence_status", type text}, {"decision_status", type text}, {"reason", type text}, {"candidate_quantity", Int64.Type}, {"executable_quantity", Int64.Type}, {"approval_required", type logical}, {"owner_role", type text}, {"source_tier", type text}, {"source_manifest_sha256", type text}, {"evidence_json", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Decision Date", each if Record.Field(_, "decision_as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "decision_as_of")), 3)), type date)
+				in
+				  Dates0
+

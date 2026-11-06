@@ -1,0 +1,68 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
+
+annotation PBI_QueryOrder = ["dim_product","dim_category","dim_supplier","dim_lot","dim_branch","dim_inventory_location","dim_date","dim_world","dim_policy","dim_scenario","dim_decision_status","source_sale_line","source_invoice","source_customer_return","source_stock_leg","source_po","source_po_event","source_vendor_claim","source_vendor_credit","source_quality","source_proposal","source_constraint_component","fact_lot_stock_asof","fact_store_sku_stock_asof","fact_dc_stock_asof","fact_inbound_asof","fact_product_policy_asof","mart_store_sku_ros_exposure","mart_lot_expiry_and_withdrawal","mart_overstock_proposal_validation","mart_supplier_service_returns","mart_store_space_assortment","mart_policy_scenario_registry","mart_kpi_dictionary","mart_unavailable_evidence","mart_sales_finance_period","mart_category_finance_period","mart_branch_finance_period","mart_network_finance_period","fact_expiry_flags","fact_conditional_forecast","forecast_evaluation","decision_review","policy_evaluation","policy_guardrail","source_case_status","PharmaDataRoot","mart_expiry_withdrawal_review_v01"]
+
+ref table dim_product
+ref table dim_category
+ref table dim_supplier
+ref table dim_lot
+ref table dim_branch
+ref table dim_inventory_location
+ref table dim_date
+ref table dim_world
+ref table dim_policy
+ref table dim_scenario
+ref table dim_decision_status
+ref table source_sale_line
+ref table source_invoice
+ref table source_customer_return
+ref table source_stock_leg
+ref table source_po
+ref table source_po_event
+ref table source_vendor_claim
+ref table source_vendor_credit
+ref table source_quality
+ref table source_proposal
+ref table source_constraint_component
+ref table fact_lot_stock_asof
+ref table fact_store_sku_stock_asof
+ref table fact_dc_stock_asof
+ref table fact_inbound_asof
+ref table fact_product_policy_asof
+ref table mart_store_sku_ros_exposure
+ref table mart_lot_expiry_and_withdrawal
+ref table mart_overstock_proposal_validation
+ref table mart_supplier_service_returns
+ref table mart_store_space_assortment
+ref table mart_policy_scenario_registry
+ref table mart_kpi_dictionary
+ref table mart_unavailable_evidence
+ref table mart_sales_finance_period
+ref table mart_category_finance_period
+ref table mart_branch_finance_period
+ref table mart_network_finance_period
+ref table fact_expiry_flags
+ref table fact_conditional_forecast
+ref table forecast_evaluation
+ref table decision_review
+ref table policy_evaluation
+ref table policy_guardrail
+ref table source_case_status
+ref table PeriodSelector
+ref table SnapshotSelector
+ref table HorizonSelector
+ref table 00_Measures
+ref table mart_expiry_withdrawal_review_v01
+
+ref cultureInfo en-US
+

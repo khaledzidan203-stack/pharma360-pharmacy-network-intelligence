@@ -1,0 +1,147 @@
+table mart_overstock_proposal_validation
+	lineageTag: ab2ff39a-f8a8-599b-a43f-1e089ef476b8
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 87391c05-6fe0-5a80-afc2-1e51a9bd142a
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 0ce6e0d2-78db-5249-818b-efa9785099bd
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column source_manifest_sha256.
+	column source_manifest_sha256
+		dataType: string
+		isHidden
+		lineageTag: 56885aeb-6e12-5a72-bda1-0573a9177ba7
+		summarizeBy: none
+		sourceColumn: source_manifest_sha256
+
+	/// Manifest-authorized source column as_of.
+	column as_of
+		dataType: string
+		lineageTag: 0562bde0-a8e3-5a82-b141-97d455ac24d9
+		summarizeBy: none
+		sourceColumn: as_of
+
+	/// Manifest-authorized source column proposal.
+	column proposal
+		dataType: string
+		lineageTag: cd89b43a-7a1b-5245-92d1-7cea39963a56
+		summarizeBy: none
+		sourceColumn: proposal
+
+	/// Manifest-authorized source column source_record.
+	column source_record
+		dataType: string
+		lineageTag: 0ed0fc5a-cc8c-5e3d-93d3-34f915a0bb32
+		summarizeBy: none
+		sourceColumn: source_record
+
+	/// Manifest-authorized source column location.
+	column location
+		dataType: string
+		lineageTag: 8dacb7e6-e9ae-58fc-a8a9-3d3cfbb41d5c
+		summarizeBy: none
+		sourceColumn: location
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 3a78549a-d966-574b-b410-dceaacea3f62
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: dd634658-2721-56a8-af58-9f25a308f41b
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column proposed_qty.
+	column proposed_qty
+		dataType: int64
+		lineageTag: fc3371dc-b43e-53ee-bda9-b96f6b9be893
+		summarizeBy: none
+		sourceColumn: proposed_qty
+
+	/// Manifest-authorized source column original_payload.
+	column original_payload
+		dataType: string
+		isHidden
+		lineageTag: 12c12cac-c534-5a8f-8cb8-963453118c4c
+		summarizeBy: none
+		sourceColumn: original_payload
+
+	/// Manifest-authorized source column physical_qty.
+	column physical_qty
+		dataType: int64
+		lineageTag: 503ae842-782d-506f-802e-f20beb0acba7
+		summarizeBy: none
+		sourceColumn: physical_qty
+
+	/// Manifest-authorized source column atp_qty.
+	column atp_qty
+		dataType: int64
+		lineageTag: 26f530e7-10e5-50aa-b581-25ea29a30d4d
+		summarizeBy: none
+		sourceColumn: atp_qty
+
+	/// Manifest-authorized source column proposed_corrected_qty.
+	column proposed_corrected_qty
+		dataType: int64
+		lineageTag: 8a14f001-7e23-517b-a789-675bd27af791
+		summarizeBy: none
+		sourceColumn: proposed_corrected_qty
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 58a9cf34-2ff5-57d4-b3fc-9343ad8f9cfc
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	/// Manifest-authorized source column reason_codes.
+	column reason_codes
+		dataType: string
+		lineageTag: a158c007-24a6-5604-a979-f0401fd9126f
+		summarizeBy: none
+		sourceColumn: reason_codes
+
+	/// Manifest-authorized source column recommendation_qty.
+	column recommendation_qty
+		dataType: int64
+		lineageTag: 04b577d4-2a0b-5ba6-903c-72f767af5311
+		summarizeBy: none
+		sourceColumn: recommendation_qty
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'As Of Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 504f5416-4e78-55d0-aa2b-0acbd293ce35
+		summarizeBy: none
+		sourceColumn: As Of Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_overstock_proposal_validation = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/marts/mart_overstock_proposal_validation.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"source_manifest_sha256", type text}, {"as_of", type text}, {"proposal", type text}, {"source_record", type text}, {"location", type text}, {"sku", type text}, {"lot", type text}, {"proposed_qty", Int64.Type}, {"original_payload", type text}, {"physical_qty", Int64.Type}, {"atp_qty", Int64.Type}, {"proposed_corrected_qty", Int64.Type}, {"executable_qty", Int64.Type}, {"reason_codes", type text}, {"recommendation_qty", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "As Of Date", each if Record.Field(_, "as_of") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "as_of")), 3)), type date)
+				in
+				  Dates0
+

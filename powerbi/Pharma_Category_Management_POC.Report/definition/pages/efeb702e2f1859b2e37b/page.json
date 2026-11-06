@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "efeb702e2f1859b2e37b",
+  "displayName": "05 INVENTORY & DISTRIBUTION NETWORK",
+  "displayOption": "FitToPage",
+  "height": 1260,
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "efeb702e2f1859b2e37b_lot_filter",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_lot"
+              }
+            },
+            "Property": "lot"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "pageBinding": {
+    "name": "efeb702e2f1859b2e37b_lot_binding",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "efeb702e2f1859b2e37b_lot_parameter",
+        "boundFilter": "efeb702e2f1859b2e37b_lot_filter",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_lot"
+              }
+            },
+            "Property": "lot"
+          }
+        }
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+table source_po_event
+	lineageTag: 395f96d6-302f-563c-8220-46d56e69c274
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: 9da40f8b-c062-5854-904a-64fd350a2c81
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: cf66ed36-2be1-53ea-8f20-7152b06a104e
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 34e876dd-2515-5828-b458-e7bb199f84b3
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: a6296daf-2e50-5a78-af89-9aea005041c7
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: ca6f4169-81b3-5156-bcf2-bd5c451eb20c
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: ae9187c3-b777-52d5-ae59-ca65bdff3638
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column po.
+	column po
+		dataType: string
+		lineageTag: 095c96f6-000a-5f5c-84c8-9f19c6cde4f9
+		summarizeBy: none
+		sourceColumn: po
+
+	/// Manifest-authorized source column state.
+	column state
+		dataType: string
+		lineageTag: 7fe5774a-4a5c-5373-a4d3-73b4857f66f9
+		summarizeBy: none
+		sourceColumn: state
+
+	/// Manifest-authorized source column qty.
+	column qty
+		dataType: int64
+		lineageTag: 9d9139a8-8ff7-5dab-91dd-67aa371649b4
+		summarizeBy: none
+		sourceColumn: qty
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 1cbb7cb8-094d-532e-94b0-3141a3a9ad79
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: da55b192-fb6a-5df8-a4b3-cfeee374def1
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition source_po_event = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/source/po_event.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"po", type text}, {"state", type text}, {"qty", Int64.Type}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date)
+				in
+				  Dates1
+

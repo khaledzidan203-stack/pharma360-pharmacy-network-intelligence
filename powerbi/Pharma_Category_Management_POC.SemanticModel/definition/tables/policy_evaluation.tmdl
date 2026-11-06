@@ -1,0 +1,105 @@
+table policy_evaluation
+	lineageTag: f67c157a-098f-53e2-9c6b-927ad1e535da
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: 316efb49-693c-5799-8ba0-b5953efd33eb
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column evaluation_unit_seed.
+	column evaluation_unit_seed
+		dataType: int64
+		lineageTag: fd78fa08-c868-5bbb-8f37-367d8e519945
+		summarizeBy: none
+		sourceColumn: evaluation_unit_seed
+
+	/// Manifest-authorized source column policy.
+	column policy
+		dataType: string
+		lineageTag: 4fe8686b-0421-5895-87e9-0040b6087962
+		summarizeBy: none
+		sourceColumn: policy
+
+	/// Manifest-authorized source column case.
+	column case
+		dataType: string
+		lineageTag: 56f3799b-e4aa-5dbb-b537-cfe034f1e307
+		summarizeBy: none
+		sourceColumn: case
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: 3f037088-167e-524d-b5bb-475779bc146e
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column transfer_candidate_qty.
+	column transfer_candidate_qty
+		dataType: int64
+		lineageTag: 369fce0e-82b1-5f99-a2da-17129d6c11ff
+		summarizeBy: none
+		sourceColumn: transfer_candidate_qty
+
+	/// Manifest-authorized source column executable_qty.
+	column executable_qty
+		dataType: int64
+		lineageTag: 2e0e6001-a9a3-5d58-8c09-2aa9dd9a6b61
+		summarizeBy: none
+		sourceColumn: executable_qty
+
+	/// Manifest-authorized source column donor_fulfilled.
+	column donor_fulfilled
+		dataType: int64
+		lineageTag: f1acbccf-bc52-54b9-a80e-85d3031d9c0d
+		summarizeBy: none
+		sourceColumn: donor_fulfilled
+
+	/// Manifest-authorized source column receiver_fulfilled.
+	column receiver_fulfilled
+		dataType: int64
+		lineageTag: 045451a5-3a09-5a78-bfdd-c193b0073aeb
+		summarizeBy: none
+		sourceColumn: receiver_fulfilled
+
+	/// Manifest-authorized source column total_fulfilled.
+	column total_fulfilled
+		dataType: int64
+		lineageTag: 5e6dbdf6-ec4e-53fc-b62e-22fa5342a7a1
+		summarizeBy: none
+		sourceColumn: total_fulfilled
+
+	/// Manifest-authorized source column simulated_margin_less_tariff_minor.
+	column simulated_margin_less_tariff_minor
+		dataType: int64
+		lineageTag: deed21cd-ed9b-5fbb-8a1d-75a44974c465
+		summarizeBy: none
+		sourceColumn: simulated_margin_less_tariff_minor
+
+	/// Manifest-authorized source column source_case_as_of.
+	column source_case_as_of
+		dataType: string
+		lineageTag: 753c0340-16fb-5538-ad72-b800ae6d61a3
+		summarizeBy: none
+		sourceColumn: source_case_as_of
+
+	/// Manifest-authorized source column status.
+	column status
+		dataType: string
+		lineageTag: 785db1f2-e13f-555c-83f4-2ea72abe0525
+		summarizeBy: none
+		sourceColumn: status
+
+	partition policy_evaluation = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/04_analytics/POLICY_EVALUATION_RESULTS.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"world_id", type text}, {"evaluation_unit_seed", Int64.Type}, {"policy", type text}, {"case", type text}, {"sku", type text}, {"transfer_candidate_qty", Int64.Type}, {"executable_qty", Int64.Type}, {"donor_fulfilled", Int64.Type}, {"receiver_fulfilled", Int64.Type}, {"total_fulfilled", Int64.Type}, {"simulated_margin_less_tariff_minor", Int64.Type}, {"source_case_as_of", type text}, {"status", type text}}, "en-US")
+				in
+				  Typed
+

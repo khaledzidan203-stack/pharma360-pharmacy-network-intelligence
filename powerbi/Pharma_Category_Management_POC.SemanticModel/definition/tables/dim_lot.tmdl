@@ -1,0 +1,167 @@
+table dim_lot
+	lineageTag: 270b06e2-5bd7-5995-ad35-d52a77e63933
+
+	/// Manifest-authorized source column id.
+	column id
+		dataType: string
+		isHidden
+		lineageTag: f77eaa34-f43c-5593-85a3-e4ba5f1a2ec9
+		summarizeBy: none
+		sourceColumn: id
+
+	/// Manifest-authorized source column world_id.
+	column world_id
+		dataType: string
+		isHidden
+		lineageTag: d225a699-b05c-5096-b419-cdba9e41d081
+		summarizeBy: none
+		sourceColumn: world_id
+
+	/// Manifest-authorized source column event_at.
+	column event_at
+		dataType: string
+		lineageTag: 90e20171-a591-574a-a9e2-a65440436d52
+		summarizeBy: none
+		sourceColumn: event_at
+
+	/// Manifest-authorized source column known_at.
+	column known_at
+		dataType: string
+		lineageTag: b757705a-1aab-5a31-baf0-8c4ffa8e74cc
+		summarizeBy: none
+		sourceColumn: known_at
+
+	/// Manifest-authorized source column ingested_at.
+	column ingested_at
+		dataType: string
+		lineageTag: 3336ee44-9030-5cfa-a286-65b2b79fe482
+		summarizeBy: none
+		sourceColumn: ingested_at
+
+	/// Manifest-authorized source column validated_at.
+	column validated_at
+		dataType: string
+		lineageTag: 7df14916-665d-5c0e-b6b8-d57177218086
+		summarizeBy: none
+		sourceColumn: validated_at
+
+	/// Manifest-authorized source column lot.
+	column lot
+		dataType: string
+		lineageTag: 89d20c7c-5575-5e49-85c3-8f9a916a7184
+		summarizeBy: none
+		sourceColumn: lot
+
+	/// Manifest-authorized source column sku.
+	column sku
+		dataType: string
+		lineageTag: fffa19ab-b912-591c-bff1-acb3129ee845
+		summarizeBy: none
+		sourceColumn: sku
+
+	/// Manifest-authorized source column expiry_year.
+	column expiry_year
+		dataType: int64
+		lineageTag: 106ca36e-d34e-5729-8b13-375b237ebd19
+		summarizeBy: none
+		sourceColumn: expiry_year
+
+	/// Manifest-authorized source column expiry_month.
+	column expiry_month
+		dataType: int64
+		lineageTag: d4c5d20c-93e9-5ba7-8b9c-e9510912c99d
+		summarizeBy: none
+		sourceColumn: expiry_month
+
+	/// Manifest-authorized source column expiry_day.
+	column expiry_day
+		dataType: string
+		lineageTag: d1759e67-2784-5bff-8900-7b5e6f962612
+		summarizeBy: none
+		sourceColumn: expiry_day
+
+	/// Manifest-authorized source column expiry_precision.
+	column expiry_precision
+		dataType: string
+		lineageTag: 34a3232c-1298-5548-93ac-1df43c49a71f
+		summarizeBy: none
+		sourceColumn: expiry_precision
+
+	/// Manifest-authorized source column manufactured_at.
+	column manufactured_at
+		dataType: string
+		lineageTag: 04f482d7-6bba-545e-8f1e-c683eb3edf43
+		summarizeBy: none
+		sourceColumn: manufactured_at
+
+	/// Manifest-authorized source column source.
+	column source
+		dataType: string
+		lineageTag: b84d1606-4903-538a-8e33-89bf1f032f22
+		summarizeBy: none
+		sourceColumn: source
+
+	/// Manifest-authorized source column unit_cost_minor.
+	column unit_cost_minor
+		dataType: int64
+		lineageTag: 26064e5b-124f-502b-b70e-3f08813621b6
+		summarizeBy: none
+		sourceColumn: unit_cost_minor
+
+	/// Manifest-authorized source column withdrawal_at.
+	column withdrawal_at
+		dataType: string
+		lineageTag: 6c390fe7-2b7c-50c4-8a4e-29fe590e9220
+		summarizeBy: none
+		sourceColumn: withdrawal_at
+
+	/// Manifest-authorized source column supplier_lot_offer_id.
+	column supplier_lot_offer_id
+		dataType: string
+		lineageTag: fc21f7c0-4c37-5c4f-a8dd-506ad40d8e9c
+		summarizeBy: none
+		sourceColumn: supplier_lot_offer_id
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Event Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 654c39c1-f9f7-51f2-a721-d24460af74b0
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Known Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 5aa5608a-2940-5702-b105-3924b7c8aa68
+		summarizeBy: none
+		sourceColumn: Known Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Riyadh date role; original offset timestamp retained.
+	column 'Withdrawal Date'
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 0e8403a0-099e-5ad6-a554-49cb37c52adc
+		summarizeBy: none
+		sourceColumn: Withdrawal Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_lot = m
+		mode: import
+		source =
+				let
+				  Source = Parquet.Document(File.Contents(PharmaDataRoot & "/05_executive_data/dimensions/dim_lot.parquet")),
+				  Nested = Source,
+				  Typed = Table.TransformColumnTypes(Nested, {{"id", type text}, {"world_id", type text}, {"event_at", type text}, {"known_at", type text}, {"ingested_at", type text}, {"validated_at", type text}, {"lot", type text}, {"sku", type text}, {"expiry_year", Int64.Type}, {"expiry_month", Int64.Type}, {"expiry_day", type text}, {"expiry_precision", type text}, {"manufactured_at", type text}, {"source", type text}, {"unit_cost_minor", Int64.Type}, {"withdrawal_at", type text}, {"supplier_lot_offer_id", type text}}, "en-US"),
+				  Dates0 = Table.AddColumn(Typed, "Event Date", each if Record.Field(_, "event_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "event_at")), 3)), type date),
+				  Dates1 = Table.AddColumn(Dates0, "Known Date", each if Record.Field(_, "known_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "known_at")), 3)), type date),
+				  Dates2 = Table.AddColumn(Dates1, "Withdrawal Date", each if Record.Field(_, "withdrawal_at") = null then null else Date.From(DateTimeZone.SwitchZone(DateTimeZone.FromText(Record.Field(_, "withdrawal_at")), 3)), type date)
+				in
+				  Dates2
+
