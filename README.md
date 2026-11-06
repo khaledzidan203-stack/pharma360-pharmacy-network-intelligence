@@ -1,11 +1,11 @@
 <div align="center">
 
 # Pharma360
-### Pharmacy Network Decision Intelligence
+### Operational Pharmacy Analytics · Synthetic Public Case Study
 
 **Category Performance · Inventory & Expiry · Supplier Service · Forecast Evaluation · Governed Decisions**
 
-**Power BI · PBIP / PBIR / TMDL · DAX · Power Query · Parquet · Synthetic Retail Data**
+**Applied Operational Analytics · Power BI · PBIP / PBIR / TMDL · DAX · Power Query · Synthetic Data**
 
 [**Explore the dashboards**](#dashboard-showcase) · [**Run the report**](#run-the-dashboard) · [**Understand the evidence**](#evidence-and-interpretation) · [**Browse the files**](#repository-map)
 
@@ -14,7 +14,7 @@
 </div>
 
 > [!IMPORTANT]
-> **A working portfolio demonstration, not an operational authorization system.** All pharmacies, SKUs, suppliers, invoices, stock movements and scenarios use fictional synthetic data. The report does not approve purchase orders, store transfers, returns, disposal or clinical substitution. Forecast outputs and proposed policies are **not certified for deployment**.
+> **Based on pharmacy analytics implemented in real operations — recreated here with synthetic data.** The underlying business reporting and operational decision-support approach comes from practical pharmacy operations work. This public GitHub edition uses fictional pharmacies, products, suppliers, invoices and inventory movements to demonstrate the approach without disclosing real business data. It is an interactive, runnable case study rather than a live connection to operational systems. Forecast experiments and simulated policy alternatives are not evidence of production-approved automated decisions.
 
 ## Dashboard showcase
 
@@ -68,6 +68,10 @@ All **15 screenshots** are preserved report captures from the final PBIP, presen
 
 ## The business problem
 
+### From operational implementation to a public case study
+
+This project draws on analytical reporting and business workflows **applied in real pharmacy operations**: tracking commercial performance, monitoring pharmacy and distribution inventory, reviewing stock risks, and supporting management decisions. The repository reconstructs representative examples using **fully synthetic data**, allowing visitors to explore the solution and its Power BI implementation without exposing employer records, commercial transactions or confidential operational systems. The exact public dataset and experimental scenarios are not presented as real production results.
+
 A pharmacy network cannot manage commercial performance independently from inventory, supplier service, expiry risk and forecast uncertainty. The question is not simply *which action looks profitable?* It is **which conclusion is supported by the available data, and which proposed action is actually permitted?**
 
 Pharma360 connects:
@@ -84,7 +88,8 @@ Pharma360 connects:
 |---|---|
 | Interactive report | **15 Power BI pages**, **277 saved PBIR visual definitions**, **14 Index destinations** |
 | Bundled input | **47 actively imported Parquet files** — all required for the existing semantic model |
-| Synthetic network | **25 stores · 280 SKUs · 8 categories · 10 suppliers** |
+| Real-world foundation | Pharmacy analytics methods implemented in day-to-day operations; synthetic reconstruction for public sharing |
+| Public example network | **25 synthetic stores · 280 SKUs · 8 categories · 10 suppliers** |
 | Editable source | Native **PBIP + PBIR + TMDL**, DAX measures and report theme |
 | Opening the report | Windows launcher configures local `PharmaDataRoot`, then opens Power BI Desktop |
 | Independent recreation | **Not claimed** — the full original world-generation and evaluation pipeline is not published in this runnable-report bundle |
@@ -100,7 +105,7 @@ flowchart LR
     E --> F["Decision alternatives<br/>subject to guardrails"]
 ```
 
-The Parquet inputs preserve the selected synthetic analytical results. Downloading this repository **does not rerun** the original simulations, optimizer studies, historical data engineering or forecast-model selection. It reproduces the *supplied report experience* using the bundled inputs, not an independently rebuilt world.
+The analytical architecture reflects an operational reporting approach developed through practical pharmacy work. The Parquet inputs are the **synthetic public example**, not exported operational records. Downloading this repository **does not rerun** the original simulations, optimizer studies, historical data engineering or forecast-model selection. It reproduces the supplied interactive report using the bundled inputs, not an independently rebuilt world or a live company system.
 
 ## Run the dashboard
 
@@ -123,6 +128,8 @@ The launcher detects its own folder, verifies all active Parquet dependencies, a
 **Verification boundary:** the owner confirmed successful local Desktop operation. A separate fresh-ZIP, cross-folder or cross-device Power BI refresh has **not yet been independently certified**.
 
 ## Evidence and interpretation
+
+**Operational application and analytical validation are different claims.** The project is grounded in real pharmacy analytics work; the publicly available figures, simulated policies and scientific evaluation belong to the synthetic case study. The repository does not claim that every experimental module was deployed or approved in a production pharmacy system.
 
 <details>
 <summary><strong>Scientific and business limitations — important when interpreting the dashboard</strong></summary>
@@ -156,7 +163,7 @@ The launcher detects its own folder, verifies all active Parquet dependencies, a
 └── screen_shoots/                    15 original report-page PNGs
 ```
 
-**Publication scope:** this repository is intentionally a **runnable Power BI portfolio bundle**. It does not include local Codex prompts, development plans, scratch files, private QA logs, source-generating scripts or the full upstream analytics pipeline. The many JSON and TMDL files under `powerbi/` are native components of the editable report and should not be removed merely to reduce the file count.
+**Publication scope:** this repository is a **runnable public edition of an operationally grounded pharmacy analytics project**, reconstructed with synthetic inputs. It does not include company data, local Codex prompts, development plans, scratch files, private QA logs, source-generating scripts or the full upstream analytics pipeline. The many JSON and TMDL files under `powerbi/` are native components of the editable report and should not be removed merely to reduce the file count.
 
 ---
 
